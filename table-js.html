@@ -10,11 +10,28 @@
       tableData.forEach((vod) => {
         let row = tableBody.insertRow();
         row.id = vod.id;
+        // Informações básicas
         row.insertCell().appendChild(document.createTextNode(vod.num));
         row.insertCell().appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
-        row.insertCell().appendChild(document.createTextNode(vod.cod));
+
+        let link = document.createElement("a");
+        link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+        link.innerHTML = vod.cod;
+        row.insertCell().appendChild(link);
+
         let nestedTable = document.createElement("table");
+
+        // Conteúdo
+        /*
+            vod.forEach((content) => {
+
+            });
+    */
+
+        // Observações e participações
         if (vod.obs !== "") {
           let obsCell = nestedTable.insertRow().insertCell();
           let obsSpan = document.createElement("span");
@@ -29,6 +46,7 @@
           partCell.appendChild(partSpan);
           partCell.appendChild(document.createTextNode(vod.part));
         }
+
         let nestedRow = tableBody.insertRow();
         nestedRow.id = "n" + vod.id;
         nestedRow.appendChild(nestedTable);
