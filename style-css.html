@@ -1,25 +1,73 @@
 <style>
   #vodsTable {
-    width: 100vw;
+    width: 100%;
+    text-align: center;
   }
 
-  .main-row td:nth-child(1) {
-    text-align: center;
+  #vodsTable th:nth-child(3) {
+    text-align: start;
+  }
+
+  #vodsTable th:nth-child(4) {
+    text-align: start;
   }
 
   .main-row td:nth-child(2) {
-    text-align: center;
     font-weight: 700;
     font-family: var(--bs-font-monospace);
   }
 
   .main-row td:nth-child(3) {
+    text-align: start;
     word-break: break-word;
+    white-space: pre-line;
   }
 
-  .nested td:nth-child(1) {
-    text-align: center;
+  .main-row td:nth-child(4) {
+    text-align: start;
+  }
+
+  .content-row td:nth-child(1) {
+    width: 2.5%;
     font-weight: 700;
     font-family: var(--bs-font-monospace);
+  }
+
+  .content-row td:nth-child(2) {
+    text-align: start;
+    word-break: break-word;
+    white-space: pre-line;
+  }
+
+  .content-row td:nth-child(3) {
+    width: 2.5%;
+  }
+
+  .obs-part-row {
+    text-align: start;
+  }
+
+  .obs-part-row td {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .obs-part-row span {
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  a {
+    color: hsl(345, 100%, 62%);
+    text-decoration: none;
+  }
+  a:hover {
+    color: hsl(345, 90%, 57%);
+  }
+  a:focus {
+    color: hsl(345, 80%, 57%);
+  }
+  a:visited {
+    color: hsl(345, 70%, 57%);
   }
 </style>

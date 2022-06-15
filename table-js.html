@@ -45,6 +45,7 @@
         // Conteúdo
         vod.contents.forEach((content) => {
           let contRow = nestedTable.insertRow();
+          contRow.className = "content-row";
           let contStatus = contRow.insertCell();
           switch (content[2]) {
             case "C":
@@ -59,22 +60,53 @@
             case "N":
               contStatus.className = "table-danger";
               break;
+            default:
+              break;
           }
           contStatus.appendChild(document.createTextNode(content[2]));
-          contRow.insertCell().appendChild(document.createTextNode(content[3]));
-          contRow.insertCell().appendChild(document.createTextNode(content[4]));
+          contRow
+            .insertCell()
+            .appendChild(
+              document.createTextNode(content[3].replace(" = ", ": "))
+            );
+          let contMute = contRow.insertCell();
+          let contMuteSymbol = null;
+          switch (content[4]) {
+            case "S":
+              contMute.className = "table-danger";
+              contMuteSymbol = "🔇";
+              break;
+            case "N":
+              contMute.className = "table-primary";
+              contMuteSymbol = "🔊";
+              break;
+            case "P":
+              contMute.className = "table-warning";
+              contMuteSymbol = "🔈";
+              break;
+            default:
+              break;
+          }
+          contMute.appendChild(document.createTextNode(contMuteSymbol));
         });
 
         // Observações e participações
         if (vod.obs !== "") {
-          let obsCell = nestedTable.insertRow().insertCell();
+          let obsRow = nestedTable.insertRow();
+          obsRow.className = "obs-part-row bg-light";
+          let obsCell = obsRow.insertCell();
+          obsCell.setAttribute("colspan", 3);
           let obsSpan = document.createElement("span");
           obsSpan.appendChild(document.createTextNode("Observações: "));
           obsCell.appendChild(obsSpan);
           obsCell.appendChild(document.createTextNode(vod.obs));
         }
         if (vod.part !== "") {
-          let partCell = nestedTable.insertRow().insertCell();
+          let partRow = nestedTable.insertRow();
+          partRow.className = "obs-part-row bg-light";
+          let partCell = partRow.insertCell();
+          partCell.className = "obs-part-cell";
+          partCell.setAttribute("colspan", 3);
           let partSpan = document.createElement("span");
           partSpan.appendChild(document.createTextNode("Participações: "));
           partCell.appendChild(partSpan);
@@ -83,7 +115,9 @@
 
         let nestedRow = tableBody.insertRow();
         nestedRow.id = "n" + vod.id;
-        nestedRow.appendChild(nestedTable);
+        let nestedCell = nestedRow.insertCell();
+        nestedCell.setAttribute("colspan", "4");
+        nestedCell.appendChild(nestedTable);
       });
     }
   });
