@@ -1,1 +1,4 @@
-const helloWorld = () => console.log('Hello world!');
+function doGet() {
+
+    return HtmlService.createHtmlOutputFromFile("table");
+}
