@@ -1,0 +1,20 @@
+<script>
+  // Ao carregar a página...
+  document.addEventListener("DOMContentLoaded", function () {
+    // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
+    google.script.run.withSuccessHandler(carregarDados).getTableData();
+
+    function carregarDados(tableData) {
+      let tableBody = document.getElementById("vodsTableBody");
+
+      tableData.forEach((vod) => {
+        let row = tableBody.insertRow();
+        row.insertCell().appendChild(document.createTextNode(vod.id));
+        row.insertCell().appendChild(document.createTextNode(vod.num));
+        row.insertCell().appendChild(document.createTextNode(vod.sts));
+        row.insertCell().appendChild(document.createTextNode(vod.tit));
+        row.insertCell().appendChild(document.createTextNode(vod.cod));
+      });
+    }
+  });
+</script>

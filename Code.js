@@ -1,4 +1,5 @@
-function doGet() {
+/** @OnlyCurrentDoc */
 
-    return HtmlService.createHtmlOutputFromFile("table");
+function doGet() {
+  return HtmlService.createTemplateFromFile("table").evaluate();
 }
