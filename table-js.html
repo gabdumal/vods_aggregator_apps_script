@@ -25,11 +25,12 @@
         let nestedTable = document.createElement("table");
 
         // Conteúdo
-        /*
-            vod.forEach((content) => {
-
-            });
-    */
+        vod.contents.forEach((content) => {
+          let contRow = nestedTable.insertRow();
+          contRow.insertCell().appendChild(document.createTextNode(content[2]));
+          contRow.insertCell().appendChild(document.createTextNode(content[3]));
+          contRow.insertCell().appendChild(document.createTextNode(content[4]));
+        });
 
         // Observações e participações
         if (vod.obs !== "") {
