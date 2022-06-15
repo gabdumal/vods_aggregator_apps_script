@@ -15,8 +15,17 @@
     <base target="_top" />
   </head>
   <body>
-    <table id="vodsTable">
-      <tbody id="vodsTableBody"></tbody>
+    <table
+      id="vodsTable"
+      class="table table-sm table-bordered table-striped align-middle table-responsive"
+    >
+      <thead>
+        <th scope="col">#</th>
+        <th scope="col">✓</th>
+        <th scope="col">Título</th>
+        <th scope="col">Link</th>
+      </thead>
+      <tbody id="vodsTableBody" class="table-group-divider"></tbody>
     </table>
 
     <?!= include("table-js"); ?>

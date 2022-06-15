@@ -9,11 +9,29 @@
 
       tableData.forEach((vod) => {
         let row = tableBody.insertRow();
-        row.insertCell().appendChild(document.createTextNode(vod.id));
+        row.id = vod.id;
         row.insertCell().appendChild(document.createTextNode(vod.num));
         row.insertCell().appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
         row.insertCell().appendChild(document.createTextNode(vod.cod));
+        let nestedTable = document.createElement("table");
+        if (vod.obs !== "") {
+          let obsCell = nestedTable.insertRow().insertCell();
+          let obsSpan = document.createElement("span");
+          obsSpan.appendChild(document.createTextNode("Observações: "));
+          obsCell.appendChild(obsSpan);
+          obsCell.appendChild(document.createTextNode(vod.obs));
+        }
+        if (vod.part !== "") {
+          let partCell = nestedTable.insertRow().insertCell();
+          let partSpan = document.createElement("span");
+          partSpan.appendChild(document.createTextNode("Participações: "));
+          partCell.appendChild(partSpan);
+          partCell.appendChild(document.createTextNode(vod.part));
+        }
+        let nestedRow = tableBody.insertRow();
+        nestedRow.id = "n" + vod.id;
+        nestedRow.appendChild(nestedTable);
       });
     }
   });
