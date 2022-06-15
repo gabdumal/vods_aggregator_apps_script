@@ -10,9 +10,26 @@
       tableData.forEach((vod) => {
         let row = tableBody.insertRow();
         row.id = vod.id;
+        row.className = "main-row";
+
         // Informações básicas
         row.insertCell().appendChild(document.createTextNode(vod.num));
-        row.insertCell().appendChild(document.createTextNode(vod.sts));
+        let vodStatus = row.insertCell();
+        switch (vod.sts) {
+          case "C":
+            vodStatus.className = "table-success";
+            break;
+          case "I":
+            vodStatus.className = "table-primary";
+            break;
+          case "P":
+            vodStatus.className = "table-warning";
+            break;
+          case "N":
+            vodStatus.className = "table-danger";
+            break;
+        }
+        vodStatus.appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
 
         let link = document.createElement("a");
@@ -23,11 +40,27 @@
         row.insertCell().appendChild(link);
 
         let nestedTable = document.createElement("table");
+        nestedTable.className = "table table-sm mb-0 nested";
 
         // Conteúdo
         vod.contents.forEach((content) => {
           let contRow = nestedTable.insertRow();
-          contRow.insertCell().appendChild(document.createTextNode(content[2]));
+          let contStatus = contRow.insertCell();
+          switch (content[2]) {
+            case "C":
+              contStatus.className = "table-success";
+              break;
+            case "I":
+              contStatus.className = "table-primary";
+              break;
+            case "P":
+              contStatus.className = "table-warning";
+              break;
+            case "N":
+              contStatus.className = "table-danger";
+              break;
+          }
+          contStatus.appendChild(document.createTextNode(content[2]));
           contRow.insertCell().appendChild(document.createTextNode(content[3]));
           contRow.insertCell().appendChild(document.createTextNode(content[4]));
         });
