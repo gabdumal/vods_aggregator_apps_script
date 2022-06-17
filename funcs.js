@@ -44,6 +44,8 @@ function getTableData() {
     }
     // Define uma lista de objetos Content cujo atributo idVod é igual ao ID do Vod
     let contentListEqual = dataContent.filter(checkIdMatch);
+    contentListEqual.forEach(function (content) {});
+    let contentObj;
     // Adiciona a lista de objetos Content ao array de dados do vod
     vodObj.contents = contentListEqual;
     // Adiciona o array de dados do vod à lista de dados a serem exibidos na tabela
