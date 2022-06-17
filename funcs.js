@@ -23,12 +23,12 @@ function getTableData() {
     return b[1] - a[1];
   });
 
-  // Declara letiável de array que guardará todos os dados da tabela
+  // Declara variável de array que guardará todos os dados da tabela
   tableData = [];
 
   // Para cada vod na lista de vods...
   dataVod.forEach(function (vod) {
-    // Declara letiável de objeto que guardará todos os dados de um único vod
+    // Declara variável de objeto que guardará todos os dados de um único vod
     let vodObj = {
       id: vod[0],
       num: vod[1],

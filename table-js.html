@@ -2,9 +2,9 @@
   // Ao carregar a página...
   document.addEventListener("DOMContentLoaded", function () {
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
-    google.script.run.withSuccessHandler(carregarDados).getTableData();
+    google.script.run.withSuccessHandler(loadData).getTableData();
 
-    function carregarDados(tableData) {
+    function loadData(tableData) {
       let tableBody = document.getElementById("vodsTableBody");
 
       tableData.forEach((vod) => {
@@ -14,22 +14,6 @@
 
         // Informações básicas
         row.insertCell().appendChild(document.createTextNode(vod.num));
-        let vodStatus = row.insertCell();
-        switch (vod.sts) {
-          case "C":
-            vodStatus.className = "table-success";
-            break;
-          case "I":
-            vodStatus.className = "table-primary";
-            break;
-          case "P":
-            vodStatus.className = "table-warning";
-            break;
-          case "N":
-            vodStatus.className = "table-danger";
-            break;
-        }
-        vodStatus.appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
 
         let link = document.createElement("a");
@@ -46,24 +30,6 @@
         vod.contents.forEach((content) => {
           let contRow = nestedTable.insertRow();
           contRow.className = "content-row";
-          let contStatus = contRow.insertCell();
-          switch (content[2]) {
-            case "C":
-              contStatus.className = "table-success";
-              break;
-            case "I":
-              contStatus.className = "table-primary";
-              break;
-            case "P":
-              contStatus.className = "table-warning";
-              break;
-            case "N":
-              contStatus.className = "table-danger";
-              break;
-            default:
-              break;
-          }
-          contStatus.appendChild(document.createTextNode(content[2]));
           contRow
             .insertCell()
             .appendChild(
