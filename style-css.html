@@ -29,9 +29,52 @@
     box-shadow: 0 0 0 0.25rem hsl(344deg 86% 70% / 50%);
   }
 
+  .order-icon {
+    align-self: center;
+    padding: 0;
+  }
+
+  .arrow {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    width: min-content;
+    height: min-content;
+    padding: 2px;
+  }
+
+  .up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+
+  .down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+  .decrescent > .up {
+    border-color: hsl(0, 0%, 50%);
+  }
+
+  .decrescent > .down {
+    border-color: hsl(0, 0%, 0%);
+  }
+
+  .crescent > .up {
+    border-color: hsl(0, 0%, 0%);
+  }
+
+  .crescent > .down {
+    border-color: hsl(0, 0%, 50%);
+  }
+
   #vodsTable {
     width: 100%;
     text-align: center;
+  }
+
+  #vodsTable th:nth-child(1) {
+    justify-content: space-around;
   }
 
   #vodsTable th:nth-child(2),
