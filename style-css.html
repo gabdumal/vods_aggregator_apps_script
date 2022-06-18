@@ -1,4 +1,28 @@
 <style>
+  .text-cherry {
+    color: hsl(344deg 100% 61%);
+  }
+
+  .title {
+    overflow: hidden;
+    margin-left: -1em;
+    transition: margin-left, 100ms;
+  }
+
+  .return-arrow {
+    height: fit-content;
+    margin-right: 100%;
+    transition: margin-right, 100ms;
+  }
+
+  .title:hover {
+    margin-left: 0;
+  }
+
+  .title:hover .return-arrow {
+    margin-right: 0.1em;
+  }
+
   #vodsTable {
     width: 100%;
     text-align: center;
@@ -18,6 +42,7 @@
 
   .main-row td:nth-child(2) {
     text-align: start;
+    word-wrap: break-word;
     word-break: break-word;
     white-space: pre-line;
   }
@@ -28,6 +53,7 @@
 
   .content-row td:nth-child(1) {
     text-align: start;
+    word-wrap: break-word;
     word-break: break-word;
     white-space: pre-line;
   }
@@ -51,16 +77,16 @@
   }
 
   a {
-    color: hsl(345, 100%, 62%);
+    color: hsl(344deg 100% 61%);
     text-decoration: none;
   }
   a:hover {
-    color: hsl(345, 90%, 57%);
+    color: hsl(344deg 90% 61%);
   }
   a:focus {
-    color: hsl(345, 80%, 57%);
+    color: hsl(344deg 80% 61%);
   }
   a:visited {
-    color: hsl(345, 70%, 57%);
+    color: hsl(344deg 70% 61%);
   }
 </style>

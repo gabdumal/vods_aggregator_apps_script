@@ -11,23 +11,50 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css"
+    />
     <?!= include("style-css"); ?>
     <title>Vods</title>
     <base target="_top" />
   </head>
   <body>
-    <table
-      id="vodsTable"
-      class="table table-sm table-striped align-middle table-responsive"
+    <nav
+      class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light"
     >
-      <thead>
-        <th scope="col">#</th>
-        <th scope="col">Título</th>
-        <th scope="col">Link</th>
-      </thead>
-      <tbody id="vodsTableBody" class="table-group-divider"></tbody>
-    </table>
-
+      <a href="#" class="navbar-brand title text-center">
+        <div class="d-flex justify-content-end ms-2">
+          <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
+          <div class="d-flex">
+            <h1 class="h2">Vods do Felps</h1>
+            <small class="text-cherry ms-2 mb-0 h3">'-'</small>
+          </div>
+        </div>
+      </a>
+      <div class="d-flex me-2">
+        <a
+          href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-twitch fs-4 text-cherry"></i>
+        </a>
+      </div>
+    </nav>
+    <article class="container-fluid">
+      <table
+        id="vodsTable"
+        class="table table-sm table-striped align-middle table-responsive"
+      >
+        <thead>
+          <th scope="col">#</th>
+          <th scope="col">Título</th>
+          <th scope="col">Link</th>
+        </thead>
+        <tbody id="vodsTableBody" class="table-group-divider"></tbody>
+      </table>
+    </article>
     <?!= include("table-js"); ?>
     <!-- JavaScript Bundle with Popper -->
     <script
