@@ -86,9 +86,31 @@
         nestedCell.appendChild(nestedTable);
       });
     }
-
-    function reverseOrder(){
-      
-    }
   });
+
+  function reverseOrder() {
+    let table = document.getElementById("vodsTable");
+    let orderElemClasses =
+      table.firstElementChild.firstElementChild.firstElementChild
+        .firstElementChild.firstElementChild.lastElementChild.classList;
+    if (orderElemClasses.contains("decrescent")) {
+      orderElemClasses.replace("decrescent", "crescent");
+    } else if (orderElemClasses.contains("crescent")) {
+      orderElemClasses.replace("crescent", "decrescent");
+    } else return null;
+
+    let tableBody = table.firstElementChild.nextElementSibling;
+    let newTableBody = document.createElement("tbody");
+    newTableBody.className = "table-group-divider";
+    let rows = tableBody.children;
+    let numRows = rows.length;
+
+    for (let row = 0; row < numRows / 2; row++) {
+      newTableBody.append(rows[numRows - 2 - row * 2]);
+      newTableBody.append(rows[numRows - 2 - row * 2]);
+    }
+
+    tableBody.remove();
+    table.append(newTableBody);
+  }
 </script>
