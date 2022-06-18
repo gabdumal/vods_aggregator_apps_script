@@ -23,16 +23,21 @@
     margin-right: 0.1em;
   }
 
+  .form-control:focus,
+  .form-select:focus {
+    border-color: hsl(344deg 100% 70%);
+    box-shadow: 0 0 0 0.25rem hsl(344deg 86% 70% / 50%);
+  }
+
   #vodsTable {
     width: 100%;
     text-align: center;
   }
 
-  #vodsTable th:nth-child(2) {
-    text-align: start;
-  }
-
-  #vodsTable th:nth-child(3) {
+  #vodsTable th:nth-child(2),
+  #vodsTable th:nth-child(3),
+  .main-row td:nth-child(3),
+  .obs-part-row {
     text-align: start;
   }
 
@@ -47,10 +52,6 @@
     white-space: pre-line;
   }
 
-  .main-row td:nth-child(3) {
-    text-align: start;
-  }
-
   .content-row td:nth-child(1) {
     text-align: start;
     word-wrap: break-word;
@@ -61,11 +62,6 @@
   .content-row td:nth-child(2) {
     width: 2.5%;
   }
-
-  .obs-part-row {
-    text-align: start;
-  }
-
   .obs-part-row td {
     padding-top: 0;
     padding-bottom: 0;

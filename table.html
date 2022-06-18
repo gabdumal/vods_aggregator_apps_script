@@ -23,7 +23,7 @@
     <nav
       class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light"
     >
-      <a href="#" class="navbar-brand title text-center">
+      <a href="javascript:void(0)" class="navbar-brand title text-center">
         <div class="d-flex justify-content-end ms-2">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
@@ -43,17 +43,39 @@
       </div>
     </nav>
     <article class="container-fluid">
-      <table
-        id="vodsTable"
-        class="table table-sm table-striped align-middle table-responsive"
-      >
-        <thead>
-          <th scope="col">#</th>
-          <th scope="col">Título</th>
-          <th scope="col">Link</th>
-        </thead>
-        <tbody id="vodsTableBody" class="table-group-divider"></tbody>
-      </table>
+      <section class="mt-1">
+        <div class="row">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Titulo da live"
+              aria-label="Titulo da live"
+            />
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Conteúdo"
+              aria-label="Conteúdo"
+            />
+          </div>
+        </div>
+      </section>
+      <section>
+        <table
+          id="vodsTable"
+          class="table table-sm table-striped align-middle table-responsive"
+        >
+          <thead>
+            <th scope="col">#</th>
+            <th scope="col">Título</th>
+            <th scope="col">Link</th>
+          </thead>
+          <tbody id="vodsTableBody" class="table-group-divider"></tbody>
+        </table>
+      </section>
     </article>
     <?!= include("table-js"); ?>
     <!-- JavaScript Bundle with Popper -->
