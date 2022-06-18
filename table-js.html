@@ -86,6 +86,32 @@
         nestedCell.appendChild(nestedTable);
       });
     }
+
+    // Pesquisa por número e título
+    let numTitInput = document.getElementById("numTitInput");
+    numTitInput.addEventListener("input", (event) => {
+      let search = event.target.value;
+      let searchLength = search.length;
+      let tableBody = document.getElementById("vodsTableBody");
+      let rows = tableBody.children;
+      let numRows = rows.length;
+      for (let row = 0; row < numRows / 2; row++) {
+        if (
+          rows[row * 2].firstElementChild.innerHTML.slice(0, searchLength) !==
+            search.slice(0, searchLength) &&
+          rows[row * 2].children[1].innerHTML
+            .slice(0, searchLength)
+            .toLowerCase() !== search.slice(0, searchLength).toLowerCase()
+        ) {
+          rows[row * 2].classList.add("d-none");
+          rows[row * 2 + 1].classList.add("d-none");
+        } else {
+          rows[row * 2].classList.remove("d-none");
+          rows[row * 2 + 1].classList.remove("d-none");
+        }
+      }
+      //numTitInput.after(search);
+    });
   });
 
   function reverseOrder() {
@@ -112,5 +138,6 @@
 
     tableBody.remove();
     table.append(newTableBody);
+    newTableBody.id = "vodsTableBody";
   }
 </script>
