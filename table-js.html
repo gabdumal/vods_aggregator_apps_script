@@ -99,9 +99,9 @@
         if (
           rows[row * 2].firstElementChild.innerHTML.slice(0, searchLength) !==
             search &&
-          rows[row * 2].children[1].innerHTML
-            .slice(0, searchLength)
-            .toLowerCase() !== search.toLowerCase()
+          !rows[row * 2].children[1].innerHTML
+            .toLowerCase()
+            .includes(search.toLowerCase())
         ) {
           rows[row * 2].classList.add("d-none");
           rows[row * 2 + 1].classList.add("d-none");
@@ -116,7 +116,6 @@
     let contentInput = document.getElementById("contentInput");
     contentInput.addEventListener("input", (event) => {
       let search = event.target.value;
-      let searchLength = search.length;
       let tableBody = document.getElementById("vodsTableBody");
       let trLvl1Arr = tableBody.children;
 
@@ -133,10 +132,7 @@
           let contentTr = contentsTrLvl2Arr[contentInd];
           let contentTd = contentTr.children[0];
           let contentName = contentTd.innerHTML;
-          if (
-            contentName.slice(0, searchLength).toLowerCase() !==
-            search.toLowerCase()
-          ) {
+          if (!contentName.toLowerCase().includes(search.toLowerCase())) {
             trLvl1Arr[trInd * 2].classList.add("d-none");
             trLvl1Arr[trInd * 2 + 1].classList.add("d-none");
           } else {
