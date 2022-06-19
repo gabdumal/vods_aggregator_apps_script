@@ -81,10 +81,23 @@
 
         let nestedRow = tableBody.insertRow();
         nestedRow.id = "n" + vod.id;
+        nestedRow.classList.add("expColHidden");
         let nestedCell = nestedRow.insertCell();
         nestedCell.setAttribute("colspan", "4");
         nestedCell.appendChild(nestedTable);
+
+        // Expandir e contrair linhas de conteúdo
+        row.setAttribute(
+          "onclick",
+          "(()=>{document.getElementById('n" +
+            vod.id +
+            "').classList.toggle('expColHidden');})()"
+        );
       });
+
+      for (let row = 0; row < 10; row++) {
+        tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
+      }
     }
 
     // Pesquisa por número e título

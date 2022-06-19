@@ -68,6 +68,11 @@
   .obs-part-row {
     text-align: start;
   }
+
+  #vodsTableBody > tr:nth-child(odd):hover {
+    background-color: rgba(0, 0, 0, 0.075);
+    cursor: pointer;
+  }
   .main-row td:nth-child(1) {
     font-weight: 700;
   }
@@ -112,7 +117,8 @@
   }
 
   .numTitHidden,
-  .contentHidden {
+  .contentHidden,
+  .expColHidden {
     display: none;
   }
 </style>
