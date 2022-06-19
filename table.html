@@ -46,19 +46,29 @@
       <section class="mt-1">
         <div class="row gx-2">
           <div class="col">
-            <input
-              id="numTitInput"
-              type="text"
-              class="form-control"
-              placeholder="Número ou título da live"
-              aria-label="Número ou título da live"
-            />
+            <div class="input-group">
+              <input
+                id="numInput"
+                type="text"
+                inputmode="numeric"
+                class="form-control form-control-sm"
+                placeholder="Número"
+                aria-label="Número"
+              />
+              <input
+                id="titInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Título da live"
+                aria-label="Título da live"
+              />
+            </div>
           </div>
           <div class="col">
             <input
               id="contentInput"
               type="text"
-              class="form-control"
+              class="form-control form-control-sm"
               placeholder="Conteúdo"
               aria-label="Conteúdo"
             />

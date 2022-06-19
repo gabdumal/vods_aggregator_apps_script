@@ -100,9 +100,9 @@
       }
     }
 
-    // Pesquisa por número e título
-    let numTitInput = document.getElementById("numTitInput");
-    numTitInput.addEventListener("input", (event) => {
+    // Pesquisa por número
+    let numInput = document.getElementById("numInput");
+    numInput.addEventListener("input", (event) => {
       let search = event.target.value;
       let searchLength = search.length;
       let tableBody = document.getElementById("vodsTableBody");
@@ -111,16 +111,36 @@
       for (let row = 0; row < numRows / 2; row++) {
         if (
           rows[row * 2].firstElementChild.innerHTML.slice(0, searchLength) !==
-            search &&
+          search
+        ) {
+          rows[row * 2].classList.add("numHidden");
+          rows[row * 2 + 1].classList.add("numHidden");
+        } else {
+          rows[row * 2].classList.remove("numHidden");
+          rows[row * 2 + 1].classList.remove("numHidden");
+        }
+      }
+    });
+
+    // Pesquisa por título
+    let titInput = document.getElementById("titInput");
+    titInput.addEventListener("input", (event) => {
+      let search = event.target.value;
+      let searchLength = search.length;
+      let tableBody = document.getElementById("vodsTableBody");
+      let rows = tableBody.children;
+      let numRows = rows.length;
+      for (let row = 0; row < numRows / 2; row++) {
+        if (
           !rows[row * 2].children[1].innerHTML
             .toLowerCase()
             .includes(search.toLowerCase())
         ) {
-          rows[row * 2].classList.add("numTitHidden");
-          rows[row * 2 + 1].classList.add("numTitHidden");
+          rows[row * 2].classList.add("titHidden");
+          rows[row * 2 + 1].classList.add("titHidden");
         } else {
-          rows[row * 2].classList.remove("numTitHidden");
-          rows[row * 2 + 1].classList.remove("numTitHidden");
+          rows[row * 2].classList.remove("titHidden");
+          rows[row * 2 + 1].classList.remove("titHidden");
         }
       }
     });

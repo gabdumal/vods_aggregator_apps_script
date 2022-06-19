@@ -26,6 +26,10 @@
     box-shadow: 0 0 0 0.25rem hsl(344deg 86% 70% / 50%);
   }
 
+  #numInput {
+    max-width: 25%;
+  }
+
   .order-icon {
     align-self: center;
     padding: 0;
@@ -68,7 +72,6 @@
   .obs-part-row {
     text-align: start;
   }
-
   #vodsTableBody > tr:nth-child(odd):hover {
     background-color: rgba(0, 0, 0, 0.075);
     cursor: pointer;
@@ -116,7 +119,8 @@
     color: hsl(344deg 70% 61%);
   }
 
-  .numTitHidden,
+  .numHidden,
+  .titHidden,
   .contentHidden,
   .expColHidden {
     display: none;
