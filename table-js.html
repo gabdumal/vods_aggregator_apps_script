@@ -37,22 +37,27 @@
             );
           let contMute = contRow.insertCell();
           let contMuteSymbol = null;
+          let contMuteStatus = null;
           switch (content[4]) {
             case "S":
               contMute.className = "table-danger";
               contMuteSymbol = "🔇";
+              contMuteStatus = "Sem som";
               break;
             case "N":
               contMute.className = "table-primary";
               contMuteSymbol = "🔊";
+              contMuteStatus = "Com som";
               break;
             case "P":
               contMute.className = "table-warning";
               contMuteSymbol = "🔈";
+              contMuteStatus = "Som parcial";
               break;
             default:
               break;
           }
+          contMute.setAttribute("title", contMuteStatus);
           contMute.appendChild(document.createTextNode(contMuteSymbol));
         });
 
