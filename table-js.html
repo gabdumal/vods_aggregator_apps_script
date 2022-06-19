@@ -103,11 +103,11 @@
             .toLowerCase()
             .includes(search.toLowerCase())
         ) {
-          rows[row * 2].classList.add("d-none");
-          rows[row * 2 + 1].classList.add("d-none");
+          rows[row * 2].classList.add("numTitHidden");
+          rows[row * 2 + 1].classList.add("numTitHidden");
         } else {
-          rows[row * 2].classList.remove("d-none");
-          rows[row * 2 + 1].classList.remove("d-none");
+          rows[row * 2].classList.remove("numTitHidden");
+          rows[row * 2 + 1].classList.remove("numTitHidden");
         }
       }
     });
@@ -133,11 +133,11 @@
           let contentTd = contentTr.children[0];
           let contentName = contentTd.innerHTML;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
-            trLvl1Arr[trInd * 2].classList.add("d-none");
-            trLvl1Arr[trInd * 2 + 1].classList.add("d-none");
+            trLvl1Arr[trInd * 2].classList.add("contentHidden");
+            trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
           } else {
-            trLvl1Arr[trInd * 2].classList.remove("d-none");
-            trLvl1Arr[trInd * 2 + 1].classList.remove("d-none");
+            trLvl1Arr[trInd * 2].classList.remove("contentHidden");
+            trLvl1Arr[trInd * 2 + 1].classList.remove("contentHidden");
             break;
           }
         }

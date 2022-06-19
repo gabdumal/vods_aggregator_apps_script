@@ -8,17 +8,14 @@
     margin-left: -1em;
     transition: margin-left, 100ms;
   }
-
   .return-arrow {
     height: fit-content;
     margin-right: 100%;
     transition: margin-right, 100ms;
   }
-
   .title:hover {
     margin-left: 0;
   }
-
   .title:hover .return-arrow {
     margin-right: 0.1em;
   }
@@ -33,7 +30,6 @@
     align-self: center;
     padding: 0;
   }
-
   .arrow {
     border: solid black;
     border-width: 0 2px 2px 0;
@@ -41,29 +37,23 @@
     height: min-content;
     padding: 2px;
   }
-
   .up {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
   }
-
   .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
   }
-
   .decrescent > .up {
     border-color: hsl(0, 0%, 50%);
   }
-
   .decrescent > .down {
     border-color: hsl(0, 0%, 0%);
   }
-
   .crescent > .up {
     border-color: hsl(0, 0%, 0%);
   }
-
   .crescent > .down {
     border-color: hsl(0, 0%, 50%);
   }
@@ -72,18 +62,15 @@
     width: 100%;
     text-align: center;
   }
-
   #vodsTable th:nth-child(2),
   #vodsTable th:nth-child(3),
   .main-row td:nth-child(3),
   .obs-part-row {
     text-align: start;
   }
-
   .main-row td:nth-child(1) {
     font-weight: 700;
   }
-
   .main-row td:nth-child(2) {
     text-align: start;
     word-wrap: break-word;
@@ -97,15 +84,14 @@
     word-break: break-word;
     white-space: pre-line;
   }
-
   .content-row td:nth-child(2) {
     width: 2.5%;
   }
+
   .obs-part-row td {
     padding-top: 0;
     padding-bottom: 0;
   }
-
   .obs-part-row span {
     font-weight: 500;
     line-height: 1.2;
@@ -123,5 +109,10 @@
   }
   a:visited {
     color: hsl(344deg 70% 61%);
+  }
+
+  .numTitHidden,
+  .contentHidden {
+    display: none;
   }
 </style>
