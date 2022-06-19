@@ -20,10 +20,6 @@
         link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
-        link.setAttribute(
-          "onclick",
-          "expandsCollapseContents('" + vod.id + "');"
-        );
         link.innerHTML = vod.cod;
         row.insertCell().appendChild(link);
 
@@ -91,10 +87,7 @@
         nestedCell.appendChild(nestedTable);
 
         // Expandir e contrair linhas de conteúdo
-        row.setAttribute(
-          "onclick",
-          "expandsCollapseContents('" + vod.id + "');"
-        );
+        row.setAttribute("onclick", "expandsCollapseContents(event);");
       });
       for (let row = 0; row < 10; row++) {
         tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
@@ -206,7 +199,10 @@
     newTableBody.id = "vodsTableBody";
   }
 
-  function expandsCollapseContents(vodId) {
-    document.getElementById("n" + vodId).classList.toggle("expColHidden");
+  function expandsCollapseContents(event) {
+    let element = event.target;
+    if (element.tagName === "TD") {
+      element.parentElement.nextElementSibling.classList.toggle("expColHidden");
+    }
   }
 </script>
