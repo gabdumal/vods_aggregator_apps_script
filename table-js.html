@@ -162,6 +162,7 @@
           contentInd++
         ) {
           let contentTr = contentsTrLvl2Arr[contentInd];
+          if (contentTr.classList.contains("obs-part-row")) continue;
           let contentTd = contentTr.children[0];
           let contentName = contentTd.innerHTML;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
