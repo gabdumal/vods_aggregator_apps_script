@@ -97,6 +97,9 @@
       for (let row = 0; row < 10; row++) {
         tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
       }
+
+      // Atualiza paginação
+      updatePagination(tableBody);
     }
 
     // Pesquisa por número
@@ -119,6 +122,7 @@
           rows[row * 2 + 1].classList.remove("numHidden");
         }
       }
+      updatePagination(tableBody);
     });
 
     // Pesquisa por título
@@ -142,6 +146,7 @@
           rows[row * 2 + 1].classList.remove("titHidden");
         }
       }
+      updatePagination(tableBody);
     });
 
     // Pesquisa por conteúdo
@@ -175,6 +180,7 @@
           }
         }
       }
+      updatePagination(tableBody);
     });
   });
 
@@ -203,6 +209,7 @@
     tableBody.remove();
     table.append(newTableBody);
     newTableBody.id = "vodsTableBody";
+    updatePagination(newTableBody);
   }
 
   function expandsCollapseContents(event) {
@@ -210,5 +217,259 @@
     if (element.tagName === "TD") {
       element.parentElement.nextElementSibling.classList.toggle("expColHidden");
     }
+  }
+
+  function createPageItem(pageNum) {
+    const pageItem = document.createElement("li");
+    const pageButton = document.createElement("button");
+    pageItem.className = "page-item";
+    pageButton.className = "page-link";
+    pageButton.setAttribute("value", pageNum);
+    pageButton.textContent = pageNum;
+    pageButton.setAttribute("onclick", "changePage(event)");
+    pageItem.append(pageButton);
+    if (pageNum === "...") {
+      pageButton.setAttribute("disabled", "disabled");
+      pageItem.classList.add("disabled");
+    }
+
+    return pageItem;
+  }
+
+  function changePage(event) {
+    const tableBody = document.getElementById("vodsTableBody");
+    const paginationList = document.getElementById("pagination");
+    const quantPageItems = paginationList.childElementCount;
+    let pageNumber = parseInt(paginationList.getAttribute("active-page"));
+    const pressedButton = event.target;
+    let newPageNumber = pressedButton.value;
+    const lastPageItemVal =
+      paginationList.lastElementChild.previousElementSibling.firstElementChild
+        .value;
+
+    // Deleta marcadores de página
+    for (
+      let pageItemIndex = 1;
+      pageItemIndex < quantPageItems - 1;
+      pageItemIndex++
+    ) {
+      paginationList.children[1].remove();
+    }
+
+    if (newPageNumber === "ant") newPageNumber = pageNumber - 1;
+    else if (newPageNumber === "prox") newPageNumber = pageNumber + 1;
+    else newPageNumber = parseInt(newPageNumber);
+
+    if (newPageNumber === 1) {
+      paginationList.firstElementChild.firstElementChild.setAttribute(
+        "disabled",
+        "disabled"
+      );
+      paginationList.firstElementChild.classList.add("disabled");
+    } else {
+      paginationList.firstElementChild.firstElementChild.removeAttribute(
+        "disabled"
+      );
+      paginationList.firstElementChild.classList.remove("disabled");
+    }
+    if (newPageNumber == lastPageItemVal) {
+      paginationList.lastElementChild.firstElementChild.setAttribute(
+        "disabled",
+        "disabled"
+      );
+      paginationList.lastElementChild.classList.add("disabled");
+    } else {
+      paginationList.lastElementChild.firstElementChild.removeAttribute(
+        "disabled"
+      );
+      paginationList.lastElementChild.classList.remove("disabled");
+    }
+
+    paginationList.setAttribute("active-page", newPageNumber);
+    if (lastPageItemVal <= 7) {
+      for (let pageIndex = 0; pageIndex < lastPageItemVal; pageIndex++) {
+        pageItem = createPageItem(pageIndex + 1);
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+      }
+      paginationList.children[newPageNumber].classList.add("active");
+    } else {
+      // Se selecionar do 1º ao 4º elemento
+      if (newPageNumber <= 4) {
+        let pageItem = null;
+        for (let pageIndex = 0; pageIndex < 5; pageIndex++) {
+          pageItem = createPageItem(pageIndex + 1);
+          paginationList.insertBefore(
+            pageItem,
+            paginationList.lastElementChild
+          );
+        }
+        pageItem = createPageItem("...");
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        pageItem = createPageItem(lastPageItemVal);
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+
+        paginationList.children[newPageNumber].classList.add("active");
+      } else if (newPageNumber >= lastPageItemVal - 3) {
+        let pageItem = null;
+        pageItem = createPageItem(1);
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        pageItem = createPageItem("...");
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        for (
+          let pageIndex = lastPageItemVal - 4;
+          pageIndex <= lastPageItemVal;
+          pageIndex++
+        ) {
+          pageItem = createPageItem(pageIndex);
+          paginationList.insertBefore(
+            pageItem,
+            paginationList.lastElementChild
+          );
+        }
+        paginationList.children[
+          7 - lastPageItemVal + newPageNumber
+        ].classList.add("active");
+      } else {
+        let pageItem = null;
+        pageItem = createPageItem(1);
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        pageItem = createPageItem("...");
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        for (let pageIndex = -1; pageIndex < 2; pageIndex++) {
+          pageItem = createPageItem(newPageNumber + pageIndex);
+          paginationList.insertBefore(
+            pageItem,
+            paginationList.lastElementChild
+          );
+        }
+        pageItem = createPageItem("...");
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        pageItem = createPageItem(lastPageItemVal);
+        paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+        paginationList.children[4].classList.add("active");
+      }
+    }
+
+    updatePages(tableBody.children, 25, newPageNumber);
+  }
+
+  function updatePages(allRows, quantDisplay, pageNumber) {
+    const visibleRows = [];
+    const hiddenClasses = ["numHidden", "titHidden", "contentHidden"];
+
+    // Lista as linhas visíveis
+    for (let rowIndex = 0; rowIndex < allRows.length; rowIndex++) {
+      const row = allRows[rowIndex];
+      if (!hiddenClasses.some((className) => row.classList.contains(className)))
+        visibleRows.push(row);
+    }
+    const numRows = visibleRows.length;
+
+    // Define visibilidade por paginação
+    for (
+      let rowIndex = quantDisplay * 2 * (pageNumber - 1);
+      rowIndex < quantDisplay * 2 * pageNumber && rowIndex < numRows;
+      rowIndex++
+    ) {
+      const row = visibleRows[rowIndex];
+      row.classList.remove("paginationHidden");
+    }
+    for (
+      let rowIndex = 0;
+      rowIndex < quantDisplay * 2 * (pageNumber - 1);
+      rowIndex++
+    ) {
+      const row = visibleRows[rowIndex];
+      row.classList.add("paginationHidden");
+    }
+    for (
+      let rowIndex = quantDisplay * 2 * pageNumber;
+      rowIndex < numRows;
+      rowIndex++
+    ) {
+      const row = visibleRows[rowIndex];
+      row.classList.add("paginationHidden");
+    }
+    return numRows;
+  }
+
+  function updatePaginationList(numRows, quantDisplay, paginationList) {
+    const paginationItems = paginationList.children;
+    let quantPageItems = paginationList.childElementCount;
+    const newQuantPages = Math.ceil(numRows / 2 / quantDisplay);
+
+    for (let pageIndex = 1; pageIndex < quantPageItems - 1; pageIndex++)
+      paginationItems[1].remove();
+    for (
+      let pageIndex = 1;
+      pageIndex <= newQuantPages && pageIndex < 8;
+      pageIndex++
+    ) {
+      const pageItem = document.createElement("li");
+      const pageButton = document.createElement("button");
+      pageItem.className = "page-item";
+      pageButton.className = "page-link";
+      let buttonText = pageIndex;
+      if (newQuantPages > 7) {
+        if (pageIndex === 6) {
+          buttonText = "...";
+          pageButton.setAttribute("disabled", "disabled");
+          pageButton.classList.add("disabled");
+        } else if (pageIndex === 7) buttonText = newQuantPages;
+      }
+      pageButton.setAttribute("value", buttonText);
+      pageButton.textContent = buttonText;
+      pageButton.setAttribute("onclick", "changePage(event)");
+      pageItem.append(pageButton);
+      paginationList.insertBefore(pageItem, paginationList.lastElementChild);
+    }
+
+    paginationList.firstElementChild.firstElementChild.setAttribute(
+      "disabled",
+      "disabled"
+    );
+    paginationList.firstElementChild.classList.add("disabled");
+    paginationList.lastElementChild.classList.remove("disabled");
+    paginationList.firstElementChild.firstElementChild.setAttribute(
+      "disabled",
+      "disabled"
+    );
+    paginationList.lastElementChild.firstElementChild.removeAttribute(
+      "disabled"
+    );
+
+    quantPageItems = paginationList.childElementCount;
+
+    if (quantPageItems - 2 === 0 || quantPageItems - 2 === 1) {
+      paginationList.lastElementChild.classList.add("disabled");
+      paginationList.lastElementChild.firstElementChild.setAttribute(
+        "disabled",
+        "disabled"
+      );
+    }
+
+    if (quantPageItems - 2 >= 1) {
+      paginationList.setAttribute("active-page", 1);
+      paginationList.children[1].classList.add("active");
+    } else {
+      paginationList.setAttribute("active-page", 0);
+    }
+  }
+
+  function updatePagination(tableBody) {
+    const quantDisplay = 25;
+
+    const pageNumber = parseInt(
+      document.getElementById("pagination").getAttribute("active-page")
+    );
+    const allRows = tableBody.children;
+
+    const numRows = updatePages(allRows, quantDisplay, 1);
+
+    updatePaginationList(
+      numRows,
+      quantDisplay,
+      document.getElementById("pagination")
+    );
   }
 </script>

@@ -20,5 +20,5 @@ function render(file, argsObject) {
   }
 
   // Executa o template, incluindo suas propriedades previamente definidas
-  return tmp.evaluate().setTitle(file);
+  return tmp.evaluate().setTitle("Vods do Felps");
 }

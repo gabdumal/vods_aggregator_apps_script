@@ -99,15 +99,35 @@
         </table>
       </section>
       <nav aria-label="Navegação entre páginas da tabela">
-        <ul class="pagination justify-content-end">
+        <ul
+          id="pagination"
+          class="pagination justify-content-end"
+          active-page="1"
+        >
           <li class="page-item disabled">
-            <a class="page-link">Anterior</a>
+            <button
+              id="previousButton"
+              class="page-link"
+              onclick="changePage(event)"
+              value="ant"
+            >
+              Anterior
+            </button>
           </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
           <li class="page-item">
-            <a class="page-link" href="#">Próximo</a>
+            <button class="page-link" onclick="changePage(event)" value="1">
+              1
+            </button>
+          </li>
+          <li class="page-item disabled">
+            <button
+              id="nextButton"
+              class="page-link"
+              onclick="changePage(event)"
+              value="prox"
+            >
+              Próximo
+            </button>
           </li>
         </ul>
       </nav>
