@@ -6,6 +6,9 @@ function doGet() {
   var page = render("table");
   page
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .addMetaTag("viewport", "width=device-width, initial-scale=1");
+    .addMetaTag(
+      "viewport",
+      "width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    );
   return page;
 }
