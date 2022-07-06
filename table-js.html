@@ -478,4 +478,16 @@
     rowsNum = event.target.value;
     updatePagination(document.getElementById("vodsTableBody"));
   }
+
+  function resetSearch() {
+    const num = document.getElementById("numInput");
+    const tit = document.getElementById("titInput");
+    const cont = document.getElementById("contentInput");
+    num.value = "";
+    tit.value = "";
+    cont.value = "";
+    num.dispatchEvent(new Event("input", { bubbles: true }));
+    tit.dispatchEvent(new Event("input", { bubbles: true }));
+    cont.dispatchEvent(new Event("input", { bubbles: true }));
+  }
 </script>
