@@ -101,6 +101,10 @@
 
       // Atualiza paginação
       updatePagination(tableBody);
+
+      // Desativa a div de carregamento
+      var loadingDiv = document.getElementById("loadingDiv");
+      loadingDiv.style.display = "none";
     }
 
     // Pesquisa por número
