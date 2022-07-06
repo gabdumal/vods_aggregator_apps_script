@@ -1,4 +1,5 @@
 <script>
+  let rowsNum = 25;
   // Ao carregar a página...
   document.addEventListener("DOMContentLoaded", function () {
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
@@ -350,7 +351,7 @@
       }
     }
 
-    updatePages(tableBody.children, 25, newPageNumber);
+    updatePages(tableBody.children, rowsNum, newPageNumber);
   }
 
   function updatePages(allRows, quantDisplay, pageNumber) {
@@ -457,7 +458,7 @@
   }
 
   function updatePagination(tableBody) {
-    const quantDisplay = 25;
+    const quantDisplay = rowsNum;
 
     const pageNumber = parseInt(
       document.getElementById("pagination").getAttribute("active-page")
@@ -471,5 +472,10 @@
       quantDisplay,
       document.getElementById("pagination")
     );
+  }
+
+  function changeRowsNum(event) {
+    rowsNum = event.target.value;
+    updatePagination(document.getElementById("vodsTableBody"));
   }
 </script>

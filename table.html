@@ -98,39 +98,60 @@
           <tbody id="vodsTableBody" class="table-group-divider"></tbody>
         </table>
       </section>
-      <nav aria-label="Navegação entre páginas da tabela">
-        <ul
-          id="pagination"
-          class="pagination justify-content-end"
-          active-page="1"
-        >
-          <li class="page-item disabled">
-            <button
-              id="previousButton"
-              class="page-link"
-              onclick="changePage(event)"
-              value="ant"
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="input-group input-group-sm mb-1">
+            <label class="input-group-text" for="numRowsSelect">Linhas</label>
+            <select
+              class="form-select"
+              id="numRowsSelect"
+              onchange="changeRowsNum(event)"
             >
-              Anterior
-            </button>
-          </li>
-          <li class="page-item">
-            <button class="page-link" onclick="changePage(event)" value="1">
-              1
-            </button>
-          </li>
-          <li class="page-item disabled">
-            <button
-              id="nextButton"
-              class="page-link"
-              onclick="changePage(event)"
-              value="prox"
+              <option value="10">10</option>
+              <option value="25" selected>25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <nav aria-label="Navegação entre páginas da tabela">
+            <ul
+              id="pagination"
+              class="pagination justify-content-end pagination-sm"
+              active-page="1"
             >
-              Próximo
-            </button>
-          </li>
-        </ul>
-      </nav>
+              <li class="page-item disabled">
+                <button
+                  id="previousButton"
+                  class="page-link"
+                  onclick="changePage(event)"
+                  value="ant"
+                  title="Anterior"
+                >
+                  &laquo;
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" onclick="changePage(event)" value="1">
+                  1
+                </button>
+              </li>
+              <li class="page-item disabled">
+                <button
+                  id="nextButton"
+                  class="page-link"
+                  onclick="changePage(event)"
+                  value="prox"
+                  title="Próxima"
+                >
+                  &raquo;
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </article>
     <?!= include("table-js"); ?>
     <!-- JavaScript Bundle with Popper -->
