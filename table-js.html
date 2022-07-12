@@ -36,6 +36,7 @@
 
         let editButton = document.createElement("a");
         editButton.setAttribute("href", pageUrl + "?v=edit&id=" + row.id);
+        editButton.setAttribute("title", "Editar registro de VoD");
         editButton.className =
           "btn btn-outline-warning btn-sm text-warning btnEditRow";
         let editIcon = document.createElement("i");

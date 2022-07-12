@@ -12,15 +12,25 @@ function render(file, argsObject) {
     // Cria uma lista de chaves das propriedades do objeto
     let keys = Object.keys(argsObject);
 
-    // Para cada chave na lista...
     keys.forEach(function (key) {
       // Cria uma propriedade no objeto tmp igual à propriedade dentro do objeto argsObject, passado nos parâmetros
       tmp[key] = argsObject[key];
     });
   }
 
+  let subtitle = "";
+  switch (file) {
+    case "addVod":
+      subtitle = " - Adicionar VoD";
+      break;
+    case "editVod":
+      subtitle = " - Editar VoD";
+      break;
+    default:
+      break;
+  }
   // Executa o template, incluindo suas propriedades previamente definidas
-  return tmp.evaluate().setTitle("Vods do Felps");
+  return tmp.evaluate().setTitle("Vods do Felps" + subtitle);
 }
 
 function getScriptUrl() {

@@ -2,8 +2,8 @@
   "timeZone": "America/Sao_Paulo",
   "dependencies": {},
   "webapp": {
-    "access": "ANYONE_ANONYMOUS",
-    "executeAs": "USER_DEPLOYING"
+    "access": "MYSELF",
+    "executeAs": "USER_ACCESSING"
   },
   "exceptionLogging": "STACKDRIVER",
   "oauthScopes": ["https://www.googleapis.com/auth/spreadsheets.currentonly"],
