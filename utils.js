@@ -5,12 +5,12 @@ function include(filename) {
 
 function render(file, argsObject) {
   // Cria um template a partir de um arquivo HTML passado nos parâmetros como file
-  var tmp = HtmlService.createTemplateFromFile(file);
+  let tmp = HtmlService.createTemplateFromFile(file);
 
   // Caso tenha sido passado um objeto com propriedades a serem definidas...
   if (argsObject) {
     // Cria uma lista de chaves das propriedades do objeto
-    var keys = Object.keys(argsObject);
+    let keys = Object.keys(argsObject);
 
     // Para cada chave na lista...
     keys.forEach(function (key) {
@@ -21,4 +21,8 @@ function render(file, argsObject) {
 
   // Executa o template, incluindo suas propriedades previamente definidas
   return tmp.evaluate().setTitle("Vods do Felps");
+}
+
+function getScriptUrl() {
+  return ScriptApp.getService().getUrl();
 }

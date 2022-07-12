@@ -99,6 +99,9 @@
     word-break: break-word;
     white-space: pre-line;
   }
+  .main-row td:last-child {
+    text-align: end;
+  }
 
   .content-row td:nth-child(1) {
     text-align: start;
@@ -171,6 +174,10 @@
     color: hsl(344, 84%, 57%);
     background-color: hsl(210, 16%, 93%);
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgb(244 113 146 / 50%);
+    box-shadow: 0 0 0 0.25rem hsla(345, 86%, 70%, 0.5);
+  }
+
+  .btnEditRow:hover {
+    color: hsl(0, 0%, 0%) !important;
   }
 </style>

@@ -1,5 +1,15 @@
 <script>
   let rowsNum = 25;
+  let pageUrl = "";
+  function getUrl() {
+    google.script.run
+      .withSuccessHandler(function (url) {
+        pageUrl = url;
+      })
+      .getScriptUrl();
+  }
+  getUrl();
+
   // Ao carregar a página...
   document.addEventListener("DOMContentLoaded", function () {
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
@@ -21,8 +31,17 @@
         link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
-        link.innerHTML = vod.cod;
+        link.textContent = vod.cod;
         row.insertCell().appendChild(link);
+
+        let editButton = document.createElement("a");
+        editButton.setAttribute("href", pageUrl + "?v=edit&id=" + row.id);
+        editButton.className =
+          "btn btn-outline-warning btn-sm text-warning btnEditRow";
+        let editIcon = document.createElement("i");
+        editIcon.className = "bi bi-pencil-fill";
+        editButton.appendChild(editIcon);
+        row.insertCell().appendChild(editButton);
 
         let nestedTable = document.createElement("table");
         nestedTable.className = "table table-sm mb-0 nested";
@@ -117,7 +136,7 @@
       let numRows = rows.length;
       for (let row = 0; row < numRows / 2; row++) {
         if (
-          rows[row * 2].firstElementChild.innerHTML.slice(0, searchLength) !==
+          rows[row * 2].firstElementChild.textContent.slice(0, searchLength) !==
           search
         ) {
           rows[row * 2].classList.add("numHidden");
@@ -140,7 +159,7 @@
       let numRows = rows.length;
       for (let row = 0; row < numRows / 2; row++) {
         if (
-          !rows[row * 2].children[1].innerHTML
+          !rows[row * 2].children[1].textContent
             .toLowerCase()
             .includes(search.toLowerCase())
         ) {
@@ -174,7 +193,7 @@
           let contentTr = contentsTrLvl2Arr[contentInd];
           if (contentTr.classList.contains("obs-part-row")) continue;
           let contentTd = contentTr.children[0];
-          let contentName = contentTd.innerHTML;
+          let contentName = contentTd.textContent;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
             trLvl1Arr[trInd * 2].classList.add("contentHidden");
             trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
