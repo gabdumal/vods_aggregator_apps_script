@@ -1,4 +1,14 @@
 <script>
+  let pageUrl = "";
+  function getUrl() {
+    google.script.run
+      .withSuccessHandler(function (url) {
+        pageUrl = url;
+      })
+      .getScriptUrl();
+  }
+  getUrl();
+
   document.addEventListener("DOMContentLoaded", function () {
     // Cria um listener para o botão btnAddConteudo, para quando clicar, executar a função addConteudo
     document
@@ -169,12 +179,12 @@
           " no sistema foi realizada com sucesso!</span></div>" +
           '<div class="row"><span>Retornar para a ' +
           '<a href="' +
-          url +
+          pageUrl +
           '" ' +
           'class="text-decoration-none fw-bold" style="color: #FF3D6C">Página Inicial</a>.</span>' +
           "</div></div>" +
           "</div>";
-        window.top.location.href = url;
+        window.top.location.href = pageUrl;
       }, 1000);
 
       // Limpa e define os valores dos campos do formulário para o padrão
