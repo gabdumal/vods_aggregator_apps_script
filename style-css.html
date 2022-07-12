@@ -199,8 +199,8 @@
 
   .btn-cherry {
     color: hsl(0, 0%, 100%) !important;
-    background-color: hsl(344, 100%, 62%);
-    border-color: hsl(344, 100%, 62%);
+    background-color: hsl(344, 100%, 62%) !important;
+    border-color: hsl(344, 100%, 62%) !important;
   }
 
   .btn-cherry:active {
@@ -229,6 +229,8 @@
     max-height: 32px;
   }
 
+  .btnEditRow:active,
+  .btnEditRow:focus,
   .btnEditRow:hover {
     color: hsl(0, 0%, 0%) !important;
   }
@@ -240,5 +242,13 @@
     padding-right: 6px;
     background: linear-gradient(transparent 50%, hsla(344, 100%, 62%, 0.5) 50%)
       no-repeat 6px 1px;
+  }
+
+  .numVodDiv {
+    height: fit-content;
+    align-self: flex-end;
+    justify-content: end;
+    display: flex;
+    align-items: baseline;
   }
 </style>

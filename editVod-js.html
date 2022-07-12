@@ -8,16 +8,96 @@
       .getScriptUrl();
   }
   getUrl();
+  let numVod = 0;
 
   document.addEventListener("DOMContentLoaded", function () {
+    // Obtém dados de um Vod da Spreadsheet procurando-o por seu ID, e preenche os campos do formulário
+    addContent();
+    const stsC1D = document.getElementsByName("stsC[]")[0];
+    stsC1D.setAttribute("disabled", "disabled");
+    const nameC1D = stsC1D.parentElement.nextElementSibling;
+    nameC1D.setAttribute("disabled", "disabled");
+    const mutC1D = nameC1D.nextElementSibling.firstElementChild;
+    mutC1D.setAttribute("disabled", "disabled");
+    const buttC1D = mutC1D.parentElement.nextElementSibling;
+    buttC1D.setAttribute("disabled", "disabled");
+
+    google.script.run.withSuccessHandler(fillForm).getVodDataById(idPag);
     document
       .getElementById("btnAddContent")
       .addEventListener("click", addContent);
+    document.getElementById("btnDelete").addEventListener("click", deleteVod);
     document.getElementById("btnSubmit").addEventListener("click", submitForm);
     document.getElementById("linkV").addEventListener("input", extractCodLink);
-
-    addContent();
   });
+
+  function fillForm(vodData) {
+    if (vodData[0] !== "#N/A") {
+      // Define constantes e as preenche com os elementos do formulário obtidos por seus IDs
+      const numV = document.getElementById("numV");
+      const stsV = document.getElementById("stsV");
+      const titV = document.getElementById("titV");
+      const linkV = document.getElementById("linkV");
+      const obsV = document.getElementById("obsV");
+      const partV = document.getElementById("partV");
+      const stsC1 = document.getElementsByName("stsC[]")[0];
+      const nameC1 = document.getElementsByName("nameC[]")[0];
+      const mutC1 = document.getElementsByName("mutC[]")[0];
+      // Define os valores dos elementos da página de acordo com os dados do Vod
+      document.getElementById("numVodTit").textContent = vodData[1];
+      numV.value = vodData[1];
+      numVod = vodData[1];
+      stsV.value = vodData[2];
+      titV.value = vodData[3];
+      linkV.value = vodData[4];
+      extractCodLink();
+      obsV.value = vodData[5];
+      partV.value = vodData[6];
+      stsC1.value = vodData[7][0][2];
+      nameC1.value = vodData[7][0][3];
+      mutC1.value = vodData[7][0][4];
+      var conteudoData = vodData[7];
+      const stsCi = document.getElementsByName("stsC[]");
+      const nameCi = document.getElementsByName("nameC[]");
+      const mutCi = document.getElementsByName("mutC[]");
+      for (i = 1; i < conteudoData.length; i++) {
+        addContent();
+        stsCi[i].value = conteudoData[i][2];
+        nameCi[i].value = conteudoData[i][3];
+        mutCi[i].value = conteudoData[i][4];
+      }
+      unlockPage();
+    } else {
+      loadingDiv.innerHTML = "";
+      const lDiv1 = document.createElement("div");
+      lDiv1.className = "card d-flex justify-content-center";
+      const lDiv2 = document.createElement("div");
+      lDiv2.className = "card-body text-center";
+      const lDiv3a = document.createElement("div");
+      lDiv3a.className = "row";
+      const lSpana = document.createElement("span");
+      lSpana.textContent =
+        "O Vod que você tentou acessar não existe no sistema.";
+      lDiv3a.appendChild(lSpana);
+      lDiv2.appendChild(lDiv3a);
+      const lDiv3b = document.createElement("div");
+      lDiv3b.className = "row";
+      const lSpanb = document.createElement("span");
+      lSpanb.appendChild(document.createTextNode("Retornar para a "));
+      const lA = document.createElement("a");
+      lA.setAttribute("href", pageUrl);
+      lA.classList = "text-decoration-none fw-bold text-cherry";
+      lA.textContent = "Página Inicial";
+      lSpanb.appendChild(lA);
+      lSpanb.appendChild(document.createTextNode("."));
+      lDiv3b.appendChild(lSpanb);
+      lDiv2.appendChild(lDiv3b);
+      lDiv1.appendChild(lDiv2);
+      loadingDiv.textContent = "";
+      loadingDiv.appendChild(lDiv1);
+      window.top.location.href = pageUrl;
+    }
+  }
 
   function submitForm() {
     let errors = "";
@@ -130,7 +210,7 @@
       google.script.run
         .withSuccessHandler(onSuccess)
         .withFailureHandler(onFailure)
-        .addVodSs(vodData, contentsList);
+        .editVodSs(vodData, contentsList);
 
       function onSuccess() {
         // Exibe um alert informando que a operação foi realizada com sucesso
@@ -142,7 +222,7 @@
         lDiv3a.className = "row";
         const lSpana = document.createElement("span");
         lSpana.textContent =
-          "A inclusão do Vod " +
+          "A edição do Vod " +
           vodData.num +
           " no sistema foi realizada com sucesso!";
         lDiv3a.appendChild(lSpana);
@@ -167,7 +247,7 @@
 
       function onFailure() {
         alert(
-          "Infelizmente não foi possível adicionar o Vod ao sistema, tente novamente."
+          "Infelizmente não foi possível editar o Vod no sistema, tente novamente."
         );
         loadingDiv.style.display = "none";
       }
@@ -243,6 +323,7 @@
     inpu.setAttribute("list", "nameCDatalist");
     inpu.setAttribute("placeholder", "Conteúdo");
     inpu.setAttribute("maxlength", "500");
+    inpu.setAttribute("disabled", "disabled");
     sel2.setAttribute("name", "mutC[]");
     opt5.setAttribute("selected", "selected");
     opt5.setAttribute("value", "N");
@@ -323,5 +404,68 @@
     const cardBody = document.getElementById("contentListCard");
     if (cardBody.childElementCount > 3)
       e.target.parentElement.parentElement.parentElement.remove();
+  }
+
+  function unlockPage() {
+    const inputList = document.querySelectorAll(
+      "input, textarea, select, button, a"
+    );
+    inputList.forEach(function (inp) {
+      inp.disabled = false;
+    });
+    loadingDiv.style.display = "none";
+  }
+
+  function deleteVod() {
+    const loadingDiv = document.getElementById("loadingDiv");
+    const confirmacao = window.confirm(
+      "Deseja excluir este registro de Vod permanentemente?"
+    );
+    if (confirmacao) {
+      // Executa a função de excluir as informações do Vod e seus Conteudos da Spreadsheet
+      google.script.run
+        .withSuccessHandler(onSuccess)
+        .withFailureHandler(onFailure)
+        .deleteVodSs(idPag);
+      loadingDiv.style.display = "flex";
+    }
+
+    function onSuccess() {
+      const lDiv1 = document.createElement("div");
+      lDiv1.className = "card d-flex justify-content-center";
+      const lDiv2 = document.createElement("div");
+      lDiv2.className = "card-body text-center";
+      const lDiv3a = document.createElement("div");
+      lDiv3a.className = "row";
+      const lSpana = document.createElement("span");
+      lSpana.textContent =
+        "A exclusão do Vod " +
+        numVod +
+        " no sistema foi realizada com sucesso!";
+      lDiv3a.appendChild(lSpana);
+      lDiv2.appendChild(lDiv3a);
+      const lDiv3b = document.createElement("div");
+      lDiv3b.className = "row";
+      const lSpanb = document.createElement("span");
+      lSpanb.appendChild(document.createTextNode("Retornar para a "));
+      const lA = document.createElement("a");
+      lA.setAttribute("href", pageUrl);
+      lA.classList = "text-decoration-none fw-bold text-cherry";
+      lA.textContent = "Página Inicial";
+      lSpanb.appendChild(lA);
+      lSpanb.appendChild(document.createTextNode("."));
+      lDiv3b.appendChild(lSpanb);
+      lDiv2.appendChild(lDiv3b);
+      lDiv1.appendChild(lDiv2);
+      loadingDiv.textContent = "";
+      loadingDiv.appendChild(lDiv1);
+      window.top.location.href = pageUrl;
+    }
+
+    function onFailure() {
+      alert(
+        "Infelizmente não foi possível excluir o Vod do sistema, tente novamente."
+      );
+    }
   }
 </script>
