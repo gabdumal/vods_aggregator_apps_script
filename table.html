@@ -21,7 +21,7 @@
   </head>
   <body>
     <nav
-      class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light"
+      class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light py-1"
     >
       <button onclick="resetSearch()" class="navbar-brand title text-center">
         <div class="d-flex justify-content-end ms-2">
@@ -32,7 +32,7 @@
           </div>
         </div>
       </button>
-      <div class="d-flex me-2">
+      <div class="d-flex me-2 buttons-nav">
         <a
           href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
           target="_blank"
@@ -40,6 +40,12 @@
           title="Transmissões anteriores do Felps na Twitch"
         >
           <i class="bi bi-twitch fs-4 text-cherry"></i>
+        </a>
+        <a
+          href="<?!= getScriptUrl(); ?>?v=add"
+          class="btn btn-cherry fw-bold btn-sm btn-add"
+        >
+          <i class="bi bi-plus-lg"></i>
         </a>
       </div>
     </nav>
