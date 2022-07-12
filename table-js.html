@@ -23,6 +23,31 @@
 
         // Informações básicas
         row.insertCell().appendChild(document.createTextNode(vod.num));
+        let cellClass = "";
+        switch (vod.sts) {
+          case "C":
+            cellClass = "table-success";
+            break;
+          case "I":
+            cellClass = "table-primary";
+            break;
+          case "P":
+            cellClass = "table-warning";
+            break;
+          case "N":
+            cellClass = "table-danger";
+            break;
+          default:
+            break;
+        }
+        const stsVCell = row.insertCell();
+        stsVCell.classList.add(
+          "text-center",
+          "fw-bold",
+          "font-monospace",
+          cellClass
+        );
+        stsVCell.appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
 
         const link = document.createElement("a");
@@ -49,6 +74,30 @@
         vod.contents.forEach((content) => {
           const contRow = nestedTable.insertRow();
           contRow.className = "content-row";
+          switch (content[2]) {
+            case "C":
+              cellClass = "table-success";
+              break;
+            case "I":
+              cellClass = "table-primary";
+              break;
+            case "P":
+              cellClass = "table-warning";
+              break;
+            case "N":
+              cellClass = "table-danger";
+              break;
+            default:
+              break;
+          }
+          const stsCCell = contRow.insertCell();
+          stsCCell.classList.add(
+            "text-center",
+            "fw-bold",
+            "font-monospace",
+            cellClass
+          );
+          stsCCell.appendChild(document.createTextNode(content[2]));
           // Melhora exibição de categoria
           contRow
             .insertCell()
@@ -86,7 +135,7 @@
           const obsRow = nestedTable.insertRow();
           obsRow.className = "obs-part-row bg-light";
           const obsCell = obsRow.insertCell();
-          obsCell.setAttribute("colspan", 3);
+          obsCell.setAttribute("colspan", "5");
           const obsSpan = document.createElement("span");
           obsSpan.appendChild(document.createTextNode("Observações: "));
           obsCell.appendChild(obsSpan);
@@ -97,7 +146,7 @@
           partRow.className = "obs-part-row bg-light";
           const partCell = partRow.insertCell();
           partCell.className = "obs-part-cell";
-          partCell.setAttribute("colspan", 3);
+          partCell.setAttribute("colspan", "5");
           const partSpan = document.createElement("span");
           partSpan.appendChild(document.createTextNode("Participações: "));
           partCell.appendChild(partSpan);
@@ -108,7 +157,7 @@
         nestedRow.id = "n" + vod.id;
         nestedRow.classList.add("expColHidden");
         const nestedCell = nestedRow.insertCell();
-        nestedCell.setAttribute("colspan", "4");
+        nestedCell.setAttribute("colspan", "5");
         nestedCell.appendChild(nestedTable);
 
         // Expandir e contrair linhas de conteúdo
