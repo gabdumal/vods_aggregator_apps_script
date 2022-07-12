@@ -45,7 +45,8 @@
     </nav>
     <div
       id="loadingDiv"
-      class="position-fixed bg-secondary bg-opacity-25 align-items-center justify-content-center loading d-none"
+      class="position-fixed bg-secondary bg-opacity-25 align-items-center justify-content-center loading"
+      style="display: none"
     >
       <div class="spinner-border" role="status"></div>
       <span class="visually-hidden">Carregando...</span>
@@ -129,63 +130,16 @@
         <div class="card mb-4" style="border-color: transparent">
           <div class="row g-0">
             <div class="col-12">
-              <div id="cardListaConteudos" class="card-body p-0">
-                <div class="form-row mb-3">
-                  <div class="form-group col-md mb-0">
-                    <div class="input-group input-group-sm">
-                      <div class="input-group-prepend">
-                        <select id="stsC1" class="form-select" name="stsC[]">
-                          <option value="N" class="text-danger">🔴</option>
-                          <option
-                            value="P"
-                            selected="selected"
-                            class="text-warning"
-                          >
-                            🟡
-                          </option>
-                          <option value="I" class="text-primary">🔵</option>
-                          <option value="C" class="text-success">🟢</option>
-                        </select>
-                      </div>
-                      <template id="nomeCTemplate">
-                        <?!= contentNamesList ?>
-                      </template>
-                      <datalist id="nomeCDatalist"> </datalist>
-                      <input
-                        id="nomeC1"
-                        name="nomeC[]"
-                        type="text"
-                        maxlength="500"
-                        list="nomeCDatalist"
-                        autocomplete="off"
-                        class="form-control nomeC"
-                        placeholder="Conteúdo"
-                        aria-label="Nome do Conteúdo"
-                      />
-                      <div class="input-group-append">
-                        <select id="mutC1" class="form-select" name="mutC[]">
-                          <option value="N" selected class="text-primary">
-                            🔊
-                          </option>
-                          <option value="S" class="text-danger">🔇</option>
-                          <option value="P" class="text-warning">🔈</option>
-                        </select>
-                      </div>
-                      <button
-                        type="button"
-                        onclick="removeConteudo(event)"
-                        class="btn btn-danger btnRemoveConteudo"
-                      >
-                        x
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              <div id="contentListCard" class="card-body p-0">
+                <template id="nameCTemplate">
+                  <?!= contentNamesList ?>
+                </template>
+                <datalist id="nameCDatalist"></datalist>
               </div>
             </div>
             <div class="col-12">
               <button
-                id="btnAddConteudo"
+                id="btnAddContent"
                 type="button"
                 class="btn btn-sm btn-outline-dark w-100 h-100 px-0"
               >
@@ -196,7 +150,7 @@
         </div>
         <div class="col-12 mb-3">
           <div class="btn-group w-100" role="group">
-            <button id="btnEnviar" type="button" class="btn btn-cherry">
+            <button id="btnSubmit" type="button" class="btn btn-cherry">
               Adicionar
             </button>
           </div>

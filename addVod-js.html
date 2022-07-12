@@ -10,58 +10,34 @@
   getUrl();
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Cria um listener para o botão btnAddConteudo, para quando clicar, executar a função addConteudo
     document
-      .getElementById("btnAddConteudo")
-      .addEventListener("click", addConteudo);
-    // Cria um listener para o botão btnEnviar, para quando clicar, executar a função enviarForm
-    document.getElementById("btnEnviar").addEventListener("click", enviarForm);
-    // Cria um listener para o input linkV, para quando mudar o valor, executar a função extrairCodLink
-    document.getElementById("linkV").addEventListener("input", extrairCodLink);
+      .getElementById("btnAddContent")
+      .addEventListener("click", addContent);
+    document.getElementById("btnSubmit").addEventListener("click", submitForm);
+    document.getElementById("linkV").addEventListener("input", extractCodLink);
 
-    // Adiciona listeners para dinamizar a datalist
-    var inpu = document.getElementById("nomeC1");
-    var results = document.getElementById("nomeCDatalist");
-    var templateContent = document.getElementById("nomeCTemplate").content;
-    inpu.addEventListener("keyup", function handler(event) {
-      while (results.children.length) results.removeChild(results.firstChild);
-      var inputVal = new RegExp(inpu.value.trim(), "i");
-      var set = Array.prototype.reduce.call(
-        templateContent.cloneNode(true).children,
-        function searchFilter(frag, item, i) {
-          if (
-            (inputVal.test(item.textContent) || inputVal.test(item.value)) &&
-            frag.children.length < 6
-          )
-            frag.appendChild(item);
-          return frag;
-        },
-        document.createDocumentFragment()
-      );
-      results.appendChild(set);
-    });
+    addContent();
   });
 
-  function enviarForm() {
-    // Define uma variável de erros
-    var erros = "";
+  function submitForm() {
+    let errors = "";
 
-    // Define variáveis e as preenche com os elementos do formulário obtidos por seus IDs
-    var numV = document.getElementById("numV");
-    var stsV = document.getElementById("stsV");
-    var titV = document.getElementById("titV").value;
-    var linkV = document.getElementById("linkV");
-    var obsV = document.getElementById("obsV");
-    var partV = document.getElementById("partV");
-    var stsC1 = document.getElementById("stsC1");
-    var nomeC1 = document.getElementById("nomeC1");
-    var mutC1 = document.getElementById("mutC1");
+    // Define constantes e as preenche com os elementos do formulário obtidos por seus IDs
+    const numV = document.getElementById("numV");
+    const stsV = document.getElementById("stsV");
+    let titV = document.getElementById("titV").value;
+    const linkV = document.getElementById("linkV");
+    const obsV = document.getElementById("obsV");
+    const partV = document.getElementById("partV");
+    const stsC1 = document.getElementById("stsC1");
+    const nameC1 = document.getElementById("nameC1");
+    const mutC1 = document.getElementById("mutC1");
 
     // Verifica se os valores do número, status e título da live foram preenchidos segundo os parâmetros
     // Caso contrário, adiciona o elemento com problemas de preenchimento à variável de erros
     if (numV.value) {
     } else {
-      erros += "Número do Vod\n";
+      errors += "Número do Vod\n";
     }
     if (
       stsV.value === "N" ||
@@ -70,45 +46,37 @@
       stsV.value === "C"
     ) {
     } else {
-      erros += "Status\n";
+      errors += "Status\n";
     }
     if (!titV) {
-      erros += "Título\n";
+      errors += "Título\n";
     } else {
       if (titV.charAt(0) === "'") {
         titV = "'" + titV;
       }
     }
 
-    // Define uma variável com o valor do código extraído do link digitado no formulário
-    codV = extrairCodLink();
+    const codV = extractCodLink();
     // Caso o tamanho do código do Vod não esteja ente 9 e 10 (tamanho esperado), adiciona Link à variável de erros
     if (codV.length < 9 || codV.length > 10) {
-      erros += "Link\n";
+      errors += "Link\n";
     }
 
-    // Define variáveis de NodeList, que guardam todos os elementos com os nomes stsC, nomeC e mutC
-    var listaStsC = document.getElementsByName("stsC[]");
-    var listaNomeC = document.getElementsByName("nomeC[]");
-    var listaMutC = document.getElementsByName("mutC[]");
+    const listStsC = document.getElementsByName("stsC[]");
+    const listNameC = document.getElementsByName("nomeC[]");
+    const listMutC = document.getElementsByName("mutC[]");
 
-    // Declara uma lista de objetos Conteudo
-    var listaConteudos = [];
+    const contentsList = [];
 
     // Define variável de erro de conteúdos
-    var errosC = "";
+    let errorsC = "";
 
-    // Para cada linha de Conteudo do formulário...
-    for (var i = 0; i < listaNomeC.length; i++) {
-      // Define a variável de nome do conteúdo com o valor da sua linha correspondente preenchida no formulário
-      var nomeCVal = listaNomeC[i].value;
-      //  Se o tamanho do nome for maior que 0 (se ele estiver preenchido)...
-      if (nomeCVal.length > 0) {
-        // Declara um objeto de Conteudo
-        var conteudoData = {};
-        // Define variáveis com os valores dos select de status e mutado da linha de conteúdo
-        var stsCVal = listaStsC[i].value;
-        var mutCVal = listaMutC[i].value;
+    for (let i = 0; i < listNameC.length; i++) {
+      const nameCVal = listNameC[i].value;
+      if (nameCVal.length > 0) {
+        const contentData = {};
+        const stsCVal = listStsC[i].value;
+        const mutCVal = listMutC[i].value;
         // Verifica se os valores dos selects obtidos estão dentro do padrão esperado
         // Caso contrário, adiciona o erro à variável de erro de conteúdos
         if (
@@ -118,136 +86,155 @@
           stsCVal === "C"
         ) {
         } else {
-          errosC += "Status do conteúdo " + (i + 1) + "\n";
+          errorsC += "Status do conteúdo " + (i + 1) + "\n";
         }
         if (mutCVal === "N" || mutCVal === "S" || mutCVal === "P") {
         } else {
-          errosC += "Mute do conteúdo " + (i + 1) + "\n";
+          errorsC += "Mute do conteúdo " + (i + 1) + "\n";
         }
         // Caso não haja erros de conteúdo...
-        if (errosC === "") {
-          // Define atributos do objeto Conteudo com os valores da linha correspondente preenchida no formulário
-          conteudoData.sts = stsCVal;
-          conteudoData.nome = nomeCVal;
-          conteudoData.mut = mutCVal;
-          // Adiciona o objeto Conteudo à lista de objetos Conteudo
-          listaConteudos.push(conteudoData);
+        if (errorsC === "") {
+          // Define atributos do objeto Conteúdo com os valores da linha correspondente preenchida no formulário
+          contentData.sts = stsCVal;
+          contentData.nome = nameCVal;
+          contentData.mut = mutCVal;
+          contentsList.push(contentData);
         } else {
           // Caso contrário...
           // Adiciona as variáveis de erro de conteúdo à variável de erro geral
-          erros += errosC;
+          errors += errorsC;
           // Define o valor da variável de erros de conteúdo como string vazia
-          errosC = "";
+          errorsC = "";
         }
       }
     }
     // Verifica se há algum conteúdo preenchido. Caso contrário, adiciona esse erro à variável de erros
-    if (listaConteudos.length < 1) {
-      erros += "Nenhum conteúdo foi preenchido corretamente\n";
+    if (contentsList.length < 1) {
+      errors += "Nenhum conteúdo foi preenchido corretamente\n";
     }
 
     // Caso não haja erros...
-    if (erros === "") {
-      // Declara um objeto de Vod
-      var vodData = {};
-      // Define o atributo cod do objeto Vod com os valores preenchidos no formulário
+    if (errors === "") {
+      const vodData = {};
       vodData.cod = codV;
-      // Define atributos do objeto Vod com os valores preenchidos no formulário
       vodData.num = numV.value;
       vodData.sts = stsV.value;
       vodData.tit = titV;
       vodData.obs = obsV.value;
       vodData.part = partV.value;
 
-      // Executa a função de adicionar as informações do Vod e Conteudos à Spreadsheet
-      google.script.run.addVodSs(vodData, listaConteudos);
+      // Executa a função de adicionar as informações do Vod e Conteúdos à Spreadsheet
+      const loadingDiv = document.getElementById("loadingDiv");
+      loadingDiv.style.display = "flex";
 
-      setTimeout(function () {
-        var loadingDiv = document.getElementById("loadingDiv");
-        loadingDiv.style.display = "flex";
+      google.script.run
+        .withSuccessHandler(onSuccess)
+        .withFailureHandler(onFailure)
+        .addVodSs(vodData, contentsList);
+
+      function onSuccess() {
         // Exibe um alert informando que a operação foi realizada com sucesso
         alert(
           "A inclusão do Vod " +
             vodData.num +
             " no sistema foi realizada com sucesso!"
         );
-        loadingDiv.innerHTML =
-          '<div class="card d-flex justify-content-center">' +
-          '<div class="card-body text-center">' +
-          '<div class="row"><span class="">A edição do Vod ' +
+        const lDiv1 = document.createElement("div");
+        lDiv1.className = "card d-flex justify-content-center";
+        const lDiv2 = document.createElement("div");
+        lDiv2.className = "card-body text-center";
+        const lDiv3a = document.createElement("div");
+        lDiv3a.className = "row";
+        const lSpana = document.createElement("span");
+        lSpana.textContent =
+          "A inclusão do Vod " +
           vodData.num +
-          " no sistema foi realizada com sucesso!</span></div>" +
-          '<div class="row"><span>Retornar para a ' +
-          '<a href="' +
-          pageUrl +
-          '" ' +
-          'class="text-decoration-none fw-bold" style="color: #FF3D6C">Página Inicial</a>.</span>' +
-          "</div></div>" +
-          "</div>";
+          " no sistema foi realizada com sucesso!";
+        lDiv3a.appendChild(lSpana);
+        lDiv2.appendChild(lDiv3a);
+        const lDiv3b = document.createElement("div");
+        lDiv3b.className = "row";
+        const lSpanb = document.createElement("span");
+        lSpanb.appendChild(document.createTextNode("Retornar para a "));
+        const lA = document.createElement("a");
+        lA.setAttribute("href", pageUrl);
+        lA.classList = "text-decoration-none fw-bold text-cherry";
+        lA.textContent = "Página Inicial";
+        lSpanb.appendChild(lA);
+        lSpanb.appendChild(document.createTextNode("."));
+        lDiv3b.appendChild(lSpanb);
+        lDiv2.appendChild(lDiv3b);
+        lDiv1.appendChild(lDiv2);
+        loadingDiv.textContent = "";
+        loadingDiv.appendChild(lDiv1);
         window.top.location.href = pageUrl;
-      }, 1000);
+      }
+
+      function onFailure() {
+        alert(
+          "Infelizmente não foi possível adicionar o Vod ao sistema, tente novamente."
+        );
+        loadingDiv.style.display = "none";
+      }
 
       // Limpa e define os valores dos campos do formulário para o padrão
-      /*
-        numV.value = "";
-        stsV.value = "P";
-        titV.value = "";
-        linkV.value = "";
-        obsV.value = "";
-        partV.value = "";
-        stsC1.value = "P";
-        nomeC1.value = "";
-        mutC1.value = "N";
-        */
+      // numV.value = "";
+      // stsV.value = "P";
+      // titV.value = "";
+      // linkV.value = "";
+      // obsV.value = "";
+      // partV.value = "";
+      // stsC1.value = "P";
+      // nameC1.value = "";
+      // mutC1.value = "N";
       // Exclui todas as linhas adicionadas de Conteúdo do formulário
       //document.querySelectorAll('.divLinhaConteudo').forEach(e => e.remove());
     } else {
       // Caso haja erros...
       // Exibe os erros em um alert
-      alert("Há erros no preenchimento do formulário:\n" + erros.slice(0, -1));
-      // Define o valor da variável de erros como string vazia
-      erros = "";
+      alert(
+        "Há errors no preenchimento do formulário:\n" + errors.slice(0, -1)
+      );
+      // Define o valor da variável de errors como string vazia
+      errors = "";
     }
   }
 
   // Extrai o código do Vod do Link digitado no formulário e atualiza o preview do código
-  function extrairCodLink() {
-    // Define uma variável com o valor do link digitado no formulário
-    var linkV = document.getElementById("linkV").value;
+  function extractCodLink() {
+    const linkV = document.getElementById("linkV").value;
     // Define uma string que recupera o código do Vod a partir do link digitado
-    var codV = linkV.substring(
+    let codV = linkV.substring(
       linkV.lastIndexOf("/") + 1,
       linkV.lastIndexOf("/") + 11
     );
     // Substitui todos os caracteres que não são numéricos por um caractere vazio
     codV = codV.replace(/\D/g, "");
-    // Define o texto do preview do código como código extraído
-    document.getElementById("codVPreview").innerHTML = codV;
-    // Retorna o codV
+    document.getElementById("codVPreview").textContent = codV;
     return codV;
   }
 
   // Ao clicar no botão de adicionar conteúdo, adiciona mais uma linha com os inputs de status e nome do conteúdo, além de um botão para remover essa linha
-  function addConteudo() {
-    var cardBody = document.getElementById("cardListaConteudos");
+  function addContent() {
+    const cardBody = document.getElementById("contentListCard");
 
     // Cria os elementos da linha de input de conteúdo
-    var div1 = document.createElement("div");
-    var div2 = document.createElement("div");
-    var div3 = document.createElement("div");
-    var div4 = document.createElement("div");
-    var sel1 = document.createElement("select");
-    var opt1 = document.createElement("option");
-    var opt2 = document.createElement("option");
-    var opt3 = document.createElement("option");
-    var opt4 = document.createElement("option");
-    var inpu = document.createElement("input");
-    var div5 = document.createElement("div");
-    var sel2 = document.createElement("select");
-    var opt5 = document.createElement("option");
-    var opt6 = document.createElement("option");
-    var opt7 = document.createElement("option");
-    var butt = document.createElement("button");
+    const div1 = document.createElement("div");
+    const div2 = document.createElement("div");
+    const div3 = document.createElement("div");
+    const div4 = document.createElement("div");
+    const sel1 = document.createElement("select");
+    const opt1 = document.createElement("option");
+    const opt2 = document.createElement("option");
+    const opt3 = document.createElement("option");
+    const opt4 = document.createElement("option");
+    const inpu = document.createElement("input");
+    const div5 = document.createElement("div");
+    const sel2 = document.createElement("select");
+    const opt5 = document.createElement("option");
+    const opt6 = document.createElement("option");
+    const opt7 = document.createElement("option");
+    const butt = document.createElement("button");
 
     // Define propriedades dos elementos criados
     sel1.setAttribute("name", "stsC[]");
@@ -258,7 +245,7 @@
     opt4.setAttribute("value", "C");
     inpu.setAttribute("name", "nomeC[]");
     inpu.setAttribute("type", "text");
-    inpu.setAttribute("list", "nomeCDatalist");
+    inpu.setAttribute("list", "nameCDatalist");
     inpu.setAttribute("placeholder", "Conteúdo");
     inpu.setAttribute("maxlength", "500");
     sel2.setAttribute("name", "mutC[]");
@@ -285,7 +272,7 @@
     opt5.classList.add("text-primary");
     opt6.classList.add("text-danger");
     opt7.classList.add("text-warning");
-    butt.classList.add("btn", "btn-danger", "btnRemoveConteudo");
+    butt.classList.add("btn", "btn-danger", "btnRemoveContent");
 
     // Define o conteúdo dos elementos criados
     opt1.textContent = "🔴";
@@ -316,15 +303,15 @@
     div3.appendChild(butt);
 
     // Adiciona listener ao botão de excluir
-    butt.addEventListener("click", removeConteudo);
+    butt.addEventListener("click", removeContent);
 
     // Adiciona listeners para dinamizar a datalist
-    var results = document.getElementById("nomeCDatalist");
-    var templateContent = document.getElementById("nomeCTemplate").content;
+    const results = document.getElementById("nameCDatalist");
+    const templateContent = document.getElementById("nameCTemplate").content;
     inpu.addEventListener("keyup", function handler(event) {
       while (results.children.length) results.removeChild(results.firstChild);
-      var inputVal = new RegExp(inpu.value.trim(), "i");
-      var set = Array.prototype.reduce.call(
+      const inputVal = new RegExp(inpu.value.trim(), "i");
+      const set = Array.prototype.reduce.call(
         templateContent.cloneNode(true).children,
         function searchFilter(frag, item, i) {
           if (inputVal.test(item.textContent) && frag.children.length < 6)
@@ -337,7 +324,9 @@
     });
   }
 
-  function removeConteudo(e) {
-    e.target.parentElement.parentElement.parentElement.remove();
+  function removeContent(e) {
+    const cardBody = document.getElementById("contentListCard");
+    if (cardBody.childElementCount > 3)
+      e.target.parentElement.parentElement.parentElement.remove();
   }
 </script>
