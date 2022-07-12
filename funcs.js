@@ -18,8 +18,8 @@ function getTableData() {
     return b[1] - a[1];
   });
 
-  // Declara variável de array que guardará todos os dados da tabela
-  tableData = [];
+  // Declara constante de array que guardará todos os dados da tabela
+  const tableData = [];
 
   dataVod.forEach(function (vod) {
     let vodObj = {
@@ -37,7 +37,7 @@ function getTableData() {
       return contPar[1] == vodObj.id;
     }
 
-    // Define uma lista de objetos Content cujo atributo idVod é igual ao ID do Vod
+    // Define uma lista de objetos Conteúdo cujo atributo idVod é igual ao ID do Vod
     let contentListEqual = dataContent.filter(checkIdMatch);
 
     vodObj.contents = contentListEqual;
