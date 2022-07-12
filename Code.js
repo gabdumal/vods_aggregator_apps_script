@@ -3,7 +3,7 @@
 function doGet() {
   /** Executa a função que cria o template, adiciona propriedades a ele e o executa,
   tendo como parâmtros o arquivo HTML que servirá de template, e o objeto com as propriedades a serem adicionadas */
-  var page = render("table");
+  const page = render("table");
   page
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
     .addMetaTag(
