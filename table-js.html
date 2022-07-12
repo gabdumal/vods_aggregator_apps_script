@@ -9,17 +9,15 @@
       .getScriptUrl();
   }
   getUrl();
-
-  // Ao carregar a página...
   document.addEventListener("DOMContentLoaded", function () {
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
     google.script.run.withSuccessHandler(loadData).getTableData();
 
     function loadData(tableData) {
-      let tableBody = document.getElementById("vodsTableBody");
+      const tableBody = document.getElementById("vodsTableBody");
 
       tableData.forEach((vod) => {
-        let row = tableBody.insertRow();
+        const row = tableBody.insertRow();
         row.id = vod.id;
         row.className = "main-row";
 
@@ -27,7 +25,7 @@
         row.insertCell().appendChild(document.createTextNode(vod.num));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
 
-        let link = document.createElement("a");
+        const link = document.createElement("a");
         link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
@@ -44,19 +42,20 @@
         editButton.appendChild(editIcon);
         row.insertCell().appendChild(editButton);
 
-        let nestedTable = document.createElement("table");
+        const nestedTable = document.createElement("table");
         nestedTable.className = "table table-sm mb-0 nested";
 
         // Conteúdo
         vod.contents.forEach((content) => {
-          let contRow = nestedTable.insertRow();
+          const contRow = nestedTable.insertRow();
           contRow.className = "content-row";
+          // Melhora exibição de categoria
           contRow
             .insertCell()
             .appendChild(
               document.createTextNode(content[3].replace(" = ", ": "))
             );
-          let contMute = contRow.insertCell();
+          const contMute = contRow.insertCell();
           let contMuteSymbol = null;
           let contMuteStatus = null;
           switch (content[4]) {
@@ -84,31 +83,31 @@
 
         // Observações e participações
         if (vod.obs !== "") {
-          let obsRow = nestedTable.insertRow();
+          const obsRow = nestedTable.insertRow();
           obsRow.className = "obs-part-row bg-light";
-          let obsCell = obsRow.insertCell();
+          const obsCell = obsRow.insertCell();
           obsCell.setAttribute("colspan", 3);
-          let obsSpan = document.createElement("span");
+          const obsSpan = document.createElement("span");
           obsSpan.appendChild(document.createTextNode("Observações: "));
           obsCell.appendChild(obsSpan);
           obsCell.appendChild(document.createTextNode(vod.obs));
         }
         if (vod.part !== "") {
-          let partRow = nestedTable.insertRow();
+          const partRow = nestedTable.insertRow();
           partRow.className = "obs-part-row bg-light";
-          let partCell = partRow.insertCell();
+          const partCell = partRow.insertCell();
           partCell.className = "obs-part-cell";
           partCell.setAttribute("colspan", 3);
-          let partSpan = document.createElement("span");
+          const partSpan = document.createElement("span");
           partSpan.appendChild(document.createTextNode("Participações: "));
           partCell.appendChild(partSpan);
           partCell.appendChild(document.createTextNode(vod.part));
         }
 
-        let nestedRow = tableBody.insertRow();
+        const nestedRow = tableBody.insertRow();
         nestedRow.id = "n" + vod.id;
         nestedRow.classList.add("expColHidden");
-        let nestedCell = nestedRow.insertCell();
+        const nestedCell = nestedRow.insertCell();
         nestedCell.setAttribute("colspan", "4");
         nestedCell.appendChild(nestedTable);
 
@@ -128,13 +127,13 @@
     }
 
     // Pesquisa por número
-    let numInput = document.getElementById("numInput");
+    const numInput = document.getElementById("numInput");
     numInput.addEventListener("input", (event) => {
-      let search = event.target.value;
-      let searchLength = search.length;
-      let tableBody = document.getElementById("vodsTableBody");
-      let rows = tableBody.children;
-      let numRows = rows.length;
+      const search = event.target.value;
+      const searchLength = search.length;
+      const tableBody = document.getElementById("vodsTableBody");
+      const rows = tableBody.children;
+      const numRows = rows.length;
       for (let row = 0; row < numRows / 2; row++) {
         if (
           rows[row * 2].firstElementChild.textContent.slice(0, searchLength) !==
@@ -151,13 +150,13 @@
     });
 
     // Pesquisa por título
-    let titInput = document.getElementById("titInput");
+    const titInput = document.getElementById("titInput");
     titInput.addEventListener("input", (event) => {
-      let search = event.target.value;
-      let searchLength = search.length;
-      let tableBody = document.getElementById("vodsTableBody");
-      let rows = tableBody.children;
-      let numRows = rows.length;
+      const search = event.target.value;
+      const searchLength = search.length;
+      const tableBody = document.getElementById("vodsTableBody");
+      const rows = tableBody.children;
+      const numRows = rows.length;
       for (let row = 0; row < numRows / 2; row++) {
         if (
           !rows[row * 2].children[1].textContent
@@ -175,15 +174,15 @@
     });
 
     // Pesquisa por conteúdo
-    let contentInput = document.getElementById("contentInput");
+    const contentInput = document.getElementById("contentInput");
     contentInput.addEventListener("input", (event) => {
-      let search = event.target.value;
-      let tableBody = document.getElementById("vodsTableBody");
-      let trLvl1Arr = tableBody.children;
+      const search = event.target.value;
+      const tableBody = document.getElementById("vodsTableBody");
+      const trLvl1Arr = tableBody.children;
 
       for (let trInd = 0; trInd < trLvl1Arr.length / 2; trInd++) {
-        let contentsTrLvl1 = trLvl1Arr[trInd * 2 + 1];
-        let contentsTrLvl2Arr =
+        const contentsTrLvl1 = trLvl1Arr[trInd * 2 + 1];
+        const contentsTrLvl2Arr =
           contentsTrLvl1.firstElementChild.firstElementChild.firstElementChild
             .children;
         for (
@@ -191,10 +190,10 @@
           contentInd < contentsTrLvl2Arr.length;
           contentInd++
         ) {
-          let contentTr = contentsTrLvl2Arr[contentInd];
+          const contentTr = contentsTrLvl2Arr[contentInd];
           if (contentTr.classList.contains("obs-part-row")) continue;
-          let contentTd = contentTr.children[0];
-          let contentName = contentTd.textContent;
+          const contentTd = contentTr.children[0];
+          const contentName = contentTd.innerHTML;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
             trLvl1Arr[trInd * 2].classList.add("contentHidden");
             trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
@@ -210,8 +209,8 @@
   });
 
   function reverseOrder() {
-    let table = document.getElementById("vodsTable");
-    let orderElemClasses =
+    const table = document.getElementById("vodsTable");
+    const orderElemClasses =
       table.firstElementChild.firstElementChild.firstElementChild
         .firstElementChild.firstElementChild.lastElementChild.classList;
     if (orderElemClasses.contains("decrescent")) {
@@ -220,11 +219,11 @@
       orderElemClasses.replace("crescent", "decrescent");
     } else return null;
 
-    let tableBody = table.firstElementChild.nextElementSibling;
-    let newTableBody = document.createElement("tbody");
+    const tableBody = table.firstElementChild.nextElementSibling;
+    const newTableBody = document.createElement("tbody");
     newTableBody.className = "table-group-divider";
-    let rows = tableBody.children;
-    let numRows = rows.length;
+    const rows = tableBody.children;
+    const numRows = rows.length;
 
     for (let row = 0; row < numRows / 2; row++) {
       newTableBody.append(rows[numRows - 2 - row * 2]);
@@ -238,7 +237,7 @@
   }
 
   function expandsCollapseContents(event) {
-    let element = event.target;
+    const element = event.target;
     if (element.tagName === "TD") {
       element.parentElement.nextElementSibling.classList.toggle("expColHidden");
     }
@@ -376,6 +375,7 @@
     }
 
     updatePages(tableBody.children, rowsNum, newPageNumber);
+    window.scrollTo(0, 0);
   }
 
   function updatePages(allRows, quantDisplay, pageNumber) {
