@@ -208,7 +208,7 @@
       const numRows = rows.length;
       for (let row = 0; row < numRows / 2; row++) {
         if (
-          !rows[row * 2].children[1].textContent
+          !rows[row * 2].children[2].textContent
             .toLowerCase()
             .includes(search.toLowerCase())
         ) {
@@ -241,7 +241,7 @@
         ) {
           const contentTr = contentsTrLvl2Arr[contentInd];
           if (contentTr.classList.contains("obs-part-row")) continue;
-          const contentTd = contentTr.children[0];
+          const contentTd = contentTr.children[1];
           const contentName = contentTd.innerHTML;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
             trLvl1Arr[trInd * 2].classList.add("contentHidden");
