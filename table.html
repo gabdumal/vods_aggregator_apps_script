@@ -59,8 +59,8 @@
     </div>
     <article class="container-fluid">
       <section class="mt-1">
-        <div class="row gx-2">
-          <div class="col">
+        <div class="search-controls">
+          <div class="row">
             <div class="input-group">
               <input
                 id="numInput"
@@ -79,14 +79,78 @@
               />
             </div>
           </div>
-          <div class="col">
-            <input
-              id="contentInput"
-              type="text"
-              class="form-control form-control-sm"
-              placeholder="Conteúdo"
-              aria-label="Conteúdo"
-            />
+          <div class="row mt-1 gx-1">
+            <div class="col">
+              <input
+                id="contentInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Conteúdo"
+                aria-label="Conteúdo"
+              />
+            </div>
+            <div class="col d-flex">
+              <div
+                id="statusButtons"
+                class="btn-group flex-wrap status-buttons"
+              >
+                <button
+                  class="btn btn-secondary btn-sm active text-center fw-bold font-monospace"
+                  tabindex="0"
+                  aria-controls="tableVods"
+                  type="button"
+                  title="T"
+                  value="CIPN"
+                  id="sButtonT"
+                >
+                  T
+                </button>
+                <button
+                  class="btn btn-success btn-sm text-center fw-bold font-monospace"
+                  tabindex="0"
+                  aria-controls="tableVods"
+                  type="button"
+                  title="C"
+                  value="C"
+                  id="sButtonC"
+                >
+                  C
+                </button>
+                <button
+                  class="btn btn-primary btn-sm text-center fw-bold font-monospace"
+                  tabindex="0"
+                  aria-controls="tableVods"
+                  type="button"
+                  title="I"
+                  value="I"
+                  id="sButtonI"
+                >
+                  I
+                </button>
+                <button
+                  class="btn btn-warning btn-sm text-center fw-bold font-monospace text-white"
+                  tabindex="0"
+                  aria-controls="tableVods"
+                  type="button"
+                  title="P"
+                  value="P"
+                  id="sButtonP"
+                >
+                  P
+                </button>
+                <button
+                  class="btn btn-danger btn-sm text-center fw-bold font-monospace"
+                  tabindex="0"
+                  aria-controls="tableVods"
+                  type="button"
+                  title="N"
+                  value="N"
+                  id="sButtonN"
+                >
+                  N
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -257,6 +257,28 @@
     });
   });
 
+  const statusButtons = document.getElementById("statusButtons");
+  for (const button of statusButtons.children) {
+    button.addEventListener("click", (event) => {
+      const search = event.target.value;
+      const searchLength = search.length;
+      const tableBody = document.getElementById("vodsTableBody");
+      const rows = tableBody.children;
+      const numRows = rows.length;
+      console.log(search);
+      for (let row = 0; row < numRows / 2; row++) {
+        if (!rows[row * 2].children[1].textContent.includes(search)) {
+          rows[row * 2].classList.add("statusHidden");
+          rows[row * 2 + 1].classList.add("statusHidden");
+        } else {
+          rows[row * 2].classList.remove("statusHidden");
+          rows[row * 2 + 1].classList.remove("statusHidden");
+        }
+      }
+      updatePagination(tableBody);
+    });
+  }
+
   function reverseOrder() {
     const table = document.getElementById("vodsTable");
     const orderElemClasses =
@@ -429,7 +451,12 @@
 
   function updatePages(allRows, quantDisplay, pageNumber) {
     const visibleRows = [];
-    const hiddenClasses = ["numHidden", "titHidden", "contentHidden"];
+    const hiddenClasses = [
+      "numHidden",
+      "titHidden",
+      "statusHidden",
+      "contentHidden",
+    ];
 
     // Lista as linhas visíveis
     for (let rowIndex = 0; rowIndex < allRows.length; rowIndex++) {
