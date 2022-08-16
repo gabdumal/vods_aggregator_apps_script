@@ -4,6 +4,13 @@
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
     google.script.run.withSuccessHandler(loadData).getTableData();
 
+    const searchAdvancedButton = document.getElementById(
+      "searchAdvancedButton"
+    );
+    searchAdvancedButton.addEventListener("click", () => {
+      searchAdvancedButton.classList.toggle("btn-active");
+    });
+
     function loadData(tableData) {
       const tableBody = document.getElementById("vodsTableBody");
 
