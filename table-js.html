@@ -552,11 +552,14 @@
     const num = document.getElementById("numInput");
     const tit = document.getElementById("titInput");
     const cont = document.getElementById("contentInput");
+    const part = document.getElementById("partInput");
     num.value = "";
     tit.value = "";
     cont.value = "";
+    part.value = "";
     num.dispatchEvent(new Event("input", { bubbles: true }));
     tit.dispatchEvent(new Event("input", { bubbles: true }));
     cont.dispatchEvent(new Event("input", { bubbles: true }));
+    part.dispatchEvent(new Event("input", { bubbles: true }));
   }
 </script>
