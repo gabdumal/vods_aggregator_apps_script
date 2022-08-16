@@ -106,6 +106,26 @@
         tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
       }
 
+      // Botão de expandir todos os registros
+      const btnExpand = document.getElementById("btnExpand");
+      btnExpand.addEventListener("click", () => {
+        const rows = tableBody.children;
+        const numRows = rows.length;
+        for (let row = 0; row < numRows / 2; row++) {
+          rows[row * 2 + 1].classList.remove("expColHidden");
+        }
+      });
+
+      // Botão de contrair todos os registros
+      const btnContract = document.getElementById("btnContract");
+      btnContract.addEventListener("click", () => {
+        const rows = tableBody.children;
+        const numRows = rows.length;
+        for (let row = 0; row < numRows / 2; row++) {
+          rows[row * 2 + 1].classList.add("expColHidden");
+        }
+      });
+
       // Atualiza paginação
       updatePagination(tableBody);
 
