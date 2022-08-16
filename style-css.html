@@ -1,4 +1,8 @@
 <style>
+  article.container-fluid {
+    padding-inline: 8px;
+  }
+
   .loading {
     z-index: 10;
     width: 100vw;
@@ -45,7 +49,7 @@
   }
 
   #numInput {
-    max-width: 25%;
+    max-width: 15%;
   }
 
   .order-icon {
@@ -210,7 +214,8 @@
     border-color: hsl(344, 100%, 62%) !important;
   }
 
-  .btn-cherry:active {
+  .btn-cherry:active,
+  .btn-cherry.active {
     background-color: hsl(344, 84%, 57%);
     border-color: hsl(344, 80%, 55%);
   }
@@ -261,8 +266,29 @@
 
   .status-buttons {
     flex: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-shrink: 2;
   }
-  .status-buttons > button {
-    width: 20%;
+  .searchRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 4px;
+  }
+  .searchRow > .input-group {
+    width: unset;
+    flex-grow: 2;
+  }
+  .column-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #searchAdvanced {
+    margin-top: 4px;
+  }
+  #searchAdvanced :nth-child(2) {
+    max-width: 35%;
   }
 </style>

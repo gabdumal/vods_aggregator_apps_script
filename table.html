@@ -59,8 +59,8 @@
     </div>
     <article class="container-fluid">
       <section class="mt-1">
-        <div class="search-controls">
-          <div class="row">
+        <div class="column-container gx-2">
+          <div class="searchRow">
             <div class="input-group">
               <input
                 id="numInput"
@@ -78,9 +78,87 @@
                 aria-label="Título da live"
               />
             </div>
+            <div id="statusButtons" class="btn-group status-buttons">
+              <input
+                type="radio"
+                value="T"
+                class="btn-check"
+                name="sButton"
+                id="sButtonT"
+                autocomplete="off"
+                checked
+              />
+              <label
+                class="btn btn-secondary btn-sm fw-bold font-monospace"
+                for="sButtonT"
+                >T</label
+              >
+              <input
+                type="radio"
+                value="C"
+                class="btn-check"
+                name="sButton"
+                id="sButtonC"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-success btn-sm fw-bold font-monospace"
+                for="sButtonC"
+                >C</label
+              >
+              <input
+                type="radio"
+                value="I"
+                class="btn-check"
+                name="sButton"
+                id="sButtonI"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-primary btn-sm fw-bold font-monospace"
+                for="sButtonI"
+                >I</label
+              >
+              <input
+                type="radio"
+                value="P"
+                class="btn-check"
+                name="sButton"
+                id="sButtonP"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-warning btn-sm fw-bold font-monospace text-white"
+                for="sButtonP"
+                >P</label
+              >
+              <input
+                type="radio"
+                value="N"
+                class="btn-check"
+                name="sButton"
+                id="sButtonN"
+                autocomplete="off"
+              />
+              <label
+                class="btn btn-danger btn-sm fw-bold font-monospace"
+                for="sButtonN"
+                >N</label
+              >
+              <button
+                class="btn btn-sm btn-cherry"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#searchAdvanced"
+                aria-expanded="false"
+                aria-controls="searchAdvanced"
+              >
+                <i class="bi bi-caret-down-fill"></i>
+              </button>
+            </div>
           </div>
-          <div class="row mt-1 gx-1">
-            <div class="col">
+          <div class="row-container collapse" id="searchAdvanced">
+            <div class="input-group">
               <input
                 id="contentInput"
                 type="text"
@@ -88,79 +166,13 @@
                 placeholder="Conteúdo"
                 aria-label="Conteúdo"
               />
-            </div>
-            <div class="col d-flex">
-              <div
-                id="statusButtons"
-                class="btn-group flex-wrap status-buttons"
-              >
-                <input
-                  type="radio"
-                  value="T"
-                  class="btn-check"
-                  name="sButton"
-                  id="sButtonT"
-                  autocomplete="off"
-                  checked
-                />
-                <label
-                  class="btn btn-secondary btn-sm fw-bold font-monospace"
-                  for="sButtonT"
-                  >T</label
-                >
-                <input
-                  type="radio"
-                  value="C"
-                  class="btn-check"
-                  name="sButton"
-                  id="sButtonC"
-                  autocomplete="off"
-                />
-                <label
-                  class="btn btn-success btn-sm fw-bold font-monospace"
-                  for="sButtonC"
-                  >C</label
-                >
-                <input
-                  type="radio"
-                  value="I"
-                  class="btn-check"
-                  name="sButton"
-                  id="sButtonI"
-                  autocomplete="off"
-                />
-                <label
-                  class="btn btn-primary btn-sm fw-bold font-monospace"
-                  for="sButtonI"
-                  >I</label
-                >
-                <input
-                  type="radio"
-                  value="P"
-                  class="btn-check"
-                  name="sButton"
-                  id="sButtonP"
-                  autocomplete="off"
-                />
-                <label
-                  class="btn btn-warning btn-sm fw-bold font-monospace text-white"
-                  for="sButtonP"
-                  >P</label
-                >
-                <input
-                  type="radio"
-                  value="N"
-                  class="btn-check"
-                  name="sButton"
-                  id="sButtonN"
-                  autocomplete="off"
-                />
-                <label
-                  class="btn btn-danger btn-sm fw-bold font-monospace"
-                  for="sButtonN"
-                  >N</label
-                >
-              </div>
+              <input
+                id="partInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Participações"
+                aria-label="Participações"
+              />
             </div>
           </div>
         </div>
