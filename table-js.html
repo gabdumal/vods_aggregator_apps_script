@@ -65,7 +65,7 @@
         // Observações e participações
         if (vod.obs !== "") {
           const obsRow = nestedTable.insertRow();
-          obsRow.className = "obs-part-row bg-light";
+          obsRow.className = "obs-row bg-light";
           const obsCell = obsRow.insertCell();
           obsCell.setAttribute("colspan", 3);
           const obsSpan = document.createElement("span");
@@ -75,9 +75,9 @@
         }
         if (vod.part !== "") {
           const partRow = nestedTable.insertRow();
-          partRow.className = "obs-part-row bg-light";
+          partRow.className = "part-row bg-light";
           const partCell = partRow.insertCell();
-          partCell.className = "obs-part-cell";
+          partCell.className = "part-cell";
           partCell.setAttribute("colspan", 3);
           const partSpan = document.createElement("span");
           partSpan.appendChild(document.createTextNode("Participações: "));
@@ -172,7 +172,11 @@
           contentInd++
         ) {
           const contentTr = contentsTrLvl2Arr[contentInd];
-          if (contentTr.classList.contains("obs-part-row")) continue;
+          if (
+            contentTr.classList.contains("obs-row") ||
+            contentTr.classList.contains("part-row")
+          )
+            continue;
           const contentTd = contentTr.children[0];
           const contentName = contentTd.textContent;
           if (!contentName.toLowerCase().includes(search.toLowerCase())) {
@@ -187,6 +191,34 @@
       }
       updatePagination(tableBody);
     });
+  });
+
+  // Pesquisa por participações
+  const partInput = document.getElementById("partInput");
+  partInput.addEventListener("input", (event) => {
+    const search = event.target.value;
+    const searchLength = search.length;
+    const tableBody = document.getElementById("vodsTableBody");
+    const trLvl1Arr = tableBody.children;
+
+    for (let trInd = 0; trInd < trLvl1Arr.length / 2; trInd++) {
+      const contentsTrLvl1 = trLvl1Arr[trInd * 2 + 1];
+      const trPart =
+        contentsTrLvl1.firstElementChild.firstElementChild.firstElementChild
+          .lastElementChild;
+      let partData = "";
+      if (trPart.classList.contains("part-row")) {
+        partData = trPart.firstElementChild.lastChild.textContent;
+      }
+      if (!partData.toLowerCase().includes(search.toLowerCase())) {
+        trLvl1Arr[trInd * 2].classList.add("partHidden");
+        trLvl1Arr[trInd * 2 + 1].classList.add("partHidden");
+      } else {
+        trLvl1Arr[trInd * 2].classList.remove("partHidden");
+        trLvl1Arr[trInd * 2 + 1].classList.remove("partHidden");
+      }
+    }
+    updatePagination(tableBody);
   });
 
   function reverseOrder() {
@@ -361,7 +393,12 @@
 
   function updatePages(allRows, quantDisplay, pageNumber) {
     const visibleRows = [];
-    const hiddenClasses = ["numHidden", "titHidden", "contentHidden"];
+    const hiddenClasses = [
+      "numHidden",
+      "titHidden",
+      "contentHidden",
+      "partHidden",
+    ];
 
     // Lista as linhas visíveis
     for (let rowIndex = 0; rowIndex < allRows.length; rowIndex++) {

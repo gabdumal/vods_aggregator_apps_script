@@ -86,7 +86,8 @@
   }
   #vodsTable th:nth-child(2),
   #vodsTable th:nth-child(3),
-  .obs-part-row {
+  .obs-row,
+  .part-row {
     text-align: start;
   }
   #vodsTableBody > tr:nth-child(odd):hover {
@@ -133,11 +134,13 @@
     width: 2.5%;
   }
 
-  .obs-part-row td {
+  .obs-row td,
+  .part-row td {
     padding-top: 0;
     padding-bottom: 0;
   }
-  .obs-part-row span {
+  .obs-row span,
+  .part-row span {
     font-weight: 500;
     line-height: 1.2;
   }
@@ -159,6 +162,7 @@
   .numHidden,
   .titHidden,
   .contentHidden,
+  .partHidden,
   .expColHidden,
   .paginationHidden {
     display: none;
