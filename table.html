@@ -125,8 +125,8 @@
           <tbody id="vodsTableBody" class="table-group-divider"></tbody>
         </table>
       </section>
-      <div class="row">
-        <div class="col-sm-6 col-md-4">
+      <footer class="footer">
+        <div>
           <div class="input-group input-group-sm mb-1">
             <label class="input-group-text" for="numRowsSelect">Linhas</label>
             <select
@@ -141,7 +141,19 @@
             </select>
           </div>
         </div>
-        <div class="col">
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Controles de expansão das linhas"
+        >
+          <button id="btnExpand" type="button" class="btn btn-sm btn-cherry">
+            Expandir
+          </button>
+          <button id="btnContract" type="button" class="btn btn-sm btn-cherry">
+            Contrair
+          </button>
+        </div>
+        <div>
           <nav aria-label="Navegação entre páginas da tabela">
             <ul
               id="pagination"
@@ -178,7 +190,7 @@
             </ul>
           </nav>
         </div>
-      </div>
+      </footer>
     </article>
     <?!= include("table-js"); ?>
     <!-- JavaScript Bundle with Popper -->
