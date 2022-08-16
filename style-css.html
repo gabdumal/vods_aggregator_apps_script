@@ -34,7 +34,7 @@
     margin-right: 0.1em;
   }
 
-  .form-select {
+  .form-select.no-arrow {
     background: none;
     padding: 0.375rem 0.75rem 0.375rem 0.75rem;
   }
@@ -290,5 +290,26 @@
 
   #searchAdvanced :nth-child(2) {
     max-width: 35%;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    flex-wrap: wrap;
+    padding-bottom: 4px;
+    column-gap: 4px;
+  }
+  .footer > :nth-child(1),
+  .footer > :nth-child(2),
+  #numRowsSelect {
+    flex: 1 1 0px;
+  }
+  .footer > :first-child > :first-child {
+    flex-wrap: nowrap;
+  }
+
+  #pagination {
+    margin: 0;
   }
 </style>
