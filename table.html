@@ -16,7 +16,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css"
     />
     <?!= include("style-css"); ?>
-    <title>Vods</title>
+    <title>Vods do Felps</title>
     <base target="_top" />
   </head>
   <body>
@@ -52,8 +52,8 @@
     </div>
     <article class="container-fluid">
       <section class="mt-1">
-        <div class="row gx-2">
-          <div class="col">
+        <div class="column-container gx-2">
+          <div class="row-container">
             <div class="input-group">
               <input
                 id="numInput"
@@ -70,16 +70,42 @@
                 placeholder="Título da live"
                 aria-label="Título da live"
               />
+              <input
+                id="contentInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Conteúdo"
+                aria-label="Conteúdo"
+              />
+              <button
+                class="btn btn-sm btn-cherry"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#searchAdvanced"
+                aria-expanded="false"
+                aria-controls="searchAdvanced"
+              >
+                <i class="bi bi-caret-down-fill"></i>
+              </button>
             </div>
           </div>
-          <div class="col">
-            <input
-              id="contentInput"
-              type="text"
-              class="form-control form-control-sm"
-              placeholder="Conteúdo"
-              aria-label="Conteúdo"
-            />
+          <div class="row-container collapse" id="searchAdvanced">
+            <div class="input-group">
+              <input
+                id="partInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Participações"
+                aria-label="Participações"
+              />
+              <input
+                id="linkInput"
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Número do link"
+                aria-label="Número do link"
+              />
+            </div>
           </div>
         </div>
       </section>

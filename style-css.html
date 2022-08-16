@@ -1,4 +1,8 @@
 <style>
+  article.container-fluid {
+    padding-inline: 8px;
+  }
+
   .loading {
     z-index: 10;
     width: 100vw;
@@ -41,7 +45,7 @@
   }
 
   #numInput {
-    max-width: 25%;
+    max-width: 15%;
   }
 
   .order-icon {
@@ -191,5 +195,57 @@
     background-color: hsl(210, 16%, 93%);
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(244 113 146 / 50%);
+  }
+
+  .row-container {
+    display: flex;
+    flex-direction: row;
+  }
+  .column-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-cherry {
+    position: relative;
+    display: block;
+    color: hsl(344, 100%, 62%);
+    text-decoration: none;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(210, 14%, 89%);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .btn-cherry:hover {
+    z-index: 2;
+    color: hsl(344, 84%, 57%);
+    background-color: hsl(210, 16%, 93%);
+    border-color: hsl(210, 14%, 89%);
+  }
+
+  .btn-cherry:focus {
+    z-index: 3;
+    color: hsl(344, 84%, 57%);
+    background-color: hsl(210, 16%, 93%);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(244 113 146 / 50%);
+  }
+
+  .btn-cherry.btn-active {
+    color: hsl(0, 0%, 100%);
+    background-color: hsl(344, 100%, 62%);
+    border-color: hsl(344, 100%, 62%);
+  }
+
+  .btn-cherry.btn-active ::before {
+    transform: rotate(180deg);
+  }
+
+  #searchAdvanced {
+    margin-top: 4px;
+  }
+  #searchAdvanced :nth-child(2) {
+    max-width: 35%;
   }
 </style>
