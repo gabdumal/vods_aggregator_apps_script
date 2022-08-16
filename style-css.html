@@ -1,8 +1,4 @@
 <style>
-  article.container-fluid {
-    padding-inline: 8px;
-  }
-
   .loading {
     z-index: 10;
     width: 100vw;
@@ -211,35 +207,26 @@
   }
 
   .btn-cherry {
-    position: relative;
-    display: block;
-    color: hsl(344, 100%, 62%);
-    text-decoration: none;
-    background-color: hsl(0, 0%, 100%);
-    border: 1px solid hsl(210, 14%, 89%);
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: hsl(0, 0%, 100%) !important;
+    background-color: hsl(344, 100%, 62%) !important;
+    border-color: hsl(344, 100%, 62%) !important;
   }
 
-  .btn-cherry:hover {
-    z-index: 2;
-    color: hsl(344, 84%, 57%);
-    background-color: hsl(210, 16%, 93%);
-    border-color: hsl(210, 14%, 89%);
+  .btn-cherry:active,
+  .btn-cherry.active {
+    background-color: hsl(344, 84%, 57%);
+    border-color: hsl(344, 80%, 55%);
   }
 
   .btn-cherry:focus {
-    z-index: 3;
-    color: hsl(344, 84%, 57%);
-    background-color: hsl(210, 16%, 93%);
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgb(244 113 146 / 50%);
+    background-color: hsl(347, 82%, 59%);
+    border-color: hsl(344, 84%, 57%);
+    box-shadow: 0 0 0 0.25rem hsla(345, 86%, 70%, 0.5);
   }
 
-  .btn-cherry.btn-active {
-    color: hsl(0, 0%, 100%);
-    background-color: hsl(344, 100%, 62%);
-    border-color: hsl(344, 100%, 62%);
+  .btn-cherry:hover {
+    background-color: hsl(347, 82%, 59%);
+    border-color: hsl(344, 84%, 57%);
   }
 
   .btn-cherry.btn-active ::before {
@@ -259,12 +246,15 @@
     align-items: baseline;
     flex-wrap: wrap;
     padding-bottom: 4px;
-    column-gap: 10%;
+    column-gap: 4px;
   }
   .footer > :nth-child(1),
   .footer > :nth-child(2),
   #numRowsSelect {
     flex: 1 1 0px;
+  }
+  .footer > :first-child > :first-child {
+    flex-wrap: nowrap;
   }
 
   #pagination {
