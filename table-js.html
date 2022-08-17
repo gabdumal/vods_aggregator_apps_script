@@ -42,11 +42,33 @@
           const contRow = nestedTable.insertRow();
           contRow.className = "content-row";
           // Melhora exibição de categoria
-          contRow
-            .insertCell()
-            .appendChild(
-              document.createTextNode(content[3].replace(" = ", ": "))
+          const contentNameCell = contRow.insertCell();
+          const contentName = content[3];
+          const contentNameParts = contentName.split(" = ", 2);
+          if (contentNameParts.length === 1) {
+            // Sem categoria separada
+            const cnSpan = document.createElement("span");
+            cnSpan.appendChild(
+              document.createTextNode(contentNameParts[0].replace("\\=", "="))
             );
+            contentNameCell.appendChild(cnSpan);
+          } else {
+            // Nome de categoria e detalhes
+            const cnSpan1 = document.createElement("span");
+            const cnSpan2 = document.createElement("span");
+            cnSpan1.classList.add("content-bold");
+            cnSpan1.appendChild(
+              document.createTextNode(
+                contentNameParts[0].replace("\\=", "=").concat(": ")
+              )
+            );
+            cnSpan2.appendChild(
+              document.createTextNode(contentNameParts[1].replace("\\=", "="))
+            );
+            contentNameCell.appendChild(cnSpan1);
+            contentNameCell.appendChild(cnSpan2);
+          }
+
           const contMute = contRow.insertCell();
           let contMuteSymbol = null;
           let contMuteStatus = null;
@@ -79,10 +101,12 @@
           obsRow.className = "obs-row bg-light";
           const obsCell = obsRow.insertCell();
           obsCell.setAttribute("colspan", 3);
-          const obsSpan = document.createElement("span");
-          obsSpan.appendChild(document.createTextNode("Observações: "));
-          obsCell.appendChild(obsSpan);
-          obsCell.appendChild(document.createTextNode(vod.obs));
+          const obsSpan1 = document.createElement("span");
+          obsSpan1.appendChild(document.createTextNode("Observações: "));
+          obsCell.appendChild(obsSpan1);
+          const obsSpan2 = document.createElement("span");
+          obsSpan2.appendChild(document.createTextNode(vod.obs));
+          obsCell.appendChild(obsSpan2);
         }
         if (vod.part !== "") {
           const partRow = nestedTable.insertRow();
@@ -90,10 +114,12 @@
           const partCell = partRow.insertCell();
           partCell.className = "part-cell";
           partCell.setAttribute("colspan", 3);
-          const partSpan = document.createElement("span");
-          partSpan.appendChild(document.createTextNode("Participações: "));
-          partCell.appendChild(partSpan);
-          partCell.appendChild(document.createTextNode(vod.part));
+          const partSpan1 = document.createElement("span");
+          partSpan1.appendChild(document.createTextNode("Participações: "));
+          partCell.appendChild(partSpan1);
+          const partSpan2 = document.createElement("span");
+          partSpan2.appendChild(document.createTextNode(vod.part));
+          partCell.appendChild(partSpan2);
         }
 
         const nestedRow = tableBody.insertRow();
