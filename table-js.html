@@ -1,19 +1,19 @@
 <script>
   let rowsNum = 25;
+
+  // Constantes gerais
+  const tableBody = document.getElementById("vodsTableBody");
+
+  const searchAdvancedButton = document.getElementById("searchAdvancedButton");
+  searchAdvancedButton.addEventListener("click", () => {
+    searchAdvancedButton.classList.toggle("btn-active");
+  });
+
   document.addEventListener("DOMContentLoaded", function () {
     // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
     google.script.run.withSuccessHandler(loadData).getTableData();
 
-    const searchAdvancedButton = document.getElementById(
-      "searchAdvancedButton"
-    );
-    searchAdvancedButton.addEventListener("click", () => {
-      searchAdvancedButton.classList.toggle("btn-active");
-    });
-
     function loadData(tableData) {
-      const tableBody = document.getElementById("vodsTableBody");
-
       tableData.forEach((vod) => {
         const row = tableBody.insertRow();
         row.id = vod.id;
@@ -106,26 +106,6 @@
         tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
       }
 
-      // Botão de expandir todos os registros
-      const btnExpand = document.getElementById("btnExpand");
-      btnExpand.addEventListener("click", () => {
-        const rows = tableBody.children;
-        const numRows = rows.length;
-        for (let row = 0; row < numRows / 2; row++) {
-          rows[row * 2 + 1].classList.remove("expColHidden");
-        }
-      });
-
-      // Botão de contrair todos os registros
-      const btnContract = document.getElementById("btnContract");
-      btnContract.addEventListener("click", () => {
-        const rows = tableBody.children;
-        const numRows = rows.length;
-        for (let row = 0; row < numRows / 2; row++) {
-          rows[row * 2 + 1].classList.add("expColHidden");
-        }
-      });
-
       // Atualiza paginação
       updatePagination(tableBody);
 
@@ -133,91 +113,88 @@
       const loadingDiv = document.getElementById("loadingDiv");
       loadingDiv.style.display = "none";
     }
+  });
 
-    // Pesquisa por número
-    const numInput = document.getElementById("numInput");
-    numInput.addEventListener("input", (event) => {
-      const search = event.target.value;
-      const searchLength = search.length;
-      const tableBody = document.getElementById("vodsTableBody");
-      const rows = tableBody.children;
-      const numRows = rows.length;
-      for (let row = 0; row < numRows / 2; row++) {
+  // Pesquisa por número
+  const numInput = document.getElementById("numInput");
+  numInput.addEventListener("input", (event) => {
+    const search = event.target.value;
+    const searchLength = search.length;
+    const rows = tableBody.children;
+    const numRows = rows.length;
+    for (let row = 0; row < numRows / 2; row++) {
+      if (
+        rows[row * 2].firstElementChild.textContent.slice(0, searchLength) !==
+        search
+      ) {
+        rows[row * 2].classList.add("numHidden");
+        rows[row * 2 + 1].classList.add("numHidden");
+      } else {
+        rows[row * 2].classList.remove("numHidden");
+        rows[row * 2 + 1].classList.remove("numHidden");
+      }
+    }
+    updatePagination(tableBody);
+  });
+
+  // Pesquisa por título
+  const titInput = document.getElementById("titInput");
+  titInput.addEventListener("input", (event) => {
+    const search = event.target.value;
+    const searchLength = search.length;
+    const rows = tableBody.children;
+    const numRows = rows.length;
+    for (let row = 0; row < numRows / 2; row++) {
+      if (
+        !rows[row * 2].children[1].textContent
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      ) {
+        rows[row * 2].classList.add("titHidden");
+        rows[row * 2 + 1].classList.add("titHidden");
+      } else {
+        rows[row * 2].classList.remove("titHidden");
+        rows[row * 2 + 1].classList.remove("titHidden");
+      }
+    }
+    updatePagination(tableBody);
+  });
+
+  // Pesquisa por conteúdo
+  const contentInput = document.getElementById("contentInput");
+  contentInput.addEventListener("input", (event) => {
+    const search = event.target.value;
+    const trLvl1Arr = tableBody.children;
+
+    for (let trInd = 0; trInd < trLvl1Arr.length / 2; trInd++) {
+      const contentsTrLvl1 = trLvl1Arr[trInd * 2 + 1];
+      const contentsTrLvl2Arr =
+        contentsTrLvl1.firstElementChild.firstElementChild.firstElementChild
+          .children;
+      for (
+        let contentInd = 0;
+        contentInd < contentsTrLvl2Arr.length;
+        contentInd++
+      ) {
+        const contentTr = contentsTrLvl2Arr[contentInd];
         if (
-          rows[row * 2].firstElementChild.textContent.slice(0, searchLength) !==
-          search
-        ) {
-          rows[row * 2].classList.add("numHidden");
-          rows[row * 2 + 1].classList.add("numHidden");
+          contentTr.classList.contains("obs-row") ||
+          contentTr.classList.contains("part-row")
+        )
+          continue;
+        const contentTd = contentTr.children[0];
+        const contentName = contentTd.textContent;
+        if (!contentName.toLowerCase().includes(search.toLowerCase())) {
+          trLvl1Arr[trInd * 2].classList.add("contentHidden");
+          trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
         } else {
-          rows[row * 2].classList.remove("numHidden");
-          rows[row * 2 + 1].classList.remove("numHidden");
+          trLvl1Arr[trInd * 2].classList.remove("contentHidden");
+          trLvl1Arr[trInd * 2 + 1].classList.remove("contentHidden");
+          break;
         }
       }
-      updatePagination(tableBody);
-    });
-
-    // Pesquisa por título
-    const titInput = document.getElementById("titInput");
-    titInput.addEventListener("input", (event) => {
-      const search = event.target.value;
-      const searchLength = search.length;
-      const tableBody = document.getElementById("vodsTableBody");
-      const rows = tableBody.children;
-      const numRows = rows.length;
-      for (let row = 0; row < numRows / 2; row++) {
-        if (
-          !rows[row * 2].children[1].textContent
-            .toLowerCase()
-            .includes(search.toLowerCase())
-        ) {
-          rows[row * 2].classList.add("titHidden");
-          rows[row * 2 + 1].classList.add("titHidden");
-        } else {
-          rows[row * 2].classList.remove("titHidden");
-          rows[row * 2 + 1].classList.remove("titHidden");
-        }
-      }
-      updatePagination(tableBody);
-    });
-
-    // Pesquisa por conteúdo
-    const contentInput = document.getElementById("contentInput");
-    contentInput.addEventListener("input", (event) => {
-      const search = event.target.value;
-      const tableBody = document.getElementById("vodsTableBody");
-      const trLvl1Arr = tableBody.children;
-
-      for (let trInd = 0; trInd < trLvl1Arr.length / 2; trInd++) {
-        const contentsTrLvl1 = trLvl1Arr[trInd * 2 + 1];
-        const contentsTrLvl2Arr =
-          contentsTrLvl1.firstElementChild.firstElementChild.firstElementChild
-            .children;
-        for (
-          let contentInd = 0;
-          contentInd < contentsTrLvl2Arr.length;
-          contentInd++
-        ) {
-          const contentTr = contentsTrLvl2Arr[contentInd];
-          if (
-            contentTr.classList.contains("obs-row") ||
-            contentTr.classList.contains("part-row")
-          )
-            continue;
-          const contentTd = contentTr.children[0];
-          const contentName = contentTd.textContent;
-          if (!contentName.toLowerCase().includes(search.toLowerCase())) {
-            trLvl1Arr[trInd * 2].classList.add("contentHidden");
-            trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
-          } else {
-            trLvl1Arr[trInd * 2].classList.remove("contentHidden");
-            trLvl1Arr[trInd * 2 + 1].classList.remove("contentHidden");
-            break;
-          }
-        }
-      }
-      updatePagination(tableBody);
-    });
+    }
+    updatePagination(tableBody);
   });
 
   // Pesquisa por participações
@@ -225,7 +202,6 @@
   partInput.addEventListener("input", (event) => {
     const search = event.target.value;
     const searchLength = search.length;
-    const tableBody = document.getElementById("vodsTableBody");
     const trLvl1Arr = tableBody.children;
 
     for (let trInd = 0; trInd < trLvl1Arr.length / 2; trInd++) {
@@ -259,10 +235,10 @@
       orderElemClasses.replace("crescent", "decrescent");
     } else return null;
 
-    const tableBody = table.firstElementChild.nextElementSibling;
+    const tableBodyRev = table.firstElementChild.nextElementSibling;
     const newTableBody = document.createElement("tbody");
     newTableBody.className = "table-group-divider";
-    const rows = tableBody.children;
+    const rows = tableBodyRev.children;
     const numRows = rows.length;
 
     for (let row = 0; row < numRows / 2; row++) {
@@ -270,7 +246,7 @@
       newTableBody.append(rows[numRows - 2 - row * 2]);
     }
 
-    tableBody.remove();
+    tableBodyRev.remove();
     table.append(newTableBody);
     newTableBody.id = "vodsTableBody";
     updatePagination(newTableBody);
@@ -282,6 +258,26 @@
       element.parentElement.nextElementSibling.classList.toggle("expColHidden");
     }
   }
+
+  // Botão de expandir todos os registros
+  const btnExpand = document.getElementById("btnExpand");
+  btnExpand.addEventListener("click", () => {
+    const rows = tableBody.children;
+    const numRows = rows.length;
+    for (let row = 0; row < numRows / 2; row++) {
+      rows[row * 2 + 1].classList.remove("expColHidden");
+    }
+  });
+
+  // Botão de contrair todos os registros
+  const btnContract = document.getElementById("btnContract");
+  btnContract.addEventListener("click", () => {
+    const rows = tableBody.children;
+    const numRows = rows.length;
+    for (let row = 0; row < numRows / 2; row++) {
+      rows[row * 2 + 1].classList.add("expColHidden");
+    }
+  });
 
   function createPageItem(pageNum) {
     const pageItem = document.createElement("li");
@@ -301,7 +297,6 @@
   }
 
   function changePage(event) {
-    const tableBody = document.getElementById("vodsTableBody");
     const paginationList = document.getElementById("pagination");
     const quantPageItems = paginationList.childElementCount;
     let pageNumber = parseInt(paginationList.getAttribute("active-page"));
