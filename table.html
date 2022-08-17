@@ -23,7 +23,11 @@
     <nav
       class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light py-1"
     >
-      <button onclick="resetSearch()" class="navbar-brand title text-center">
+      <button
+        onclick="resetSearch()"
+        class="navbar-brand title text-center"
+        title="Limpar campos de busca"
+      >
         <div class="d-flex justify-content-end ms-2">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
@@ -91,8 +95,10 @@
               <label
                 class="btn btn-secondary btn-sm fw-bold font-monospace"
                 for="sButtonT"
-                >T</label
+                title="Exibir VoDs em qualquer status de visualização"
               >
+                T
+              </label>
               <input
                 type="radio"
                 value="C"
@@ -104,8 +110,10 @@
               <label
                 class="btn btn-success btn-sm fw-bold font-monospace"
                 for="sButtonC"
-                >C</label
+                title="Exibir VoDs completamente assistidos"
               >
+                C
+              </label>
               <input
                 type="radio"
                 value="I"
@@ -117,8 +125,10 @@
               <label
                 class="btn btn-primary btn-sm fw-bold font-monospace"
                 for="sButtonI"
-                >I</label
+                title="Exibir VoDs incompletamente assistidos"
               >
+                I
+              </label>
               <input
                 type="radio"
                 value="P"
@@ -130,8 +140,10 @@
               <label
                 class="btn btn-warning btn-sm fw-bold font-monospace text-white"
                 for="sButtonP"
-                >P</label
+                title="Exibir VoDs parcialmente assistidos"
               >
+                P
+              </label>
               <input
                 type="radio"
                 value="N"
@@ -143,8 +155,10 @@
               <label
                 class="btn btn-danger btn-sm fw-bold font-monospace"
                 for="sButtonN"
-                >N</label
+                title="Exibir VoDs não assistidos"
               >
+                N
+              </label>
               <button
                 id="searchAdvancedButton"
                 class="btn btn-sm btn-cherry btn-active"
@@ -153,6 +167,7 @@
                 data-bs-target="#searchAdvanced"
                 aria-expanded="true"
                 aria-controls="searchAdvanced"
+                title="Controle dos campos de busca avançada"
               >
                 <i class="bi bi-caret-down-fill"></i>
               </button>
@@ -204,7 +219,10 @@
       </section>
       <footer class="footer">
         <div>
-          <div class="input-group input-group-sm mb-1">
+          <div
+            class="input-group input-group-sm mb-1"
+            title="Alterar quantidade de registros exibidos"
+          >
             <label class="input-group-text" for="numRowsSelect">Linhas</label>
             <select
               class="form-select"
@@ -223,15 +241,28 @@
           role="group"
           aria-label="Controles de expansão das linhas"
         >
-          <button id="btnExpand" type="button" class="btn btn-sm btn-cherry">
+          <button
+            id="btnExpand"
+            type="button"
+            class="btn btn-sm btn-cherry"
+            title="Expandir dados de todos os registros"
+          >
             Expandir
           </button>
-          <button id="btnContract" type="button" class="btn btn-sm btn-cherry">
+          <button
+            id="btnContract"
+            type="button"
+            class="btn btn-sm btn-cherry"
+            title="Contrair dados de todos os registros"
+          >
             Contrair
           </button>
         </div>
         <div>
-          <nav aria-label="Navegação entre páginas da tabela">
+          <nav
+            aria-label="Navegação entre páginas da tabela"
+            title="Controle de paginação"
+          >
             <ul
               id="pagination"
               class="pagination justify-content-end pagination-sm"

@@ -31,18 +31,23 @@
         // Informações básicas
         row.insertCell().appendChild(document.createTextNode(vod.num));
         let cellClass = "";
+        let cellTitle = "";
         switch (vod.sts) {
           case "C":
             cellClass = "table-success";
+            cellTitle = "Completamente assistido";
             break;
           case "I":
             cellClass = "table-primary";
+            cellTitle = "Incompletamente assistido";
             break;
           case "P":
             cellClass = "table-warning";
+            cellTitle = "Parcialmente assistido";
             break;
           case "N":
             cellClass = "table-danger";
+            cellTitle = "Não assistido";
             break;
           default:
             break;
@@ -54,6 +59,7 @@
           "font-monospace",
           cellClass
         );
+        stsVCell.setAttribute("title", cellTitle);
         stsVCell.appendChild(document.createTextNode(vod.sts));
         row.insertCell().appendChild(document.createTextNode(vod.tit));
 
@@ -88,15 +94,19 @@
           switch (content[2]) {
             case "C":
               cellClass = "table-success";
+              cellTitle = "Completamente assistido";
               break;
             case "I":
               cellClass = "table-primary";
+              cellTitle = "Incompletamente assistido";
               break;
             case "P":
               cellClass = "table-warning";
+              cellTitle = "Parcialmente assistido";
               break;
             case "N":
               cellClass = "table-danger";
+              cellTitle = "Não assistido";
               break;
             default:
               break;
@@ -108,6 +118,7 @@
             "font-monospace",
             cellClass
           );
+          stsCCell.setAttribute("title", cellTitle);
           stsCCell.appendChild(document.createTextNode(content[2]));
           // Melhora exibição de categoria
           contRow
