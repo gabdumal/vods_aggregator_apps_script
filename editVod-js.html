@@ -11,7 +11,7 @@
   let numVod = 0;
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Obtém dados de um Vod da Spreadsheet procurando-o por seu ID, e preenche os campos do formulário
+    // Obtém dados de um VoD da Spreadsheet procurando-o por seu ID, e preenche os campos do formulário
     addContent();
     const stsC1D = document.getElementsByName("stsC[]")[0];
     stsC1D.setAttribute("disabled", "disabled");
@@ -43,7 +43,7 @@
       const stsC1 = document.getElementsByName("stsC[]")[0];
       const nameC1 = document.getElementsByName("nameC[]")[0];
       const mutC1 = document.getElementsByName("mutC[]")[0];
-      // Define os valores dos elementos da página de acordo com os dados do Vod
+      // Define os valores dos elementos da página de acordo com os dados do VoD
       document.getElementById("numVodTit").textContent = vodData[1];
       numV.value = vodData[1];
       numVod = vodData[1];
@@ -77,7 +77,7 @@
       lDiv3a.className = "row";
       const lSpana = document.createElement("span");
       lSpana.textContent =
-        "O Vod que você tentou acessar não existe no sistema.";
+        "O VoD que você tentou acessar não existe no sistema.";
       lDiv3a.appendChild(lSpana);
       lDiv2.appendChild(lDiv3a);
       const lDiv3b = document.createElement("div");
@@ -117,7 +117,7 @@
     // Caso contrário, adiciona o elemento com problemas de preenchimento à variável de erros
     if (numV.value) {
     } else {
-      errors += "Número do Vod\n";
+      errors += "Número do VoD\n";
     }
     if (
       stsV.value === "N" ||
@@ -137,7 +137,7 @@
     }
 
     const codV = extractCodLink();
-    // Caso o tamanho do código do Vod não esteja ente 9 e 10 (tamanho esperado), adiciona Link à variável de erros
+    // Caso o tamanho do código do VoD não esteja ente 9 e 10 (tamanho esperado), adiciona Link à variável de erros
     if (codV.length < 9 || codV.length > 10) {
       errors += "Link\n";
     }
@@ -193,8 +193,32 @@
       errors += "Nenhum conteúdo foi preenchido corretamente\n";
     }
 
+    // Pede confirmação quando há inconsistência no status de visualização
+    function checkStatusIntegrity() {
+      const stsVValue = stsV.value;
+      let onlyCI = true;
+      for (const contentData of contentsList) {
+        const cdSts = contentData.sts;
+        if (stsVValue === "C" && cdSts !== "C")
+          return window.confirm(
+            "O status de visualização do VoD é Completamente assistido, mas há conteúdos preenchidos de forma diferente. Deseja prosseguir dessa forma?"
+          );
+        if (stsVValue === "I" && cdSts === "P")
+          return window.confirm(
+            "O status de visualização do VoD é Incompletamente assistido, mas há conteúdos Parcialmente assistidos. Deseja prosseguir dessa forma?"
+          );
+        if (cdSts === "P" || cdSts === "N") onlyCI = false;
+      }
+      if (stsVValue === "P" && onlyCI)
+        return window.confirm(
+          "O status de visualização do VoD é Parcialmente assistido, mas todos os conteúdos já foram assistidos. Deseja prosseguir dessa forma?"
+        );
+      return true;
+    }
+
     // Caso não haja erros...
     if (errors === "") {
+      if (!checkStatusIntegrity()) return;
       const vodData = {};
       vodData.id = idPag;
       vodData.cod = codV;
@@ -204,7 +228,7 @@
       vodData.obs = obsV.value;
       vodData.part = partV.value;
 
-      // Executa a função de adicionar as informações do Vod e Conteúdos à Spreadsheet
+      // Executa a função de adicionar as informações do VoD e Conteúdos à Spreadsheet
       const loadingDiv = document.getElementById("loadingDiv");
       loadingDiv.style.display = "flex";
 
@@ -223,7 +247,7 @@
         lDiv3a.className = "row";
         const lSpana = document.createElement("span");
         lSpana.textContent =
-          "A edição do Vod " +
+          "A edição do VoD " +
           vodData.num +
           " no sistema foi realizada com sucesso!";
         lDiv3a.appendChild(lSpana);
@@ -248,7 +272,7 @@
 
       function onFailure() {
         alert(
-          "Infelizmente não foi possível editar o Vod no sistema, tente novamente."
+          "Infelizmente não foi possível editar o VoD no sistema, tente novamente."
         );
         loadingDiv.style.display = "none";
       }
@@ -276,10 +300,10 @@
     }
   }
 
-  // Extrai o código do Vod do Link digitado no formulário e atualiza o preview do código
+  // Extrai o código do VoD do Link digitado no formulário e atualiza o preview do código
   function extractCodLink() {
     const linkV = document.getElementById("linkV").value;
-    // Define uma string que recupera o código do Vod a partir do link digitado
+    // Define uma string que recupera o código do VoD a partir do link digitado
     let codV = linkV.substring(
       linkV.lastIndexOf("/") + 1,
       linkV.lastIndexOf("/") + 11
@@ -421,10 +445,10 @@
   function deleteVod() {
     const loadingDiv = document.getElementById("loadingDiv");
     const confirmacao = window.confirm(
-      "Deseja excluir este registro de Vod permanentemente?"
+      "Deseja excluir este registro de VoD permanentemente?"
     );
     if (confirmacao) {
-      // Executa a função de excluir as informações do Vod e seus Conteudos da Spreadsheet
+      // Executa a função de excluir as informações do VoD e seus Conteudos da Spreadsheet
       google.script.run
         .withSuccessHandler(onSuccess)
         .withFailureHandler(onFailure)
@@ -441,9 +465,9 @@
       lDiv3a.className = "row";
       const lSpana = document.createElement("span");
       lSpana.textContent =
-        "A exclusão do Vod " +
+        "A exclusão do VoD " +
         numVod +
-        " no sistema foi realizada com sucesso!";
+        " do sistema foi realizada com sucesso!";
       lDiv3a.appendChild(lSpana);
       lDiv2.appendChild(lDiv3a);
       const lDiv3b = document.createElement("div");
@@ -466,7 +490,7 @@
 
     function onFailure() {
       alert(
-        "Infelizmente não foi possível excluir o Vod do sistema, tente novamente."
+        "Infelizmente não foi possível excluir o VoD do sistema, tente novamente."
       );
     }
   }
