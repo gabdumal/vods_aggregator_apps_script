@@ -208,7 +208,7 @@
       // nameC1.value = "";
       // mutC1.value = "N";
       // Exclui todas as linhas adicionadas de Conteúdo do formulário
-      //document.querySelectorAll('.divLinhaConteudo').forEach(e => e.remove());
+      //document.querySelectorAll('.div-content-row').forEach(e => e.remove());
     } else {
       // Caso haja erros...
       // Exibe os erros em um alert
@@ -242,14 +242,12 @@
     const div1 = document.createElement("div");
     const div2 = document.createElement("div");
     const div3 = document.createElement("div");
-    const div4 = document.createElement("div");
     const sel1 = document.createElement("select");
     const opt1 = document.createElement("option");
     const opt2 = document.createElement("option");
     const opt3 = document.createElement("option");
     const opt4 = document.createElement("option");
     const inpu = document.createElement("input");
-    const div5 = document.createElement("div");
     const sel2 = document.createElement("select");
     const opt5 = document.createElement("option");
     const opt6 = document.createElement("option");
@@ -276,49 +274,42 @@
     butt.setAttribute("type", "button");
 
     // Define as classes dos elementos criados
-    div1.classList.add("form-row", "mb-3", "divLinhaConteudo");
-    div2.classList.add("form-group", "col-md", "mb-0", "conteudoInputRow");
-    div3.classList.add("input-group");
-    div3.classList.add("input-group-sm");
-    div4.classList.add("input-group-prepend");
-    sel1.classList.add("form-select");
-    sel1.classList.add("no-arrow");
+    div1.classList.add("form-row", "mb-3", "div-content-row");
+    div2.classList.add("form-group", "col-md", "mb-0");
+    div3.classList.add("input-group", "input-group-sm");
+    sel1.classList.add("form-select", "no-arrow");
     opt1.classList.add("text-danger");
     opt2.classList.add("text-warning");
     opt3.classList.add("text-primary");
     opt4.classList.add("text-success");
     inpu.classList.add("form-control", "nameC");
-    div5.classList.add("input-group-append");
-    sel2.classList.add("form-select");
-    sel2.classList.add("no-arrow");
+    sel2.classList.add("form-select", "no-arrow");
     opt5.classList.add("text-primary");
     opt6.classList.add("text-danger");
     opt7.classList.add("text-warning");
-    butt.classList.add("btn", "btn-danger", "btnRemoveContent");
+    butt.classList.add("btn", "btn-danger", "btn-remove-content");
 
     // Define o conteúdo dos elementos criados
-    opt1.textContent = "🔴";
-    opt2.textContent = "🟡";
-    opt3.textContent = "🔵";
-    opt4.textContent = "🟢";
-    opt5.textContent = "🔊";
-    opt6.textContent = "🔇";
-    opt7.textContent = "🔈";
+    opt1.textContent = "Não assistido 🔴";
+    opt2.textContent = "Parcialmente 🟡";
+    opt3.textContent = "Incompletamente🔵";
+    opt4.textContent = "Completamente🟢";
+    opt5.textContent = "Com som 🔊";
+    opt6.textContent = "Sem som 🔇";
+    opt7.textContent = "Som parcial 🔈";
     butt.textContent = "x";
 
     // Define elementos como filhos de outros elementos apropriados
     cardBody.appendChild(div1);
     div1.appendChild(div2);
     div2.appendChild(div3);
-    div3.appendChild(div4);
-    div4.appendChild(sel1);
+    div3.appendChild(sel1);
     sel1.appendChild(opt1);
     sel1.appendChild(opt2);
     sel1.appendChild(opt3);
     sel1.appendChild(opt4);
     div3.appendChild(inpu);
-    div3.appendChild(div5);
-    div5.appendChild(sel2);
+    div3.appendChild(sel2);
     sel2.appendChild(opt5);
     sel2.appendChild(opt6);
     sel2.appendChild(opt7);
