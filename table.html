@@ -23,7 +23,11 @@
     <nav
       class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light"
     >
-      <button onclick="resetSearch()" class="navbar-brand title text-center">
+      <button
+        onclick="resetSearch()"
+        class="navbar-brand title text-center"
+        title="Limpar campos de busca"
+      >
         <div class="d-flex justify-content-end ms-2">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
@@ -85,6 +89,7 @@
                 data-bs-target="#searchAdvanced"
                 aria-expanded="false"
                 aria-controls="searchAdvanced"
+                title="Controle dos campos de busca avançada"
               >
                 <i class="bi bi-caret-down-fill"></i>
               </button>
@@ -127,7 +132,10 @@
       </section>
       <footer class="footer">
         <div>
-          <div class="input-group input-group-sm mb-1">
+          <div
+            class="input-group input-group-sm mb-1"
+            title="Alterar quantidade de registros exibidos"
+          >
             <label class="input-group-text" for="numRowsSelect">Linhas</label>
             <select
               class="form-select"
@@ -146,15 +154,28 @@
           role="group"
           aria-label="Controles de expansão das linhas"
         >
-          <button id="btnExpand" type="button" class="btn btn-sm btn-cherry">
+          <button
+            id="btnExpand"
+            type="button"
+            class="btn btn-sm btn-cherry"
+            title="Expandir dados de todos os registros"
+          >
             Expandir
           </button>
-          <button id="btnContract" type="button" class="btn btn-sm btn-cherry">
+          <button
+            id="btnContract"
+            type="button"
+            class="btn btn-sm btn-cherry"
+            title="Contrair dados de todos os registros"
+          >
             Contrair
           </button>
         </div>
         <div>
-          <nav aria-label="Navegação entre páginas da tabela">
+          <nav
+            aria-label="Navegação entre páginas da tabela"
+            title="Controle de paginação"
+          >
             <ul
               id="pagination"
               class="pagination justify-content-end pagination-sm"
