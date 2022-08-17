@@ -27,7 +27,11 @@
         link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
-        link.innerHTML = vod.cod;
+        link.classList.add("btn", "btn-sm", "btn-outline-cherry");
+        link.setAttribute("title", vod.cod);
+        const linkItem = document.createElement("i");
+        linkItem.classList.add("bi", "bi-link-45deg");
+        link.appendChild(linkItem);
         row.insertCell().appendChild(link);
 
         const nestedTable = document.createElement("table");
