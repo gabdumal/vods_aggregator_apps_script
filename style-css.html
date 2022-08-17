@@ -114,13 +114,7 @@
     white-space: pre-line;
   }
   .main-row td:nth-child(4) {
-    text-align: start;
     width: 0;
-  }
-  @media (min-width: 768px) {
-    .main-row td:nth-child(4) {
-      padding-right: 1em;
-    }
   }
   .main-row td:last-child {
     text-align: end;
@@ -181,7 +175,6 @@
     background-color: hsl(344, 100%, 62%);
     border-color: hsl(344, 100%, 62%);
   }
-
   .page-link {
     position: relative;
     display: block;
@@ -192,14 +185,12 @@
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
       border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
-
   .page-link:hover {
     z-index: 2;
     color: hsl(344, 84%, 57%);
     background-color: hsl(210, 16%, 93%);
     border-color: hsl(210, 14%, 89%);
   }
-
   .page-link:focus {
     z-index: 3;
     color: hsl(344, 84%, 57%);
@@ -213,26 +204,43 @@
     background-color: hsl(344, 100%, 62%) !important;
     border-color: hsl(344, 100%, 62%) !important;
   }
-
   .btn-cherry:active,
   .btn-cherry.active {
     background-color: hsl(344, 84%, 57%);
     border-color: hsl(344, 80%, 55%);
   }
-
   .btn-cherry:focus {
     background-color: hsl(347, 82%, 59%);
     border-color: hsl(344, 84%, 57%);
     box-shadow: 0 0 0 0.25rem hsla(345, 86%, 70%, 0.5);
   }
-
   .btn-cherry:hover {
     background-color: hsl(347, 82%, 59%);
     border-color: hsl(344, 84%, 57%);
   }
-
   .btn-cherry.btn-active ::before {
     transform: rotate(180deg);
+  }
+
+  .btn-outline-cherry {
+    color: hsl(344, 100%, 62%);
+    border-color: hsl(344, 100%, 62%) !important;
+  }
+  .btn-outline-cherry:visited {
+    color: hsl(344, 100%, 62%);
+  }
+  .btn-outline-cherry:hover {
+    background-color: hsl(344, 100%, 62%);
+    color: hsl(0, 0%, 100%);
+  }
+  .btn-outline-cherry:focus {
+    background-color: hsl(344, 100%, 62%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: 0 0 0 0.25rem hsla(345, 86%, 70%, 0.5);
+  }
+  .btn-outline-cherry:active {
+    background-color: hsl(344, 100%, 62%);
+    color: hsl(0, 0%, 100%);
   }
 
   .buttons-nav {
