@@ -107,7 +107,7 @@ function addVodSs(vodInfo, contentInfoList) {
 }
 
 // Extrai os dados de um Vod a partir do seu ID
-function getVodDataById(idPar) {
+function getVodDataByIdOld(idPar) {
   // Query para buscar todas as colunas de um registro da sheet vod em que a coluna A seja igual ao parâmetro idPar
   const qSearchVod = "SELECT A, B, C, D, E, F, G WHERE (A='" + idPar + "')";
   // Busca todas as células que contenham o ID passado nos parâmetros
@@ -118,6 +118,57 @@ function getVodDataById(idPar) {
   const extractedDataContentList = query("content!$A$1:$E", qSearchContent);
   const vodData = vodExtractedData[0];
   vodData.push(extractedDataContentList);
+  return vodData;
+}
+
+// Extrai os dados de um Vod a partir do seu ID
+function getVodDataById(idVod) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const wsVod = ss.getSheetByName("vod");
+  const wsContent = ss.getSheetByName("content");
+
+  const lastRowV = wsVod.getRange("A1").getDataRegion().getLastRow();
+
+  // Obtém uma lista de todos os idVods na spreadsheet
+  const dataIdVods = wsVod.getRange(1, 1, lastRowV, 1).getValues();
+  const idVodList = dataIdVods.map(function (r) {
+    return r[0];
+  });
+
+  // Procura a posição do idVod fornecido nos parâmetros dentro do array 1D de idVods
+  const pV = idVodList.indexOf(idVod);
+  const rowV = pV + 1;
+
+  // Captura os dados da linha na sheet wsVod
+  const vodData = wsVod.getRange(rowV, 1, 1, 7).getValues()[0];
+
+  const contentsList = [];
+  const lastRowC = wsContent.getRange("A1").getDataRegion().getLastRow();
+  // Obtém uma lista de todos os idContents na spreadsheet
+  const dataContent = wsContent.getRange(1, 1, lastRowC, 2).getValues();
+  const idContentList = dataContent.map(function (r) {
+    return r[0];
+  });
+  // Verifica se o ID do Vod é igual ao idVod registrado no Conteúdo
+  function checkIdMatch(contPar) {
+    return contPar[1] == idVod;
+  }
+  const contentListEqual = dataContent.filter(checkIdMatch);
+  let rowsCList = [];
+  for (i = 0; i < contentListEqual.length; i++) {
+    // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContents
+    const pC = idContentList.indexOf(contentListEqual[i][0]);
+    const rowC = pC + 1;
+    rowsCList.push(String(rowC));
+  }
+  // Busca dados de cada conteudo e apensa à lista de conteúdos
+  for (i = 0; i < rowsCList.length; i++) {
+    const contentData = wsContent
+      .getRange(rowsCList[i], 1, 1, 5)
+      .getValues()[0];
+    contentsList.push(contentData);
+  }
+  vodData.push(contentsList);
   return vodData;
 }
 

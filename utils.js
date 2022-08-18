@@ -33,30 +33,6 @@ function render(file, argsObject) {
   return tmp.evaluate().setTitle("Vods do Felps" + subtitle);
 }
 
-function query(interval, qSearch) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const wsQuery = ss.getSheetByName("query");
-  // Define uma variável como o texto da fórmula Query, passando os parâmetros dados e consulta iguais aos passados na definição da função
-  const queryFormula = "=QUERY(" + interval + '; "' + qSearch + '")';
-  // Define a célula A1 como uma fórmula Query com o texto definido previamente
-  wsQuery.getRange(1, 1).setFormula(queryFormula);
-  // Define um range a partir do intervalo passado
-  const rangeData = wsQuery.getRange(interval);
-  // Define uma variável com os dados extraídos da sheet de query
-  const extractedData = wsQuery
-    .getRange(
-      1,
-      1,
-      wsQuery.getDataRange().getLastRow(),
-      rangeData.getLastColumn()
-    )
-    .getValues();
-  // Limpa os dados preenchidos na sheet query
-  wsQuery.getDataRange().clearContent();
-  // Retorna os dados extraídos
-  return extractedData;
-}
-
 function getScriptUrl() {
   return ScriptApp.getService().getUrl();
 }
