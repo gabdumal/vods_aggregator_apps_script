@@ -17,10 +17,8 @@
   .header-nav > :nth-child(2) {
     margin-inline-start: auto;
   }
-
   .title {
     overflow: hidden;
-    transition: margin-left, 100ms;
     border: 0;
     background-color: transparent;
   }
@@ -36,6 +34,24 @@
   .title:hover .return-arrow {
     margin-right: 0.1em;
     width: unset;
+  }
+  @media (max-width: 297px) {
+    .little-face {
+      display: none;
+    }
+  }
+  @media (max-width: 267px) {
+    .title {
+      padding-inline: 0;
+    }
+    .header-nav {
+      column-gap: 0.1em;
+    }
+  }
+  @media (max-width: 241px) {
+    .return-arrow {
+      display: none;
+    }
   }
 
   .form-control:focus,
