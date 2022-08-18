@@ -10,28 +10,49 @@
     color: hsl(344deg 100% 61%);
   }
 
+  .header-nav {
+    column-gap: 0.5em;
+    padding-inline: 0.5em;
+  }
+  .header-nav > :nth-child(2) {
+    margin-inline-start: auto;
+  }
   .title {
     overflow: hidden;
-    margin-left: -1em;
     transition: margin-left, 100ms;
     border: 0;
     background-color: transparent;
   }
-
   .title h1 {
     margin-bottom: 0;
   }
-
   .return-arrow {
     height: fit-content;
     margin-right: 100%;
-    transition: margin-right, 100ms;
-  }
-  .title:hover {
-    margin-left: 0;
+    width: 0;
+    transition: margin-right 100ms, width 100ms;
   }
   .title:hover .return-arrow {
     margin-right: 0.1em;
+    width: unset;
+  }
+  @media (max-width: 339px) {
+    .little-face {
+      display: none;
+    }
+  }
+  @media (max-width: 285px) {
+    .title {
+      padding-inline: 0;
+    }
+    .header-nav {
+      column-gap: 0.1em;
+    }
+  }
+  @media (max-width: 276px) {
+    .return-arrow {
+      display: none;
+    }
   }
 
   .form-select.no-arrow {

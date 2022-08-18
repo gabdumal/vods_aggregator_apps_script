@@ -20,39 +20,47 @@
     <base target="_top" />
   </head>
   <body>
+    <?!= include("credits"); ?>
     <nav
-      class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light py-1"
+      class="nav navbar-expand-lg align-items-center navbar-light bg-light header-nav"
     >
       <button
         onclick="resetSearch()"
         class="navbar-brand title text-center"
         title="Limpar campos de busca"
       >
-        <div class="d-flex justify-content-end ms-2">
+        <div class="d-flex justify-content-end">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
             <h1 class="h3">Vods do Felps</h1>
-            <small class="text-cherry ms-2 mb-0 h3">'-'</small>
+            <small class="text-cherry ms-2 mb-0 h3 little-face">'-'</small>
           </div>
         </div>
       </button>
-      <div class="d-flex me-2 buttons-nav">
-        <a
-          href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Transmissões anteriores do Felps na Twitch"
-        >
-          <i class="bi bi-twitch fs-4 text-cherry"></i>
-        </a>
-        <a
-          href="<?!= getScriptUrl(); ?>?v=add"
-          class="btn btn-cherry fw-bold btn-sm btn-add"
-          title="Adicionar novo registro de VoD"
-        >
-          <i class="bi bi-plus-lg"></i>
-        </a>
-      </div>
+      <a
+        data-bs-toggle="offcanvas"
+        href="#creditsOffcanvas"
+        role="button"
+        aria-controls="creditsOffcanvas"
+        title="Créditos"
+      >
+        <i class="bi bi-at fs-4 text-cherry"></i>
+      </a>
+      <a
+        href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Transmissões anteriores do Felps na Twitch"
+      >
+        <i class="bi bi-twitch fs-4 text-cherry"></i>
+      </a>
+      <a
+        href="<?!= getScriptUrl(); ?>?v=add"
+        class="btn btn-cherry fw-bold btn-sm btn-add"
+        title="Adicionar novo registro de VoD"
+      >
+        <i class="bi bi-plus-lg"></i>
+      </a>
     </nav>
     <div
       id="loadingDiv"
