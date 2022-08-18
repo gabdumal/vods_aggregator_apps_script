@@ -20,15 +20,16 @@
     <base target="_top" />
   </head>
   <body>
+    <?!= include("credits"); ?>
     <nav
-      class="nav navbar-expand-lg justify-content-between align-items-center navbar-light bg-light"
+      class="nav navbar-expand-lg align-items-center navbar-light bg-light header-nav"
     >
       <button
         onclick="resetSearch()"
         class="navbar-brand title text-center"
         title="Limpar campos de busca"
       >
-        <div class="d-flex justify-content-end ms-2">
+        <div class="d-flex justify-content-end">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
             <h1 class="h3">Vods do Felps</h1>
@@ -36,16 +37,23 @@
           </div>
         </div>
       </button>
-      <div class="d-flex me-2">
-        <a
-          href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Transmissões anteriores do Felps na Twitch"
-        >
-          <i class="bi bi-twitch fs-4 text-cherry"></i>
-        </a>
-      </div>
+      <a
+        data-bs-toggle="offcanvas"
+        href="#creditsOffcanvas"
+        role="button"
+        aria-controls="creditsOffcanvas"
+        title="Créditos"
+      >
+        <i class="bi bi-at fs-4 text-cherry"></i>
+      </a>
+      <a
+        href="https://www.twitch.tv/felps/videos?filter=archives&sort=time"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Transmissões anteriores do Felps na Twitch"
+      >
+        <i class="bi bi-twitch fs-4 text-cherry"></i>
+      </a>
     </nav>
     <div
       id="loadingDiv"
