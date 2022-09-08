@@ -11,7 +11,7 @@
   getUrl();
 
   // Constantes gerais
-  const tableBody = document.getElementById("vodsTableBody");
+  let tableBody = document.getElementById("vodsTableBody");
 
   const searchAdvancedButton = document.getElementById("searchAdvancedButton");
   searchAdvancedButton.addEventListener("click", () => {
@@ -379,7 +379,8 @@
     tableBodyRev.remove();
     table.append(newTableBody);
     newTableBody.id = "vodsTableBody";
-    updatePagination(newTableBody);
+    tableBody = newTableBody
+    updatePagination(tableBody);
   }
 
   function expandsCollapseContents(event) {
