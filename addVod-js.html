@@ -124,9 +124,13 @@
           return window.confirm(
             "O status de visualização do VoD é Completamente assistido, mas há conteúdos preenchidos de forma diferente. Deseja prosseguir dessa forma?"
           );
-        if (stsVValue === "I" && cdSts === "P")
+        else if (stsVValue === "I" && cdSts === "P")
           return window.confirm(
             "O status de visualização do VoD é Incompletamente assistido, mas há conteúdos Parcialmente assistidos. Deseja prosseguir dessa forma?"
+          );
+        else if (stsVValue === "N" && cdSts !== "N")
+          return window.confirm(
+            "O status de visualização do VoD é Não assistido, mas há conteúdos preenchidos de forma diferente. Deseja prosseguir dessa forma?"
           );
         if (cdSts === "P" || cdSts === "N") onlyCI = false;
       }
