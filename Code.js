@@ -37,7 +37,9 @@ function loadAddVod() {
 
   const contentCategoryOptionList = getContentCategoryOptionList(ws);
 
-  const page = render("addVod", { contentCategoryOptionList: contentCategoryOptionList });
+  const page = render("addVod", {
+    contentCategoryOptionList: contentCategoryOptionList,
+  });
   return setPage(page);
 }
 
@@ -57,7 +59,7 @@ function loadEditVod(idVod) {
 
 function getContentCategoryOptionList(ws) {
   // Obtém array 2D com informações extraídas da sheet selecionada
-  const list = ws.getRange(1, 7, ws.getLastRow()).getValues();
+  const list = ws.getRange(1, 7, ws.getLastRow(), 1).getValues();
 
   // Monta uma lista de <option>
   return list
