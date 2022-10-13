@@ -1,7 +1,6 @@
 /** @OnlyCurrentDoc */
 
 const Route = {};
-// Adicionará uma propriedade ao objeto Route e define seu valor como uma função passada nos parâmetros
 Route.path = function (route, callback) {
   Route[route] = callback;
 };
@@ -16,9 +15,8 @@ function doGet(e) {
   }
 }
 
+// Constrói e retorna página
 function setPage(page) {
-  // Cria o template, adiciona propriedades a ele e o executa
-  // Tem como parâmtros o arquivo HTML que servirá de template, e o objeto com as propriedades a serem adicionadas
   page
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
     .addMetaTag(
@@ -28,51 +26,43 @@ function setPage(page) {
   return page;
 }
 
-// Inicia o HTML da página table
 function loadTable() {
   const page = render("table");
   return setPage(page);
 }
 
-// Inicia o HTML da página addVod
 function loadAddVod() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const ws = ss.getSheetByName("content_cat");
+  const ws = ss.getSheetByName("operational");
 
-  // Obtém um array 2D com informações extraídas da sheet selecionada
-  const list = ws
-    .getRange(1, 7, ws.getRange("G1").getDataRegion().getLastRow(), 1)
-    .getValues();
-  // Monta uma lista de <option> com os valores extraídos, transformando o array 2D em um array 1D
-  const htmlOptionList = list
-    .map(function (r) {
-      return "<option>" + r[0] + "</option>";
-    })
-    .join("");
+  const contentCategoryOptionList = getContentCategoryOptionList(ws);
 
-  const page = render("addVod", { contentNamesList: htmlOptionList });
+  const page = render("addVod", { contentCategoryOptionList: contentCategoryOptionList });
   return setPage(page);
 }
 
 // Inicia o HTML da página editVod
 function loadEditVod(idVod) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const ws = ss.getSheetByName("content_cat");
+  const ws = ss.getSheetByName("operational");
 
-  // Obtém um array 2D com informações extraídas da sheet selecionada
-  const list = ws
-    .getRange(1, 7, ws.getRange("G1").getDataRegion().getLastRow(), 1)
-    .getValues();
-  // Monta uma lista de <option> com os valores extraídos, transformando o array 2D em um array 1D
-  const htmlOptionList = list
-    .map(function (r) {
-      return "<option>" + r[0] + "</option>";
-    })
-    .join("");
+  const contentCategoryOptionList = getContentCategoryOptionList(ws);
 
   const page = render("editVod", {
-    contentNamesList: htmlOptionList,
+    contentCategoryOptionList: contentCategoryOptionList,
     idVod: idVod,
   });
   return setPage(page);
+}
+
+function getContentCategoryOptionList(ws) {
+  // Obtém array 2D com informações extraídas da sheet selecionada
+  const list = ws.getRange(1, 7, ws.getLastRow()).getValues();
+
+  // Monta uma lista de <option>
+  return list
+    .map(function (data) {
+      return "<option>" + data[0] + "</option>";
+    })
+    .join("");
 }

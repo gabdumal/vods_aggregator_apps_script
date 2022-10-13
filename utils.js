@@ -4,16 +4,16 @@ function include(filename) {
 }
 
 function render(file, argsObject) {
-  // Cria um template a partir de um arquivo HTML passado nos parâmetros como file
+  // Cria um template a partir de um arquivo HTML
   let tmp = HtmlService.createTemplateFromFile(file);
 
-  // Caso tenha sido passado um objeto com propriedades a serem definidas...
+  // Caso haja propriedades a serem definidas...
   if (argsObject) {
     // Cria uma lista de chaves das propriedades do objeto
     let keys = Object.keys(argsObject);
 
     keys.forEach(function (key) {
-      // Cria uma propriedade no objeto tmp igual à propriedade dentro do objeto argsObject, passado nos parâmetros
+      // Cria uma propriedade no objeto tmp igual à propriedade dentro do objeto argsObject
       tmp[key] = argsObject[key];
     });
   }

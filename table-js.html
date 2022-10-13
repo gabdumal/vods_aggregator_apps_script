@@ -19,203 +19,202 @@
   });
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Executa a função de carregar todos os elementos da página com os dados extraídos da planilha
+    // Carrega os elementos da página com os dados extraídos da planilha
     google.script.run.withSuccessHandler(loadData).getTableData();
 
     function loadData(tableData) {
       tableData.forEach((vod) => {
-        const row = tableBody.insertRow();
-        row.id = vod.id;
-        row.className = "main-row";
+        const vodRow = tableBody.insertRow();
+        vodRow.id = vod.id;
+        vodRow.className = "main-row";
 
         // Informações básicas
-        row.insertCell().appendChild(document.createTextNode(vod.num));
-        let cellClass = "";
-        let cellTitle = "";
-        switch (vod.sts) {
+        //
+        vodRow.insertCell().appendChild(document.createTextNode(vod.number));
+
+        let cellWatchStatusClass = "";
+        let cellWatchStatusTitle = "";
+        switch (vod.watchStatus) {
           case "C":
-            cellClass = "table-success";
-            cellTitle = "Completamente assistido";
+            cellWatchStatusClass = "table-success";
+            cellWatchStatusTitle = "Completamente assistido";
             break;
           case "I":
-            cellClass = "table-primary";
-            cellTitle = "Incompletamente assistido";
+            cellWatchStatusClass = "table-primary";
+            cellWatchStatusTitle = "Incompletamente assistido";
             break;
           case "P":
-            cellClass = "table-warning";
-            cellTitle = "Parcialmente assistido";
+            cellWatchStatusClass = "table-warning";
+            cellWatchStatusTitle = "Parcialmente assistido";
             break;
           case "N":
-            cellClass = "table-danger";
-            cellTitle = "Não assistido";
+            cellWatchStatusClass = "table-danger";
+            cellWatchStatusTitle = "Não assistido";
             break;
           default:
             break;
         }
-        const stsVCell = row.insertCell();
-        stsVCell.classList.add(
+        const vodCellWatchStatus = vodRow.insertCell();
+        vodCellWatchStatus.classList.add(
           "text-center",
           "fw-bold",
           "font-monospace",
-          cellClass
+          cellWatchStatusClass
         );
-        stsVCell.setAttribute("title", cellTitle);
-        stsVCell.appendChild(document.createTextNode(vod.sts));
-        row.insertCell().appendChild(document.createTextNode(vod.tit));
+        vodCellWatchStatus.setAttribute("title", cellWatchStatusTitle);
+        vodCellWatchStatus.appendChild(
+          document.createTextNode(vod.watchStatus)
+        );
+        vodRow.insertCell().appendChild(document.createTextNode(vod.title));
 
-        const link = document.createElement("a");
-        link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener noreferrer");
-        link.classList.add("btn", "btn-sm", "btn-outline-cherry");
-        link.setAttribute("title", vod.cod);
-        const linkItem = document.createElement("i");
-        linkItem.classList.add("bi", "bi-link-45deg");
-        link.appendChild(linkItem);
-        row.insertCell().appendChild(link);
+        const vodlink = document.createElement("a");
+        vodlink.setAttribute(
+          "href",
+          "https://www.twitch.tv/videos/" + vod.link
+        );
+        vodlink.setAttribute("target", "_blank");
+        vodlink.setAttribute("rel", "noopener noreferrer");
+        vodlink.classList.add("btn", "btn-sm", "btn-outline-cherry");
+        vodlink.setAttribute("title", vod.link);
+        const vodLinkItem = document.createElement("i");
+        vodLinkItem.classList.add("bi", "bi-link-45deg");
+        vodlink.appendChild(vodLinkItem);
+        vodRow.insertCell().appendChild(vodlink);
 
         let editButton = document.createElement("a");
-        editButton.setAttribute("href", pageUrl + "?v=edit&id=" + row.id);
+        editButton.setAttribute("href", pageUrl + "?v=edit&id=" + vodRow.id);
         editButton.setAttribute("title", "Editar registro de VoD");
         editButton.className =
           "btn btn-outline-warning btn-sm text-warning btnEditRow";
         let editIcon = document.createElement("i");
         editIcon.className = "bi bi-pencil-fill";
         editButton.appendChild(editIcon);
-        row.insertCell().appendChild(editButton);
+        vodRow.insertCell().appendChild(editButton);
 
+        // Conteúdo
+        //
         const nestedTable = document.createElement("table");
         nestedTable.className = "table table-sm mb-0 nested";
 
-        // Conteúdo
-        vod.contents.forEach((content) => {
-          const contRow = nestedTable.insertRow();
-          contRow.className = "content-row";
-          switch (content[2]) {
+        for (const content of vod.contentList) {
+          const contentRow = nestedTable.insertRow();
+          contentRow.className = "content-row";
+          switch (content.watchStatus) {
             case "C":
-              cellClass = "table-success";
-              cellTitle = "Completamente assistido";
+              cellWatchStatusClass = "table-success";
+              cellWatchStatusTitle = "Completamente assistido";
               break;
             case "I":
-              cellClass = "table-primary";
-              cellTitle = "Incompletamente assistido";
+              cellWatchStatusClass = "table-primary";
+              cellWatchStatusTitle = "Incompletamente assistido";
               break;
             case "P":
-              cellClass = "table-warning";
-              cellTitle = "Parcialmente assistido";
+              cellWatchStatusClass = "table-warning";
+              cellWatchStatusTitle = "Parcialmente assistido";
               break;
             case "N":
-              cellClass = "table-danger";
-              cellTitle = "Não assistido";
+              cellWatchStatusClass = "table-danger";
+              cellWatchStatusTitle = "Não assistido";
               break;
             default:
               break;
           }
-          const stsCCell = contRow.insertCell();
-          stsCCell.classList.add(
+          const contentCellWatchStatus = contentRow.insertCell();
+          contentCellWatchStatus.classList.add(
             "text-center",
             "fw-bold",
             "font-monospace",
-            cellClass
+            cellWatchStatusClass
           );
-          stsCCell.setAttribute("title", cellTitle);
-          stsCCell.appendChild(document.createTextNode(content[2]));
-          // Melhora exibição de categoria
-          const contentNameCell = contRow.insertCell();
-          const contentName = content[3];
-          const contentNameParts = contentName.split(" = ", 2);
-          if (contentNameParts.length === 1) {
-            // Sem categoria separada
-            const cnSpan = document.createElement("span");
-            cnSpan.appendChild(
-              document.createTextNode(contentNameParts[0].replace("\\=", "="))
+          contentCellWatchStatus.setAttribute("title", cellWatchStatusTitle);
+          contentCellWatchStatus.appendChild(
+            document.createTextNode(content.watchStatus)
+          );
+
+          const contentCellCategoryAndDescription = contentRow.insertCell();
+          const contentSpanCategory = document.createElement("span");
+          contentSpanCategory.classList = "content-bold";
+          let contentSpanCategoryText = content.category;
+          if (content.description !== "") contentSpanCategoryText += ": ";
+          contentSpanCategory.appendChild(
+            document.createTextNode(contentSpanCategoryText)
+          );
+          contentCellCategoryAndDescription.appendChild(contentSpanCategory);
+          if (content.description !== "") {
+            const contentSpanDescriptionText = document.createElement("span");
+            contentSpanDescriptionText.appendChild(
+              document.createTextNode(content.description)
             );
-            contentNameCell.appendChild(cnSpan);
-          } else {
-            // Nome de categoria e detalhes
-            const cnSpan1 = document.createElement("span");
-            const cnSpan2 = document.createElement("span");
-            cnSpan1.classList.add("content-bold");
-            cnSpan1.appendChild(
-              document.createTextNode(
-                contentNameParts[0].replace("\\=", "=").concat(": ")
-              )
+            contentCellCategoryAndDescription.appendChild(
+              contentSpanDescriptionText
             );
-            cnSpan2.appendChild(
-              document.createTextNode(contentNameParts[1].replace("\\=", "="))
-            );
-            contentNameCell.appendChild(cnSpan1);
-            contentNameCell.appendChild(cnSpan2);
           }
 
-          const contMute = contRow.insertCell();
-          let contMuteSymbol = null;
-          let contMuteStatus = null;
-          switch (content[4]) {
+          const contentCellSoundStatus = contentRow.insertCell();
+          let contentCellSoundStatusSymbol = "";
+          let contentCellSoundStatusLabel = "";
+          switch (content.soundStatus) {
             case "S":
-              contMute.className = "table-danger";
-              contMuteSymbol = "🔇";
-              contMuteStatus = "Sem som";
+              contentCellSoundStatus.className = "table-danger";
+              contentCellSoundStatusSymbol = "🔇";
+              contentCellSoundStatusLabel = "Sem som";
               break;
             case "N":
-              contMute.className = "table-primary";
-              contMuteSymbol = "🔊";
-              contMuteStatus = "Com som";
+              contentCellSoundStatus.className = "table-primary";
+              contentCellSoundStatusSymbol = "🔊";
+              contentCellSoundStatusLabel = "Com som";
               break;
             case "P":
-              contMute.className = "table-warning";
-              contMuteSymbol = "🔈";
-              contMuteStatus = "Som parcial";
+              contentCellSoundStatus.className = "table-warning";
+              contentCellSoundStatusSymbol = "🔈";
+              contentCellSoundStatusLabel = "Som parcial";
               break;
             default:
               break;
           }
-          contMute.setAttribute("title", contMuteStatus);
-          contMute.appendChild(document.createTextNode(contMuteSymbol));
-        });
-
-        // Observações e participações
-        if (vod.obs !== "") {
-          const obsRow = nestedTable.insertRow();
-          obsRow.className = "obs-row bg-light";
-          const obsCell = obsRow.insertCell();
-          obsCell.setAttribute("colspan", "5");
-          const obsSpan1 = document.createElement("span");
-          obsSpan1.appendChild(document.createTextNode("Observações: "));
-          obsCell.appendChild(obsSpan1);
-          const obsSpan2 = document.createElement("span");
-          obsSpan2.appendChild(document.createTextNode(vod.obs));
-          obsCell.appendChild(obsSpan2);
-        }
-        if (vod.part !== "") {
-          const partRow = nestedTable.insertRow();
-          partRow.className = "part-row bg-light";
-          const partCell = partRow.insertCell();
-          partCell.className = "part-cell";
-          partCell.setAttribute("colspan", "5");
-          const partSpan1 = document.createElement("span");
-          partSpan1.appendChild(document.createTextNode("Participações: "));
-          partCell.appendChild(partSpan1);
-          const partSpan2 = document.createElement("span");
-          partSpan2.appendChild(document.createTextNode(vod.part));
-          partCell.appendChild(partSpan2);
+          contentCellSoundStatus.setAttribute(
+            "title",
+            contentCellSoundStatusLabel
+          );
+          contentCellSoundStatus.appendChild(
+            document.createTextNode(contentCellSoundStatusSymbol)
+          );
         }
 
-        const nestedRow = tableBody.insertRow();
-        nestedRow.id = "n" + vod.id;
-        nestedRow.classList.add("expColHidden");
-        const nestedCell = nestedRow.insertCell();
-        nestedCell.setAttribute("colspan", "5");
-        nestedCell.appendChild(nestedTable);
+        function addDetailRow(key, label, className) {
+          const vodDetailRow = nestedTable.insertRow();
+          vodDetailRow.classList.add("bg-light", className);
+          const vodDetailCell = vodDetailRow.insertCell();
+          vodDetailCell.setAttribute("colspan", "5");
+          const vodDetailSpanLabel = document.createElement("span");
+          vodDetailSpanLabel.appendChild(document.createTextNode(label + ": "));
+          vodDetailCell.appendChild(vodDetailSpanLabel);
+          const vodDetailSpanText = document.createElement("span");
+          vodDetailSpanText.appendChild(document.createTextNode(vod[key]));
+          vodDetailCell.appendChild(vodDetailSpanText);
+        }
+        if (vod.observation !== "")
+          addDetailRow("observation", "Observações", "obs-row");
+        if (vod.participants !== "")
+          addDetailRow("participants", "Participantes", "part-row");
+        if (vod.comments !== "")
+          addDetailRow("comments", "Comentários", "comments-row");
+
+        const contentsNestedRow = tableBody.insertRow();
+        contentsNestedRow.id = "n" + vod.id;
+        contentsNestedRow.classList.add("expColHidden");
+        const contentsNestedCell = contentsNestedRow.insertCell();
+        contentsNestedCell.setAttribute("colspan", "5");
+        contentsNestedCell.appendChild(nestedTable);
 
         // Expandir e contrair linhas de conteúdo
-        row.setAttribute("onclick", "expandsCollapseContents(event);");
+        vodRow.setAttribute("onclick", "expandsCollapseContents(event);");
       });
+
       for (let row = 0; row < 10; row++) {
         tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
       }
 
-      // Atualiza paginação
       updatePagination(tableBody);
 
       // Desativa a div de carregamento
@@ -379,7 +378,7 @@
     tableBodyRev.remove();
     table.append(newTableBody);
     newTableBody.id = "vodsTableBody";
-    tableBody = newTableBody
+    tableBody = newTableBody;
     updatePagination(tableBody);
   }
 
