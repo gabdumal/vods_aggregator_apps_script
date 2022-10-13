@@ -32,11 +32,25 @@
         <div class="d-flex justify-content-end">
           <i class="return-arrow bi bi-arrow-left fs-4 text-cherry mb-0"></i>
           <div class="d-flex">
-            <h1 class="h3">Vods do Felps</h1>
+            <h1 class="h3">Vods<span class="title-name"> do Felps</span></h1>
             <small class="text-cherry ms-2 mb-0 h3 little-face">'-'</small>
           </div>
         </div>
       </button>
+      <label
+        class="btn btn-sm btn-outline-cherry"
+        for="favoriteCheckbox"
+        title="Exibir VoDs marcados como favoritos"
+      >
+        <input
+          type="checkbox"
+          class="btn-check"
+          name="favoriteCheckbox"
+          id="favoriteCheckbox"
+          autocomplete="off"
+        />
+        <i class="bi bi-star"></i>
+      </label>
       <a
         data-bs-toggle="offcanvas"
         href="#creditsOffcanvas"

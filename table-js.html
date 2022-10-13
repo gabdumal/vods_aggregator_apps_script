@@ -13,6 +13,26 @@
   // Constantes gerais
   let tableBody = document.getElementById("vodsTableBody");
 
+  const favoriteCheckbox = document.getElementById("favoriteCheckbox");
+  favoriteCheckbox.addEventListener("change", () => {
+    favoriteCheckbox.parentElement.classList.toggle("checkbox-active");
+    const rows = tableBody.children;
+    const numRows = rows.length;
+    for (let row = 0; row < numRows / 2; row++) {
+      if (
+        favoriteCheckbox.checked &&
+        rows[row * 2].getAttribute("data-favorite") !== "S"
+      ) {
+        rows[row * 2].classList.add("not-favorite-hidden");
+        rows[row * 2 + 1].classList.add("not-favorite-hidden");
+      } else {
+        rows[row * 2].classList.remove("not-favorite-hidden");
+        rows[row * 2 + 1].classList.remove("not-favorite-hidden");
+      }
+    }
+    updatePagination(tableBody);
+  });
+
   const searchAdvancedButton = document.getElementById("searchAdvancedButton");
   searchAdvancedButton.addEventListener("click", () => {
     searchAdvancedButton.classList.toggle("btn-active");
@@ -27,6 +47,11 @@
         const vodRow = tableBody.insertRow();
         vodRow.id = vod.id;
         vodRow.className = "main-row";
+        if (vod.favorite) {
+          vodRow.classList.add("favorite");
+          vodRow.setAttribute("title", "Favorito");
+          vodRow.setAttribute("data-favorite", "S");
+        }
 
         // Informações básicas
         //
@@ -202,7 +227,8 @@
 
         const contentsNestedRow = tableBody.insertRow();
         contentsNestedRow.id = "n" + vod.id;
-        contentsNestedRow.classList.add("expColHidden");
+        contentsNestedRow.classList.add("expand-collapse-hidden");
+        if (vod.favorite) contentsNestedRow.classList.add("favorite");
         const contentsNestedCell = contentsNestedRow.insertCell();
         contentsNestedCell.setAttribute("colspan", "5");
         contentsNestedCell.appendChild(nestedTable);
@@ -212,7 +238,9 @@
       });
 
       for (let row = 0; row < 10; row++) {
-        tableBody.children[row * 2 + 1].classList.toggle("expColHidden");
+        tableBody.children[row * 2 + 1].classList.toggle(
+          "expand-collapse-hidden"
+        );
       }
 
       updatePagination(tableBody);
@@ -235,11 +263,11 @@
         rows[row * 2].firstElementChild.textContent.slice(0, searchLength) !==
         search
       ) {
-        rows[row * 2].classList.add("numHidden");
-        rows[row * 2 + 1].classList.add("numHidden");
+        rows[row * 2].classList.add("number-hidden");
+        rows[row * 2 + 1].classList.add("number-hidden");
       } else {
-        rows[row * 2].classList.remove("numHidden");
-        rows[row * 2 + 1].classList.remove("numHidden");
+        rows[row * 2].classList.remove("number-hidden");
+        rows[row * 2 + 1].classList.remove("number-hidden");
       }
     }
     updatePagination(tableBody);
@@ -257,11 +285,11 @@
           .toLowerCase()
           .includes(search.toLowerCase())
       ) {
-        rows[row * 2].classList.add("titHidden");
-        rows[row * 2 + 1].classList.add("titHidden");
+        rows[row * 2].classList.add("title-hidden");
+        rows[row * 2 + 1].classList.add("title-hidden");
       } else {
-        rows[row * 2].classList.remove("titHidden");
-        rows[row * 2 + 1].classList.remove("titHidden");
+        rows[row * 2].classList.remove("title-hidden");
+        rows[row * 2 + 1].classList.remove("title-hidden");
       }
     }
     updatePagination(tableBody);
@@ -292,11 +320,11 @@
         const contentTd = contentTr.children[1];
         const contentName = contentTd.innerHTML;
         if (!contentName.toLowerCase().includes(search.toLowerCase())) {
-          trLvl1Arr[trInd * 2].classList.add("contentHidden");
-          trLvl1Arr[trInd * 2 + 1].classList.add("contentHidden");
+          trLvl1Arr[trInd * 2].classList.add("content-hidden");
+          trLvl1Arr[trInd * 2 + 1].classList.add("content-hidden");
         } else {
-          trLvl1Arr[trInd * 2].classList.remove("contentHidden");
-          trLvl1Arr[trInd * 2 + 1].classList.remove("contentHidden");
+          trLvl1Arr[trInd * 2].classList.remove("content-hidden");
+          trLvl1Arr[trInd * 2 + 1].classList.remove("content-hidden");
           break;
         }
       }
@@ -321,11 +349,11 @@
         partData = trPart.firstElementChild.lastChild.textContent;
       }
       if (!partData.toLowerCase().includes(search.toLowerCase())) {
-        trLvl1Arr[trInd * 2].classList.add("partHidden");
-        trLvl1Arr[trInd * 2 + 1].classList.add("partHidden");
+        trLvl1Arr[trInd * 2].classList.add("participants-hidden");
+        trLvl1Arr[trInd * 2 + 1].classList.add("participants-hidden");
       } else {
-        trLvl1Arr[trInd * 2].classList.remove("partHidden");
-        trLvl1Arr[trInd * 2 + 1].classList.remove("partHidden");
+        trLvl1Arr[trInd * 2].classList.remove("participants-hidden");
+        trLvl1Arr[trInd * 2 + 1].classList.remove("participants-hidden");
       }
     }
     updatePagination(tableBody);
@@ -342,11 +370,11 @@
           search !== "T" &&
           !(rows[row * 2].children[1].textContent === search)
         ) {
-          rows[row * 2].classList.add("statusHidden");
-          rows[row * 2 + 1].classList.add("statusHidden");
+          rows[row * 2].classList.add("status-hidden");
+          rows[row * 2 + 1].classList.add("status-hidden");
         } else {
-          rows[row * 2].classList.remove("statusHidden");
-          rows[row * 2 + 1].classList.remove("statusHidden");
+          rows[row * 2].classList.remove("status-hidden");
+          rows[row * 2 + 1].classList.remove("status-hidden");
         }
       }
       updatePagination(tableBody);
@@ -385,7 +413,9 @@
   function expandsCollapseContents(event) {
     const element = event.target;
     if (element.tagName === "TD") {
-      element.parentElement.nextElementSibling.classList.toggle("expColHidden");
+      element.parentElement.nextElementSibling.classList.toggle(
+        "expand-collapse-hidden"
+      );
     }
   }
 
@@ -395,7 +425,7 @@
     const rows = tableBody.children;
     const numRows = rows.length;
     for (let row = 0; row < numRows / 2; row++) {
-      rows[row * 2 + 1].classList.remove("expColHidden");
+      rows[row * 2 + 1].classList.remove("expand-collapse-hidden");
     }
   });
 
@@ -405,7 +435,7 @@
     const rows = tableBody.children;
     const numRows = rows.length;
     for (let row = 0; row < numRows / 2; row++) {
-      rows[row * 2 + 1].classList.add("expColHidden");
+      rows[row * 2 + 1].classList.add("expand-collapse-hidden");
     }
   });
 
@@ -546,11 +576,12 @@
   function updatePages(allRows, quantDisplay, pageNumber) {
     const visibleRows = [];
     const hiddenClasses = [
-      "numHidden",
-      "titHidden",
-      "statusHidden",
-      "contentHidden",
-      "partHidden",
+      "number-hidden",
+      "title-hidden",
+      "status-hidden",
+      "content-hidden",
+      "participants-hidden",
+      ".not-favorite-hidden",
     ];
 
     // Lista as linhas visíveis

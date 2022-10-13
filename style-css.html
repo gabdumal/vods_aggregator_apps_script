@@ -35,21 +35,16 @@
     margin-right: 0.1em;
     width: unset;
   }
-  @media (max-width: 339px) {
-    .little-face {
+  @media (max-width: 380px) {
+    .return-arrow {
+      display: none;
+    }
+    .title-name {
       display: none;
     }
   }
-  @media (max-width: 285px) {
-    .title {
-      padding-inline: 0;
-    }
-    .header-nav {
-      column-gap: 0.1em;
-    }
-  }
-  @media (max-width: 276px) {
-    .return-arrow {
+  @media (max-width: 270px) {
+    .little-face {
       display: none;
     }
   }
@@ -66,6 +61,11 @@
 
   #numInput {
     max-width: 15%;
+  }
+  @media (max-width: 380px) {
+    #numInput {
+      max-width: 25%;
+    }
   }
 
   .order-icon {
@@ -161,6 +161,16 @@
     width: 2.5%;
   }
 
+  .table.nested {
+    background-color: hsl(0, 0%, 100%) !important;
+  }
+  .favorite {
+    background-color: hsla(36, 100%, 90%, 0.75) !important;
+  }
+  .main-row.favorite:hover {
+    background-color: hsla(36, 100%, 85%, 0.75) !important;
+  }
+
   .obs-row td,
   .part-row td,
   .comments-row td {
@@ -189,13 +199,14 @@
     color: hsl(344deg 70% 61%);
   }
 
-  .numHidden,
-  .titHidden,
-  .statusHidden,
-  .contentHidden,
-  .partHidden,
-  .expColHidden,
-  .paginationHidden {
+  .expand-collapse-hidden,
+  .pagination-hidden,
+  .number-hidden,
+  .title-hidden,
+  .status-hidden,
+  .content-hidden,
+  .participants-hidden,
+  .not-favorite-hidden {
     display: none;
   }
 
@@ -269,6 +280,10 @@
     box-shadow: 0 0 0 0.25rem hsla(345, 86%, 70%, 0.5);
   }
   .btn-outline-cherry:active {
+    background-color: hsl(344, 100%, 62%);
+    color: hsl(0, 0%, 100%);
+  }
+  .btn-outline-cherry.checkbox-active {
     background-color: hsl(344, 100%, 62%);
     color: hsl(0, 0%, 100%);
   }

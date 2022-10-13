@@ -21,7 +21,7 @@ function getTableData() {
       participants: vodData[5],
       watchStatus: vodData[6],
       comments: vodData[7],
-      favorite: vodData[8],
+      favorite: vodData[8] === "S",
       contentList: [],
     };
 
