@@ -263,7 +263,7 @@
       google.script.run
         .withSuccessHandler(onSuccess)
         .withFailureHandler(onFailure)
-        .editVodSs(vod, contentList);
+        .editVodSs(idPag, vod, contentList);
 
       function onSuccess() {
         // Exibe um alert informando que a operação foi realizada com sucesso
@@ -276,7 +276,7 @@
         const lSpana = document.createElement("span");
         lSpana.textContent =
           "A edição do VoD " +
-          vodData.num +
+          vod.number +
           " no sistema foi realizada com sucesso!";
         lDiv3a.appendChild(lSpana);
         lDiv2.appendChild(lDiv3a);
