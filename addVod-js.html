@@ -9,97 +9,127 @@
   }
   getUrl();
 
+  let vodLinkInput = null;
+  let vodLinkPreview = null;
   document.addEventListener("DOMContentLoaded", function () {
     document
       .getElementById("btnAddContent")
       .addEventListener("click", addContent);
     document.getElementById("btnSubmit").addEventListener("click", submitForm);
-    document.getElementById("linkV").addEventListener("input", extractCodLink);
+    vodLinkPreview = document.getElementById("vodLinkPreview");
+    vodLinkInput = document.getElementById("vodLink");
+    vodLinkInput.addEventListener("input", extractCodLink);
 
     addContent();
-    document.getElementsByName("stsC[]")[0].value = "P";
+    document.getElementsByName("contentWatchStatus[]")[0].value = "P";
   });
 
   function submitForm() {
     let errors = "";
 
-    // Define constantes e as preenche com os elementos do formulário obtidos por seus IDs
-    const numV = document.getElementById("numV");
-    const stsV = document.getElementById("stsV");
-    let titV = document.getElementById("titV").value;
-    const linkV = document.getElementById("linkV");
-    const obsV = document.getElementById("obsV");
-    const partV = document.getElementById("partV");
-    const stsC1 = document.getElementById("stsC1");
-    const nameC1 = document.getElementById("nameC1");
-    const mutC1 = document.getElementById("mutC1");
+    const vodNumber = document.getElementById("vodNumber").value.trim();
+    const vodWatchStatus = document
+      .getElementById("vodWatchStatus")
+      .value.trim();
+    let vodTitle = document.getElementById("vodTitle").value.trim();
+    const vodObservation = document
+      .getElementById("vodObservation")
+      .value.trim();
+    const vodParticipants = document
+      .getElementById("vodParticipants")
+      .value.trim();
+    const vodComments = document.getElementById("vodComments").value.trim();
+    let vodFavorite = document.getElementById("vodFavorite").checked
+      ? "S"
+      : "N";
 
     // Verifica se os valores do número, status e título da live foram preenchidos segundo os parâmetros
     // Caso contrário, adiciona o elemento com problemas de preenchimento à variável de erros
-    if (numV.value) {
+    if (vodNumber) {
     } else {
       errors += "Número do VoD\n";
     }
     if (
-      stsV.value === "N" ||
-      stsV.value === "P" ||
-      stsV.value === "I" ||
-      stsV.value === "C"
+      vodWatchStatus === "N" ||
+      vodWatchStatus === "P" ||
+      vodWatchStatus === "I" ||
+      vodWatchStatus === "C"
     ) {
     } else {
-      errors += "Status\n";
+      errors += "Status de visualização\n";
     }
-    if (!titV) {
+    if (!vodTitle) {
       errors += "Título\n";
     } else {
-      if (titV.charAt(0) === "'") {
-        titV = "'" + titV;
+      // Corrige texto caso comece com '
+      if (vodTitle.charAt(0) === "'") {
+        vodTitle = "'" + vodTitle;
       }
     }
+    if (vodFavorite !== "S") vodFavorite = "N";
 
-    const codV = extractCodLink();
+    const vodLink = extractCodLink();
     // Caso o tamanho do código do VoD não esteja ente 9 e 10 (tamanho esperado), adiciona Link à variável de erros
-    if (codV.length < 9 || codV.length > 10) {
+    if (vodLink.length < 9 || vodLink.length > 10) {
       errors += "Link\n";
     }
 
-    const listStsC = document.getElementsByName("stsC[]");
-    const listNameC = document.getElementsByName("nameC[]");
-    const listMutC = document.getElementsByName("mutC[]");
+    const contentListWatchStatus = document.getElementsByName(
+      "contentWatchStatus[]"
+    );
+    const contentListName = document.getElementsByName("contentName[]");
+    const contentListSoundStatus = document.getElementsByName(
+      "contentSoundStatus[]"
+    );
 
-    const contentsList = [];
-
+    // Conteúdos
+    //
+    const contentList = [];
     // Define variável de erro de conteúdos
     let errorsC = "";
 
-    for (let i = 0; i < listNameC.length; i++) {
-      const nameCVal = listNameC[i].value;
-      if (nameCVal.length > 0) {
-        const contentData = {};
-        const stsCVal = listStsC[i].value;
-        const mutCVal = listMutC[i].value;
+    for (let i = 0; i < contentListName.length; i++) {
+      const contentNameValue = contentListName[i].value;
+      if (contentNameValue.length > 0) {
+        const contentNameValue = contentListName[i].value;
+        const contentWatchStatusValue = contentListWatchStatus[i].value;
+        const contentSoundStatusValue = contentListSoundStatus[i].value;
         // Verifica se os valores dos selects obtidos estão dentro do padrão esperado
         // Caso contrário, adiciona o erro à variável de erro de conteúdos
         if (
-          stsCVal === "N" ||
-          stsCVal === "P" ||
-          stsCVal === "I" ||
-          stsCVal === "C"
+          contentWatchStatusValue === "N" ||
+          contentWatchStatusValue === "P" ||
+          contentWatchStatusValue === "I" ||
+          contentWatchStatusValue === "C"
         ) {
         } else {
-          errorsC += "Status do conteúdo " + (i + 1) + "\n";
+          errorsC += "Status de visualização do conteúdo " + (i + 1) + "\n";
         }
-        if (mutCVal === "N" || mutCVal === "S" || mutCVal === "P") {
+        if (
+          contentSoundStatusValue === "N" ||
+          contentSoundStatusValue === "S" ||
+          contentSoundStatusValue === "P"
+        ) {
         } else {
-          errorsC += "Mute do conteúdo " + (i + 1) + "\n";
+          errorsC += "Status de áudio do conteúdo " + (i + 1) + "\n";
         }
         // Caso não haja erros de conteúdo...
         if (errorsC === "") {
+          let [contentCategory, contentDescription] = contentNameValue.split(
+            " = ",
+            2
+          );
+          contentCategory = contentCategory.replace("\\=", "=");
+          contentDescription = contentDescription.replace("\\=", "=");
+
           // Define atributos do objeto Conteúdo com os valores da linha correspondente preenchida no formulário
-          contentData.sts = stsCVal;
-          contentData.nome = nameCVal;
-          contentData.mut = mutCVal;
-          contentsList.push(contentData);
+          const content = {
+            category: contentCategory,
+            description: contentDescription,
+            soundStatus: contentSoundStatusValue,
+            watchStatus: contentWatchStatusValue,
+          };
+          contentList.push(content);
         } else {
           // Caso contrário...
           // Adiciona as variáveis de erro de conteúdo à variável de erro geral
@@ -110,16 +140,16 @@
       }
     }
     // Verifica se há algum conteúdo preenchido. Caso contrário, adiciona esse erro à variável de erros
-    if (contentsList.length < 1) {
+    if (contentList.length < 1) {
       errors += "Nenhum conteúdo foi preenchido corretamente\n";
     }
 
     // Pede confirmação quando há inconsistência no status de visualização
     function checkStatusIntegrity() {
-      const stsVValue = stsV.value;
+      const stsVValue = vodWatchStatus;
       let onlyCI = true;
-      for (const contentData of contentsList) {
-        const cdSts = contentData.sts;
+      for (const contentData of contentList) {
+        const cdSts = contentData.watchStatus;
         if (stsVValue === "C" && cdSts !== "C")
           return window.confirm(
             "O status de visualização do VoD é Completamente assistido, mas há conteúdos preenchidos de forma diferente. Deseja prosseguir dessa forma?"
@@ -144,13 +174,16 @@
     // Caso não haja erros...
     if (errors === "") {
       if (!checkStatusIntegrity()) return;
-      const vodData = {};
-      vodData.cod = codV;
-      vodData.num = numV.value;
-      vodData.sts = stsV.value;
-      vodData.tit = titV;
-      vodData.obs = obsV.value;
-      vodData.part = partV.value;
+      const vod = {
+        number: vodNumber,
+        title: vodTitle,
+        link: vodLink,
+        observation: vodObservation,
+        participants: vodParticipants,
+        watchStatus: vodWatchStatus,
+        comments: vodComments,
+        favorite: vodFavorite,
+      };
 
       // Executa a função de adicionar as informações do VoD e Conteúdos à Spreadsheet
       const loadingDiv = document.getElementById("loadingDiv");
@@ -159,7 +192,7 @@
       google.script.run
         .withSuccessHandler(onSuccess)
         .withFailureHandler(onFailure)
-        .addVodSs(vodData, contentsList);
+        .addVodSs(vodData, contentList);
 
       function onSuccess() {
         // Exibe um alert informando que a operação foi realizada com sucesso
@@ -183,7 +216,7 @@
         const lA = document.createElement("a");
         lA.setAttribute("href", pageUrl);
         lA.classList = "text-decoration-none fw-bold text-cherry";
-        lA.textContent = "Página Inicial";
+        lA.textContent = "página inicial";
         lSpanb.appendChild(lA);
         lSpanb.appendChild(document.createTextNode("."));
         lDiv3b.appendChild(lSpanb);
@@ -200,22 +233,8 @@
         );
         loadingDiv.style.display = "none";
       }
-
-      // Limpa e define os valores dos campos do formulário para o padrão
-      // numV.value = "";
-      // stsV.value = "P";
-      // titV.value = "";
-      // linkV.value = "";
-      // obsV.value = "";
-      // partV.value = "";
-      // stsC1.value = "P";
-      // nameC1.value = "";
-      // mutC1.value = "N";
-      // Exclui todas as linhas adicionadas de Conteúdo do formulário
-      //document.querySelectorAll('.div-content-row').forEach(e => e.remove());
     } else {
-      // Caso haja erros...
-      // Exibe os erros em um alert
+      // Caso haja erros, exibe-os em um alert
       alert(
         "Há errors no preenchimento do formulário:\n" + errors.slice(0, -1)
       );
@@ -226,16 +245,16 @@
 
   // Extrai o código do VoD do Link digitado no formulário e atualiza o preview do código
   function extractCodLink() {
-    const linkV = document.getElementById("linkV").value;
-    // Define uma string que recupera o código do VoD a partir do link digitado
-    let codV = linkV.substring(
-      linkV.lastIndexOf("/") + 1,
-      linkV.lastIndexOf("/") + 11
+    const vodFullLink = vodLinkInput.value;
+    // Recupera o código do VoD a partir do link digitado
+    let vodLink = vodFullLink.substring(
+      vodFullLink.lastIndexOf("/") + 1,
+      vodFullLink.lastIndexOf("/") + 11
     );
     // Substitui todos os caracteres que não são numéricos por um caractere vazio
-    codV = codV.replace(/\D/g, "");
-    document.getElementById("codVPreview").textContent = codV;
-    return codV;
+    vodLink = vodLink.replace(/\D/g, "");
+    vodLinkPreview.textContent = vodLink;
+    return vodLink;
   }
 
   // Ao clicar no botão de adicionar conteúdo, adiciona mais uma linha com os inputs de status e nome do conteúdo, além de um botão para remover essa linha
@@ -259,18 +278,18 @@
     const butt = document.createElement("button");
 
     // Define propriedades dos elementos criados
-    sel1.setAttribute("name", "stsC[]");
+    sel1.setAttribute("name", "contentWatchStatus[]");
     opt1.setAttribute("value", "N");
     opt1.setAttribute("selected", "selected");
     opt2.setAttribute("value", "P");
     opt3.setAttribute("value", "I");
     opt4.setAttribute("value", "C");
-    inpu.setAttribute("name", "nameC[]");
+    inpu.setAttribute("name", "contentName[]");
     inpu.setAttribute("type", "text");
-    inpu.setAttribute("list", "nameCDatalist");
+    inpu.setAttribute("list", "contentNameDatalist");
     inpu.setAttribute("placeholder", "Conteúdo");
     inpu.setAttribute("maxlength", "500");
-    sel2.setAttribute("name", "mutC[]");
+    sel2.setAttribute("name", "contentSoundStatus[]");
     opt5.setAttribute("selected", "selected");
     opt5.setAttribute("value", "N");
     opt6.setAttribute("value", "S");
@@ -323,8 +342,10 @@
     butt.addEventListener("click", removeContent);
 
     // Adiciona listeners para dinamizar a datalist
-    const results = document.getElementById("nameCDatalist");
-    const templateContent = document.getElementById("nameCTemplate").content;
+    const results = document.getElementById("contentNameDatalist");
+    const templateContent = document.getElementById(
+      "contentNameTemplate"
+    ).content;
     inpu.addEventListener("keyup", function handler(event) {
       while (results.children.length) results.removeChild(results.firstChild);
       const inputVal = new RegExp(inpu.value.trim(), "i");

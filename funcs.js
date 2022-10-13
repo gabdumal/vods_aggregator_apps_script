@@ -108,21 +108,6 @@ function addVodSs(vodInfo, contentInfoList) {
 }
 
 // Extrai os dados de um Vod a partir do seu ID
-function getVodDataByIdOld(idPar) {
-  // Query para buscar todas as colunas de um registro da sheet vod em que a coluna A seja igual ao parâmetro idPar
-  const qSearchVod = "SELECT A, B, C, D, E, F, G WHERE (A='" + idPar + "')";
-  // Busca todas as células que contenham o ID passado nos parâmetros
-  const vodExtractedData = query("vod!$A$1:$G", qSearchVod);
-  // Query para buscar todas as colunas de todos os registros da sheet content em que a coluna B seja igual ao parâmetro idPar
-  const qSearchContent = "SELECT A, B, C, D, E WHERE (B='" + idPar + "')";
-  // Busca todas as células que contenham o ID passado nos parâmetros
-  const extractedDataContentList = query("content!$A$1:$E", qSearchContent);
-  const vodData = vodExtractedData[0];
-  vodData.push(extractedDataContentList);
-  return vodData;
-}
-
-// Extrai os dados de um Vod a partir do seu ID
 function getVodDataById(idVod) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const wsVod = ss.getSheetByName("vod");
