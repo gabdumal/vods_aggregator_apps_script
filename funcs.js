@@ -101,13 +101,10 @@ function addVodSs(vod, contentList) {
 // Extrai os dados de um Vod a partir do seu ID
 function getVodDataById(idVod) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const wsVod = ss.getSheetByName("vod");
-  const wsContent = ss.getSheetByName("content");
+  const wsVod = ss.getSheetByName("server_vod");
+  const wsContent = ss.getSheetByName("server_content");
 
-  const lastRowV = wsVod.getRange("A1").getDataRegion().getLastRow();
-
-  // Obtém uma lista de todos os idVods na spreadsheet
-  const dataIdVods = wsVod.getRange(1, 1, lastRowV, 1).getValues();
+  const dataIdVods = wsVod.getRange(1, 1, wsVod.getLastRow(), 1).getValues();
   const idVodList = dataIdVods.map(function (r) {
     return r[0];
   });
@@ -116,37 +113,42 @@ function getVodDataById(idVod) {
   const pV = idVodList.indexOf(idVod);
   const rowV = pV + 1;
 
-  // Captura os dados da linha na sheet wsVod
-  const vodData = wsVod.getRange(rowV, 1, 1, 7).getValues()[0];
+  const vodData = wsVod.getRange(rowV, 1, 1, 9).getValues()[0];
 
-  const contentsList = [];
-  const lastRowC = wsContent.getRange("A1").getDataRegion().getLastRow();
-  // Obtém uma lista de todos os idContents na spreadsheet
-  const dataContent = wsContent.getRange(1, 1, lastRowC, 2).getValues();
-  const idContentList = dataContent.map(function (r) {
-    return r[0];
-  });
+  const vod = {
+    id: vodData[0],
+    number: vodData[1],
+    title: vodData[2],
+    link: vodData[3],
+    observation: vodData[4],
+    participants: vodData[5],
+    watchStatus: vodData[6],
+    comments: vodData[7],
+    favorite: vodData[8] === "S",
+    contentList: [],
+  };
+
+  const contentListData = wsContent
+    .getRange(1, 2, wsContent.getLastRow(), 6)
+    .getValues();
+
   // Verifica se o ID do Vod é igual ao idVod registrado no Conteúdo
-  function checkIdMatch(contPar) {
-    return contPar[1] == idVod;
+  function checkIdMatch(content) {
+    return content[0] === idVod;
   }
-  const contentListEqual = dataContent.filter(checkIdMatch);
-  let rowsCList = [];
-  for (i = 0; i < contentListEqual.length; i++) {
-    // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContents
-    const pC = idContentList.indexOf(contentListEqual[i][0]);
-    const rowC = pC + 1;
-    rowsCList.push(String(rowC));
+  const matchedContentList = contentListData.filter(checkIdMatch);
+
+  for (const contentData of matchedContentList) {
+    const content = {
+      category: contentData[1],
+      description: contentData[2],
+      soundStatus: contentData[3],
+      watchStatus: contentData[4],
+    };
+    vod.contentList.push(content);
   }
-  // Busca dados de cada conteudo e apensa à lista de conteúdos
-  for (i = 0; i < rowsCList.length; i++) {
-    const contentData = wsContent
-      .getRange(rowsCList[i], 1, 1, 5)
-      .getValues()[0];
-    contentsList.push(contentData);
-  }
-  vodData.push(contentsList);
-  return vodData;
+
+  return vod;
 }
 
 // Edita as informações do Vod e Conteúdo na Spreadsheet
@@ -202,7 +204,7 @@ function editVodSs(vodInfo, contentInfoList) {
 
   let rowsCList = [];
   for (i = 0; i < contentListEqual.length; i++) {
-    // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContents
+    // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContent
     const pC = idContentList.indexOf(contentListEqual[i][0]);
     const rowC = pC + 1;
     rowsCList.push(String(rowC));
@@ -232,50 +234,82 @@ function editVodSs(vodInfo, contentInfoList) {
 }
 
 function deleteVodSs(idVod) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const wsVod = ss.getSheetByName("vod");
-  const wsContent = ss.getSheetByName("content");
+  const ssServer = SpreadsheetApp.openById(
+    "1EByNGWjjCsvcSa1nlXCMck0JOM9V6MJ2EwVVD7UYmv8"
+  );
+  let ssUser = SpreadsheetApp.getActiveSpreadsheet();
+  const wsServerVod = ssServer.getSheetByName("server_vod");
+  const wsUserVod = ssUser.getSheetByName("user_vod");
+  const wsServerContent = ssServer.getSheetByName("server_content");
+  const wsUserContent = ssUser.getSheetByName("user_content");
 
-  const lastRowV = wsVod.getRange("A1").getDataRegion().getLastRow();
-
-  // Obtém uma lista de todos os idVods na spreadsheet
-  const dataIdVods = wsVod.getRange(1, 1, lastRowV, 1).getValues();
-  const idVodList = dataIdVods.map(function (r) {
+  const serverVodIdData = wsServerVod
+    .getRange(1, 1, wsServerVod.getLastRow(), 1)
+    .getValues();
+  const serverVodIdList = serverVodIdData.map(function (r) {
     return r[0];
   });
+  let pV = serverVodIdList.indexOf(idVod);
+  let rowV = pV + 1;
+  wsServerVod
+    .getRange(rowV, 1, 1, 7)
+    .deleteCells(SpreadsheetApp.Dimension.ROWS);
 
-  // Procura a posição do idVod fornecido nos parâmetros dentro do array 1D de idVods
-  const pV = idVodList.indexOf(idVod);
-  const rowV = pV + 1;
-
-  // Deleta os dados da linha na sheet wsVod
-  wsVod.getRange(rowV, 1, 1, 7).deleteCells(SpreadsheetApp.Dimension.ROWS);
-
-  const lastRowC = wsContent.getRange("A1").getDataRegion().getLastRow();
-  // Obtém uma lista de todos os idContents na spreadsheet
-  const dataContent = wsContent.getRange(1, 1, lastRowC, 2).getValues();
-  const idContentList = dataContent.map(function (r) {
+  const userVodIdData = wsUserVod
+    .getRange(1, 1, wsUserVod.getLastRow(), 1)
+    .getValues();
+  const userVodIdList = userVodIdData.map(function (r) {
     return r[0];
   });
+  pV = userVodIdList.indexOf(idVod);
+  rowV = pV + 1;
+  wsUserVod.getRange(rowV, 1, 1, 7).deleteCells(SpreadsheetApp.Dimension.ROWS);
 
+  const serverDataContent = wsServerContent
+    .getRange(1, 1, wsServerContent.getLastRow(), 2)
+    .getValues();
+  const serverContentIdList = serverDataContent.map(function (r) {
+    return r[0];
+  });
   // Verifica se o ID do Vod é igual ao idVod registrado no Conteúdo
-  function checkIdMatch(contPar) {
-    return contPar[1] == idVod;
+  function checkIdMatch(content) {
+    return content[1] === idVod;
   }
-  const contentListEqual = dataContent.filter(checkIdMatch);
-
-  let rowsCList = [];
-  for (i = 0; i < contentListEqual.length; i++) {
+  const matchedServerContentList = serverDataContent.filter(checkIdMatch);
+  let serverContentRowsList = [];
+  for (let i = 0; i < matchedServerContentList.length; i++) {
     // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContents
-    const pC = idContentList.indexOf(contentListEqual[i][0]);
+    const pC = serverContentIdList.indexOf(matchedServerContentList[i][0]);
     const rowC = pC + 1;
-    rowsCList.push(String(rowC));
+    serverContentRowsList.push(String(rowC));
   }
-  // Inverte o sentido de rowsCList
-  rowsCList = rowsCList.reverse();
-  for (i = 0; i < rowsCList.length; i++) {
-    wsContent
-      .getRange(rowsCList[i], 1, 1, 5)
+  // Inverte o sentido de rowsCList e deleta as linhas selecionadas
+  serverContentRowsList = serverContentRowsList.reverse();
+  for (let i = 0; i < serverContentRowsList.length; i++) {
+    wsServerContent
+      .getRange(serverContentRowsList[i], 1, 1, 5)
+      .deleteCells(SpreadsheetApp.Dimension.ROWS);
+  }
+
+  const userDataContent = wsUserContent
+    .getRange(1, 1, wsUserContent.getLastRow(), 2)
+    .getValues();
+  const userContentIdList = userDataContent.map(function (r) {
+    return r[0];
+  });
+  const matchedUserContentList = userDataContent.filter(checkIdMatch);
+  let userContentRowsList = [];
+  for (let i = 0; i < matchedUserContentList.length; i++) {
+    // Procura a posição do idContent fornecido nos parâmetros dentro do array 1D de idContents
+    const pC = userContentIdList.indexOf(matchedUserContentList[i][0]);
+    const rowC = pC + 1;
+    userContentRowsList.push(String(rowC));
+  }
+  // Inverte o sentido de rowsCList e deleta as linhas selecionadas
+  userContentRowsList = userContentRowsList.reverse();
+  for (let i = 0; i < userContentRowsList.length; i++) {
+    wsUserContent
+      .getRange(userContentRowsList[i], 1, 1, 3)
       .deleteCells(SpreadsheetApp.Dimension.ROWS);
   }
 }

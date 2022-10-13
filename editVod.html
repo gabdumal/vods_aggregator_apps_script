@@ -55,22 +55,22 @@
         <h1 class="display-5 pageTitle">Editar Vod</h1>
         <div class="fs-2 font-monospace text-cherry numVodDiv">
           <span class="text-black fs-5"> núm</span>
-          <span id="numVodTit">---</span>
+          <span id="vodNumberHeader">---</span>
         </div>
       </header>
       <section class="mt-3">
         <div class="row g-3 mb-3">
-          <div class="col-lg-4">
-            <div class="input-group">
+          <div class="col-md-4">
+            <div class="input-group num-sts-group">
               <span class="input-group-text">Nº</span>
               <input
                 type="text"
-                id="numV"
+                id="vodNumber"
                 maxlength="8"
                 class="form-control"
                 disabled
               />
-              <select id="stsV" class="form-select no-arrow" disabled>
+              <select id="vodWatchStatus" class="form-select no-arrow" disabled>
                 <option value="N" class="text-danger">Não assistido 🔴</option>
                 <option value="P" selected="selected" class="text-warning">
                   Parcialmente 🟡
@@ -82,13 +82,13 @@
               </select>
             </div>
           </div>
-          <div class="col-lg-8">
+          <div class="col-md-8">
             <div class="input-group">
               <span class="input-group-text">Título</span>
               <input
                 type="text"
                 maxlength="500"
-                id="titV"
+                id="vodTitle"
                 class="form-control"
                 disabled
               />
@@ -97,59 +97,43 @@
         </div>
         <div class="row g-3 mb-3">
           <div class="col-lg-12">
-            <div class="input-group">
+            <div class="input-group link-favorite-group">
               <span class="input-group-text">Link</span>
               <input
                 type="text"
                 maxlength="500"
-                id="linkV"
+                id="vodLink"
                 class="form-control"
                 disabled
               />
-              <div class="input-group-text">
-                <span id="codVPreview">---</span>
+              <div class="input-group-text link-preview">
+                <span id="vodLinkPreview">---</span>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="row g-3 mb-3">
-          <div class="col-lg-12">
-            <div class="input-group">
-              <span class="input-group-text">Observações</span>
-              <textarea
-                id="obsV"
-                rows="2"
-                maxlength="1000"
-                class="form-control"
-                aria-label="Observações"
+              <input
+                type="checkbox"
+                class="btn-check"
+                id="vodFavorite"
+                autocomplete="off"
                 disabled
-              ></textarea>
+              />
+              <label
+                class="btn btn-outline-warning favorite-label"
+                for="vodFavorite"
+              >
+                <i class="bi bi-star"></i>
+                <span class="fw-bold"> Favorito</span>
+              </label>
             </div>
           </div>
         </div>
-        <div class="row g-3 mb-3">
-          <div class="col-lg-12">
-            <div class="input-group">
-              <span class="input-group-text">Participações</span>
-              <textarea
-                id="partV"
-                rows="2"
-                maxlength="500"
-                class="form-control"
-                aria-label="Participações"
-                disabled
-              ></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4" style="border-color: transparent">
+        <div class="card mb-3" style="border-color: transparent">
           <div class="row g-0">
             <div class="col-12">
               <div id="contentListCard" class="card-body p-0">
-                <template id="nameCTemplate">
-                  <?!= contentNamesList ?>
+                <template id="contentNameTemplate">
+                  <?!= contentCategoryOptionList ?>
                 </template>
-                <datalist id="nameCDatalist"></datalist>
+                <datalist id="contentNameDatalist"></datalist>
               </div>
             </div>
             <div class="col-12">
@@ -164,13 +148,58 @@
             </div>
           </div>
         </div>
+        <div class="row g-3 mb-3">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-text">Observações</span>
+              <textarea
+                id="vodObservation"
+                rows="1"
+                maxlength="1000"
+                class="form-control"
+                aria-label="Observações"
+                disabled
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-text">Participações</span>
+              <textarea
+                id="vodParticipants"
+                rows="1"
+                maxlength="500"
+                class="form-control"
+                aria-label="Participações"
+                disabled
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <span class="input-group-text">Comentários</span>
+              <textarea
+                id="vodComments"
+                rows="2"
+                maxlength="1000"
+                class="form-control"
+                aria-label="Comentários"
+                disabled
+              ></textarea>
+            </div>
+          </div>
+        </div>
         <div class="col-12 mb-3">
           <div class="btn-group w-100" role="group">
             <button
               id="btnDelete"
               type="button"
               class="btn btn-danger w-50"
-              disabled="disabled"
+              disabled
             >
               Excluir
             </button>
@@ -178,7 +207,7 @@
               id="btnSubmit"
               type="button"
               class="btn btn-cherry w-50"
-              disabled="disabled"
+              disabled
             >
               Editar
             </button>
