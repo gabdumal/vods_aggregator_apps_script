@@ -581,7 +581,7 @@
       "status-hidden",
       "content-hidden",
       "participants-hidden",
-      ".not-favorite-hidden",
+      "not-favorite-hidden",
     ];
 
     // Lista as linhas visíveis
@@ -599,7 +599,7 @@
       rowIndex++
     ) {
       const row = visibleRows[rowIndex];
-      row.classList.remove("paginationHidden");
+      row.classList.remove("pagination-hidden");
     }
     for (
       let rowIndex = 0;
@@ -607,7 +607,7 @@
       rowIndex++
     ) {
       const row = visibleRows[rowIndex];
-      row.classList.add("paginationHidden");
+      row.classList.add("pagination-hidden");
     }
     for (
       let rowIndex = quantDisplay * 2 * pageNumber;
@@ -615,7 +615,7 @@
       rowIndex++
     ) {
       const row = visibleRows[rowIndex];
-      row.classList.add("paginationHidden");
+      row.classList.add("pagination-hidden");
     }
     return numRows;
   }

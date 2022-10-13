@@ -28,9 +28,7 @@
     let errors = "";
 
     const vodNumber = document.getElementById("vodNumber").value.trim();
-    const vodWatchStatus = document
-      .getElementById("vodWatchStatus")
-      .value.trim();
+    const vodWatchStatus = document.getElementById("vodWatchStatus").value;
     let vodTitle = document.getElementById("vodTitle").value.trim();
     const vodObservation = document
       .getElementById("vodObservation")
@@ -58,14 +56,7 @@
     } else {
       errors += "Status de visualização\n";
     }
-    if (!vodTitle) {
-      errors += "Título\n";
-    } else {
-      // Corrige texto caso comece com '
-      if (vodTitle.charAt(0) === "'") {
-        vodTitle = "'" + vodTitle;
-      }
-    }
+    if (!vodTitle) errors += "Título\n";
     if (vodFavorite !== "S") vodFavorite = "N";
 
     const vodLink = extractCodLink();
@@ -91,7 +82,7 @@
     for (let i = 0; i < contentListName.length; i++) {
       const contentNameValue = contentListName[i].value;
       if (contentNameValue.length > 0) {
-        const contentNameValue = contentListName[i].value;
+        const contentNameValue = contentListName[i].value.trim();
         const contentWatchStatusValue = contentListWatchStatus[i].value;
         const contentSoundStatusValue = contentListSoundStatus[i].value;
         // Verifica se os valores dos selects obtidos estão dentro do padrão esperado
@@ -119,6 +110,7 @@
             " = ",
             2
           );
+          contentDescription = contentDescription || "";
           contentCategory = contentCategory.replace("\\=", "=");
           contentDescription = contentDescription.replace("\\=", "=");
 
@@ -192,7 +184,7 @@
       google.script.run
         .withSuccessHandler(onSuccess)
         .withFailureHandler(onFailure)
-        .addVodSs(vodData, contentList);
+        .addVodSs(vod, contentList);
 
       function onSuccess() {
         // Exibe um alert informando que a operação foi realizada com sucesso
@@ -205,7 +197,7 @@
         const lSpana = document.createElement("span");
         lSpana.textContent =
           "A inclusão do VoD " +
-          vodData.num +
+          vod.number +
           " no sistema foi realizada com sucesso!";
         lDiv3a.appendChild(lSpana);
         lDiv2.appendChild(lDiv3a);

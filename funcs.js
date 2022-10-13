@@ -10,7 +10,10 @@ function getTableData() {
     return b[1] - a[1];
   });
 
-  let dataContent = wsContent.getRange(1, 2, wsContent.getLastRow(), 6).getValues();
+  let dataContent = wsContent
+    .getRange(1, 2, wsContent.getLastRow(), 6)
+    .getValues();
+
   dataVod.forEach(function (vodData) {
     const vod = {
       id: vodData[0],
@@ -48,62 +51,50 @@ function getTableData() {
 }
 
 // Adiciona as informações do Vod e Conteúdos à Spreadsheet
-function addVodSs(vodInfo, contentInfoList) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const wsVod = ss.getSheetByName("vod");
-  const wsContent = ss.getSheetByName("content");
+function addVodSs(vod, contentList) {
+  const ssServer = SpreadsheetApp.openById(
+    "1EByNGWjjCsvcSa1nlXCMck0JOM9V6MJ2EwVVD7UYmv8"
+  );
+  let ssUser = SpreadsheetApp.getActiveSpreadsheet();
+  const wsConfiguration = ssServer.getSheetByName("configuration");
+  const wsServerVod = ssServer.getSheetByName("server_vod");
+  const wsUserVod = ssUser.getSheetByName("user_vod");
+  const wsServerContent = ssServer.getSheetByName("server_content");
+  const wsUserContent = ssUser.getSheetByName("user_content");
 
-  const lastRowV = wsVod.getRange("A1").getDataRegion().getLastRow();
-  const lastRowC = wsContent.getRange("A1").getDataRegion().getLastRow();
+  const configurationData = wsConfiguration.getRange(1, 1, 1, 3).getValues();
+  const newVodId = configurationData[0][0];
+  const newContentId = configurationData[0][2];
 
-  // Define a constante idVod como o maior valor de id encontrado para os Vods + 1
-  const dataIdVods = wsVod.getRange(1, 1, lastRowV, 1).getValues();
-  const idVodList = dataIdVods.map(function (r) {
-    return r[0];
-  });
-  const maxIdVod = Math.max.apply(Math, idVodList);
-  const idVod = maxIdVod + 1;
+  wsServerVod.appendRow([
+    "'" + newVodId,
+    "'" + vod.number,
+    "'" + vod.title,
+    "'" + vod.link,
+    "'" + vod.observation,
+    "'" + vod.participants,
+  ]);
+  wsUserVod.appendRow([
+    "'" + newVodId,
+    "'" + vod.watchStatus,
+    "'" + vod.comments,
+    "'" + vod.favorite,
+  ]);
 
-  // Cria uma nova linha na sheet wsVod
-  wsVod.appendRow([""]);
-  // Define o formato dos dados da nova linha
-  wsVod.getRange(lastRowV + 1, 1, 1, 7).setNumberFormat("@");
-  // Preenche a última linha criada com os dados do objeto Vod passado nos parâmetros
-  wsVod
-    .getRange(lastRowV + 1, 1, 1, 7)
-    .setValues([
-      [
-        idVod,
-        vodInfo.num,
-        vodInfo.sts,
-        vodInfo.tit,
-        vodInfo.cod,
-        vodInfo.obs,
-        vodInfo.part,
-      ],
+  for (i = 0; i < contentList.length; i++) {
+    const content = contentList[i];
+    wsServerContent.appendRow([
+      "'" + (newContentId + i),
+      "'" + newVodId,
+      "'" + content.category,
+      "'" + content.description,
+      "'" + content.soundStatus,
     ]);
-  // Define o formato dos dados da nova linha novamente
-  wsVod.getRange(lastRowV + 1, 1, 1, 7).setNumberFormat("@");
-
-  // Define a constante maxIdContent como o maior valor de id encontrado para os conteúdos
-  const dataIdContent = wsContent.getRange(1, 1, lastRowC, 1).getValues();
-  const idContentList = dataIdContent.map(function (r) {
-    return r[0];
-  });
-  const maxIdContent = Math.max.apply(Math, idContentList);
-
-  for (i = 0; i < contentInfoList.length; i++) {
-    const contentInfo = contentInfoList[i];
-    // Cria uma nova linha na sheet wsContent com os dados do objeto Conteúdo
-    wsContent.appendRow([
-      maxIdContent + (i + 1),
-      idVod,
-      contentInfo.sts,
-      contentInfo.nome,
-      contentInfo.mut,
+    wsUserContent.appendRow([
+      "'" + (newContentId + i),
+      "'" + newVodId,
+      "'" + content.watchStatus,
     ]);
-    // Define o formato dos dados da nova linha
-    wsContent.getRange(lastRowC + 1 + i, 1, 1, 5).setNumberFormat("@");
   }
 }
 
