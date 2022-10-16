@@ -1,47 +1,44 @@
 function getTableData() {
   let ss = SpreadsheetApp.getActiveSpreadsheet();
-  let wsVod = ss.getSheetByName("vod");
-  let dataVodNO = wsVod.getRange(1, 1, wsVod.getLastRow(), 7).getValues();
+  let wsVod = ss.getSheetByName("server_vod");
+  let wsContent = ss.getSheetByName("server_content");
+  const tableData = []; // Guarda todos os dados da tabela
 
-  // Inicializa um array 2D com as informações extraídas, mas ordenado pela segunda coluna de cada item na ordem decrescente
-  let dataVod = dataVodNO.sort(function (a, b) {
-    return b[1] - a[1];
-  });
-
-  let wsContent = ss.getSheetByName("content");
-  let dataContentNO = wsContent
-    .getRange(1, 1, wsContent.getLastRow(), 5)
+  const dataServerVod = wsVod.getRange(1, 1, wsVod.getLastRow(), 7).getValues();
+  const dataServerContent = wsContent
+    .getRange(1, 1, wsContent.getLastRow(), 3)
     .getValues();
-
-  // Inicializa um array 2D com as informações extraídas, mas ordenado pela segunda coluna de cada item na ordem decrescente
-  let dataContent = dataContentNO.sort(function (a, b) {
-    return b[1] - a[1];
-  });
-
-  // Declara constante de array que guardará todos os dados da tabela
-  const tableData = [];
-
-  dataVod.forEach(function (vod) {
-    let vodObj = {
-      id: vod[0],
-      num: vod[1],
-      sts: vod[2],
-      tit: vod[3],
-      cod: vod[4],
-      obs: vod[5],
-      part: vod[6],
+  for (const serverVod of dataServerVod) {
+    if (serverVod[6] !== "S") continue;
+    // Verifica se o primeiro item de um array corresponde a um id dado, capturando a última correspondência
+    function checkIdMatch(array) {
+      return array[0] === serverVod[0];
+    }
+    const vod = {
+      id: serverVod[0],
+      number: serverVod[1],
+      title: serverVod[2],
+      link: serverVod[3],
+      observation: serverVod[4],
+      participants: serverVod[5],
+      contentList: [],
     };
 
-    // Verifica se o ID do Vod é igual ao idVod registrado no Conteúdo
-    function checkIdMatch(contPar) {
-      return contPar[1] == vodObj.id;
+    const matchedServerContentList = dataServerContent.filter(checkIdMatch);
+    for (const serverContent of matchedServerContentList) {
+      const content = {
+        name: serverContent[1],
+        soundStatus: serverContent[2],
+      };
+      vod.contentList.push(content);
     }
+    tableData.push(vod);
+  }
 
-    // Define uma lista de objetos Conteúdo cujo atributo idVod é igual ao ID do Vod
-    let contentListEqual = dataContent.filter(checkIdMatch);
-
-    vodObj.contents = contentListEqual;
-    tableData.push(vodObj);
+  // Organiza pelo número do vod
+  tableData.sort(function (a, b) {
+    return b.number - a.number;
   });
+
   return tableData;
 }

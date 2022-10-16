@@ -20,15 +20,15 @@
         row.className = "main-row";
 
         // Informações básicas
-        row.insertCell().appendChild(document.createTextNode(vod.num));
-        row.insertCell().appendChild(document.createTextNode(vod.tit));
+        row.insertCell().appendChild(document.createTextNode(vod.number));
+        row.insertCell().appendChild(document.createTextNode(vod.title));
 
         const link = document.createElement("a");
-        link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.cod);
+        link.setAttribute("href", "https://www.twitch.tv/videos/" + vod.link);
         link.setAttribute("target", "_blank");
         link.setAttribute("rel", "noopener noreferrer");
         link.classList.add("btn", "btn-sm", "btn-outline-cherry");
-        link.setAttribute("title", vod.cod);
+        link.setAttribute("title", vod.link);
         const linkItem = document.createElement("i");
         linkItem.classList.add("bi", "bi-link-45deg");
         link.appendChild(linkItem);
@@ -38,65 +38,69 @@
         nestedTable.className = "table table-sm mb-0 nested";
 
         // Conteúdo
-        vod.contents.forEach((content) => {
-          const contRow = nestedTable.insertRow();
-          contRow.className = "content-row";
-          // Melhora exibição de categoria
-          const contentNameCell = contRow.insertCell();
-          const contentName = content[3];
-          const contentNameParts = contentName.split(" = ", 2);
-          if (contentNameParts.length === 1) {
-            // Sem categoria separada
-            const cnSpan = document.createElement("span");
-            cnSpan.appendChild(
-              document.createTextNode(contentNameParts[0].replace("\\=", "="))
+        for (const content of vod.contentList) {
+          const contentRow = nestedTable.insertRow();
+          contentRow.className = "content-row";
+
+          let [contentCategory, contentDescription] = content.name.split(
+            " = ",
+            2
+          );
+          contentDescription = contentDescription || "";
+          contentCategory = contentCategory.replace("\\=", "=");
+          contentDescription = contentDescription.replace("\\=", "=");
+          const contentCellCategoryAndDescription = contentRow.insertCell();
+          const contentSpanCategory = document.createElement("span");
+          contentSpanCategory.classList = "content-bold";
+          let contentSpanCategoryText = contentCategory;
+          if (contentDescription !== "") contentSpanCategoryText += ": ";
+          contentSpanCategory.appendChild(
+            document.createTextNode(contentSpanCategoryText)
+          );
+          contentCellCategoryAndDescription.appendChild(contentSpanCategory);
+          if (contentDescription !== "") {
+            const contentSpanDescriptionText = document.createElement("span");
+            contentSpanDescriptionText.appendChild(
+              document.createTextNode(contentDescription)
             );
-            contentNameCell.appendChild(cnSpan);
-          } else {
-            // Nome de categoria e detalhes
-            const cnSpan1 = document.createElement("span");
-            const cnSpan2 = document.createElement("span");
-            cnSpan1.classList.add("content-bold");
-            cnSpan1.appendChild(
-              document.createTextNode(
-                contentNameParts[0].replace("\\=", "=").concat(": ")
-              )
+            contentCellCategoryAndDescription.appendChild(
+              contentSpanDescriptionText
             );
-            cnSpan2.appendChild(
-              document.createTextNode(contentNameParts[1].replace("\\=", "="))
-            );
-            contentNameCell.appendChild(cnSpan1);
-            contentNameCell.appendChild(cnSpan2);
           }
 
-          const contMute = contRow.insertCell();
-          let contMuteSymbol = null;
-          let contMuteStatus = null;
-          switch (content[4]) {
+          const contentCellSoundStatus = contentRow.insertCell();
+          let contentCellSoundStatusSymbol = "";
+          let contentCellSoundStatusLabel = "";
+          switch (content.soundStatus) {
             case "S":
-              contMute.className = "table-danger";
-              contMuteSymbol = "🔇";
-              contMuteStatus = "Sem som";
+              contentCellSoundStatus.className = "table-danger";
+              contentCellSoundStatusSymbol = "🔇";
+              contentCellSoundStatusLabel = "Sem som";
               break;
             case "N":
-              contMute.className = "table-primary";
-              contMuteSymbol = "🔊";
-              contMuteStatus = "Com som";
+              contentCellSoundStatus.className = "table-primary";
+              contentCellSoundStatusSymbol = "🔊";
+              contentCellSoundStatusLabel = "Com som";
               break;
             case "P":
-              contMute.className = "table-warning";
-              contMuteSymbol = "🔈";
-              contMuteStatus = "Som parcial";
+              contentCellSoundStatus.className = "table-warning";
+              contentCellSoundStatusSymbol = "🔈";
+              contentCellSoundStatusLabel = "Som parcial";
               break;
             default:
               break;
           }
-          contMute.setAttribute("title", contMuteStatus);
-          contMute.appendChild(document.createTextNode(contMuteSymbol));
-        });
+          contentCellSoundStatus.setAttribute(
+            "title",
+            contentCellSoundStatusLabel
+          );
+          contentCellSoundStatus.appendChild(
+            document.createTextNode(contentCellSoundStatusSymbol)
+          );
+        }
 
         // Observações e participações
-        if (vod.obs !== "") {
+        if (vod.observation !== "") {
           const obsRow = nestedTable.insertRow();
           obsRow.className = "obs-row bg-light";
           const obsCell = obsRow.insertCell();
@@ -105,10 +109,10 @@
           obsSpan1.appendChild(document.createTextNode("Observações: "));
           obsCell.appendChild(obsSpan1);
           const obsSpan2 = document.createElement("span");
-          obsSpan2.appendChild(document.createTextNode(vod.obs));
+          obsSpan2.appendChild(document.createTextNode(vod.observation));
           obsCell.appendChild(obsSpan2);
         }
-        if (vod.part !== "") {
+        if (vod.participants !== "") {
           const partRow = nestedTable.insertRow();
           partRow.className = "part-row bg-light";
           const partCell = partRow.insertCell();
@@ -118,7 +122,7 @@
           partSpan1.appendChild(document.createTextNode("Participações: "));
           partCell.appendChild(partSpan1);
           const partSpan2 = document.createElement("span");
-          partSpan2.appendChild(document.createTextNode(vod.part));
+          partSpan2.appendChild(document.createTextNode(vod.participants));
           partCell.appendChild(partSpan2);
         }
 
